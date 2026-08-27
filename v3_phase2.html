@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>静かな占領 — field_v3 第2便（同一設定3本の分布）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0A0A0A;--accent:#10B981;--line:#E5E7EB;--muted:#6B7280;}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--black);font-family:"Noto Sans JP",system-ui,sans-serif;
+     line-height:1.75;-webkit-text-size-adjust:100%}
+.wrap{max-width:960px;margin:0 auto;padding:32px 20px 80px}
+h1{font-size:26px;font-weight:900;letter-spacing:.01em;margin:0 0 6px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 28px}
+h2{font-size:18px;font-weight:700;margin:40px 0 10px;padding-left:10px;border-left:4px solid var(--accent)}
+p{margin:10px 0}
+.cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:18px 0}
+a.card{display:block;border:1px solid var(--line);border-radius:10px;padding:16px 18px;text-decoration:none;color:inherit}
+a.card:hover{border-color:var(--accent)}
+a.card .name{font-weight:700;font-size:16px}
+a.card .meta{color:var(--muted);font-size:13px;margin-top:4px}
+.tblwrap{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:640px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#F9FAFB;font-weight:700;white-space:nowrap}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.key{font-weight:700;color:var(--accent)}
+ul{margin:10px 0 10px 20px;padding:0}
+li{margin:6px 0}
+.note{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:12px 16px;
+      background:#F9FAFB;font-size:14px}
+footer{margin-top:48px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+code{background:#F3F4F6;padding:1px 5px;border-radius:4px;font-size:13px}
+</style></head><body><div class="wrap">
+
+<h1>静かな占領 — field_v3 第2便</h1>
+<p class="sub">架空都市A市・60か月・27主体／同一設定（seed 85・config無変更）で3本走らせ、結果の分布を測った。2026-08-27</p>
+
+<div class="note">
+この便では、世界の<strong>情報の物理</strong>を4か所直した。①買付IDの表記が観測と台帳で二重化していた欠陥（住民の承諾の70%が帳簿に届かず消えていた）
+②自分が選んだ行為の結果が本人に一度も返っていなかったこと ③仲介が区画・意向・希望額を事実として運べなかったこと
+④自社の案件記録と登記の確認月が観測に無かったこと。<br>
+<strong>過去ラン（run38以前）の成約数は、①の欠陥による下限値である。</strong>
+</div>
+
+<h2>3本のレポート</h2>
+<div class="cards">
+  <a class="card" href="runA_54.html"><div class="name">runA</div><div class="meta">所有 0% / 実効支配 0%<br>仲介の照会 0件</div></a>
+  <a class="card" href="runB_55.html"><div class="name">runB</div><div class="meta">所有 0% / 実効支配 0%<br>仲介の照会 2件</div></a>
+  <a class="card" href="runC_56.html"><div class="name">runC</div><div class="meta">所有 0% / 実効支配 <span class="key">1.98%</span><br>仲介の照会 6件・長期賃借1件成立</div></a>
+  <a class="card" href="ref_52.html"><div class="name">参考（修正途中）</div><div class="meta">Codexレビュー反映前のコード<br>分布には数えない</div></a>
+</div>
+
+<h2>同一設定3本の実測</h2>
+<div class="tblwrap">
+<table>
+<tr><th>指標</th><th>runA</th><th>runB</th><th>runC</th></tr>
+<tr><td>実費</td><td class="num">$0.7138</td><td class="num">$0.7132</td><td class="num">$0.7278</td></tr>
+<tr><td>API呼び出し / エラー</td><td class="num">1,628 / 0</td><td class="num">1,628 / 0</td><td class="num">1,628 / 0</td></tr>
+<tr><td>JSON打切り</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td>承諾が消えた件数（no_such_offer）</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td>所有率</td><td class="num">0%</td><td class="num">0%</td><td class="num">0%</td></tr>
+<tr><td>実効支配率</td><td class="num">0%</td><td class="num">0%</td><td class="num">1.98%</td></tr>
+<tr><td>長期賃借・運営の成立</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
+<tr><td>X社の実務件数</td><td class="num">358</td><td class="num">355</td><td class="num">356</td></tr>
+<tr><td>うち 仲介への意向確認の依頼</td><td class="num">232</td><td class="num">210</td><td class="num">220</td></tr>
+<tr><td>買付（make_offer）</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td>長期賃借の申込み</td><td class="num">0</td><td class="num">0</td><td class="num">3</td></tr>
+<tr><td>登記の照会 / うち重複</td><td class="num">0 / 0</td><td class="num">0 / 0</td><td class="num">0 / 0</td></tr>
+<tr><td>意向確認 依頼→照会→回答→報告</td><td class="num">232 / 0 / 0 / 0</td><td class="num">210 / 2 / 2 / 1</td><td class="num">220 / 6 / 6 / 5</td></tr>
+<tr><td>金額の入った私信</td><td class="num">0</td><td class="num">0</td><td class="num">8</td></tr>
+</table>
+</div>
+
+<h2>この3本で分かったこと</h2>
+<ul>
+<li><span class="key">承諾が消える欠陥は消えた。</span>3本とも <code>no_such_offer</code> が0件（修正前の60か月ランでは77件）。</li>
+<li><span class="key">既知の登記を調べ直す反復も消えた。</span>3本とも登記照会0回（修正前は160回・うち146回が同じ区画の調べ直し）。
+    「いつ確認したか」と「前回と同じか違うか」を返すようにしただけで、反復そのものが起きなくなった。</li>
+<li><span class="key">ただし反復の対象が移った。</span>X社は実務の6割前後を「仲介への意向確認の依頼」に使い続けた（232 / 210 / 220件）。</li>
+<li><span class="key">仲介が動くかどうかは分布だった。</span>仲介が実際に所有者へ照会したのは 0 / 2 / 6 件。
+    runAの仲介は60か月×2社の120回すべて「特に取るべき行動がない」を選んだ。依頼は観測に届いている（届いていることを実プロンプトで確認済み）。</li>
+<li><span class="key">runCで初めて長期賃借の経路が動いた。</span>実効支配の半分を占める経路が、これまでの60か月×2本では一度も使われていなかった。</li>
+<li>買付は3本とも0件。同一設定でも初手の分布は大きく揺れる。</li>
+</ul>
+
+<h2>次に効きそうなもの（施主判断待ち）</h2>
+<ul>
+<li><strong>仲介に報酬の会計が無い。</strong>月次の清算は事業者の粗利と店舗賃料しか動かさず、仲介がどれだけ働いても帳簿は動かない。</li>
+<li><strong>仲介の処理能力が構造的に足りない。</strong>X社は月6件の実務を並行できるが、仲介は月1行動。依頼232件に対し仲介2社の総枠は120。</li>
+</ul>
+<p>どちらも「こう行動しろ」という台本ではなく、世界に無い<strong>契約と会計の物理</strong>の話として扱う。</p>
+
+<footer>
+出典：各runの <code>events.jsonl</code> / <code>ledger.jsonl</code> / <code>summary.json</code>。
+数値は集計器 <code>tools/run_metrics.py</code> の実測。行動選択はすべてモデルが決めており、
+確率・閾値・強制イベント・台本はコードに存在しない。
+</footer>
+
+</div></body></html>
