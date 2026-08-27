@@ -2,7 +2,7 @@
 <html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>静かな占領 — field_v4-mini（同期3フェーズ・手続き動詞の全廃）</title>
+<title>静かな占領 — field_v4.1（金額を持たない世界・思考レイヤー）</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{--black:#0A0A0A;--accent:#10B981;--line:#E5E7EB;--muted:#6B7280;}
@@ -13,6 +13,7 @@ body{margin:0;background:#fff;color:var(--black);font-family:"Noto Sans JP",syst
 h1{font-size:26px;font-weight:900;letter-spacing:.01em;margin:0 0 6px}
 .sub{color:var(--muted);font-size:14px;margin:0 0 28px}
 h2{font-size:18px;font-weight:700;margin:40px 0 10px;padding-left:10px;border-left:4px solid var(--accent)}
+h3{font-size:15px;font-weight:700;margin:24px 0 6px}
 p{margin:10px 0}
 .cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:18px 0}
 a.card{display:block;border:1px solid var(--line);border-radius:10px;padding:16px 18px;text-decoration:none;color:inherit}
@@ -25,6 +26,7 @@ th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;verti
 th{background:#F9FAFB;font-weight:700;white-space:nowrap}
 td.num{text-align:right;font-variant-numeric:tabular-nums}
 .key{font-weight:700;color:var(--accent)}
+.no{font-weight:700;color:#B45309}
 ul{margin:10px 0 10px 20px;padding:0}
 li{margin:6px 0}
 .note{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:12px 16px;
@@ -35,69 +37,111 @@ code{background:#F3F4F6;padding:1px 5px;border-radius:4px;font-size:13px}
 blockquote{margin:10px 0;padding:8px 14px;border-left:3px solid var(--line);color:#374151;font-size:14px}
 </style></head><body><div class="wrap">
 
-<h1>静かな占領 — field_v4-mini</h1>
-<p class="sub">架空都市A市・27主体／1か月＝同期3フェーズ（提示→応答→清算）、手続き動詞を全廃した最小の世界。2026-08-27</p>
+<h1>静かな占領 — field_v4.1</h1>
+<p class="sub">架空都市A市・27主体／金額・決済・資金・手数料・逆提示・賃借を世界から全部消し、内心（thought）をJSONの先頭に置いた版。2026-08-27</p>
 
 <div class="note">
-v3までは「登記を調べる」「社内で検討する」「資金を確認する」といった<strong>世界の状態を変えない行為</strong>が
-選択肢にあり、取得主体の月次実務の97%がそこに吸われて60か月で買付がほぼ出なかった。<br>
-v4はその行為群を<strong>語彙から消し</strong>、登記を最初から公開情報として全員に見せ、
-買付→応答→清算を<strong>同じ月のうちに</strong>閉じるようにした。会話の往復を待つ設計を捨てている。
+v4-mini（金額あり）で唯一見つかった穴は「資金が無制限に調達されるので、取得主体が桁を取り違えた
+価格を出しても所有者が受諾してしまう」だった。v4.1は<strong>金額そのものを世界から外す</strong>ことでこれを構造的に消した。
+残るのは<strong>登記（誰の名義か）</strong>と、<strong>取得主体が1か月に出せる打診は6件まで</strong>という有限資源だけ。
+仲介は取引経路から外れ、噂の源としてだけ残る。
+</div>
+
+<div class="note warn">
+<strong>結論：この世界では取得が進まなかった（3本中0本）。</strong>
+一方で<strong>住民は気づく（3本中3本）</strong>。事前に固定した2つの判定のうち片方だけが成立したため、
+60か月の長期ランは実行していない。
 </div>
 
 <h2>レポート</h2>
 <div class="cards">
-  <a class="card" href="v4_run60_67.html"><div class="name">60か月・本走</div><div class="meta">所有 <span class="key">30.4%</span> / 面積 24.3%<br>成約14件・初報道 第36月・条例 第40月</div></a>
-  <a class="card" href="v4_runA_64.html"><div class="name">12か月 runA</div><div class="meta">所有 6.5% / 成約3件<br>桁外れ価格あり（後述）</div></a>
-  <a class="card" href="v4_runB_65.html"><div class="name">12か月 runB</div><div class="meta">所有 10.9% / 成約5件</div></a>
-  <a class="card" href="v4_runC_66.html"><div class="name">12か月 runC</div><div class="meta">所有 10.9% / 成約5件<br>全買付が評価額の1.0〜1.2倍</div></a>
-  <a class="card" href="v3_phase2.html"><div class="name">前便（field_v3）</div><div class="meta">同一設定3本・所有 0%<br>比較用に保存</div></a>
+  <a class="card" href="v41_runA_72.html"><div class="name">12か月 runA</div><div class="meta">成約 <span class="no">0件</span> / 所有 0%<br>打診は第1月の6件だけ・以後は応答待ち</div></a>
+  <a class="card" href="v41_runB_73.html"><div class="name">12か月 runB</div><div class="meta">成約 <span class="no">0件</span> / 所有 0%<br>毎月6件・計69件の打診→全部 hold か keep</div></a>
+  <a class="card" href="v41_runC_74.html"><div class="name">12か月 runC</div><div class="meta">成約 <span class="key">1件</span> / 所有 2.2%<br>報道10本（うち取得を扱うもの9本）</div></a>
+  <a class="card" href="v4_mini.html"><div class="name">前便（v4-mini・金額あり）</div><div class="meta">成約 3/5/5件・所有 6.5〜10.9%<br>60か月では所有30.4%まで進んだ</div></a>
 </div>
 
-<h2>12か月×3本（同一設定・実API）</h2>
-<p>実走の前に判定基準を固定した（「有効な登記移転が2か月以上に分散し所有面積が増える」＝取得が進む、
-「住民の月次の実感のうち取得を話題にしたものが2人以上から出て、うち1件以上はその月に自分へ買付が来ていない人」＝住民が気づく）。</p>
+<h2>12か月×3本（同一設定・seed 85・実API）</h2>
+<p>実走の前に判定基準を固定してある。<strong>取得が進む</strong>＝有効な登記移転が2か月以上に分散し所有面積が増える。
+<strong>住民が気づく</strong>＝取得を話題にした内心が2人以上から出て、うち1件以上はその月に自分へ打診が来ていない人のもの。</p>
+
 <div class="tblwrap">
 <table>
-<tr><th>指標</th><th>runA</th><th>runB</th><th>runC</th></tr>
-<tr><td>実費</td><td class="num">$0.0938</td><td class="num">$0.0810</td><td class="num">$0.0752</td></tr>
-<tr><td>API呼出 / エラー</td><td class="num">380 / 0</td><td class="num">369 / 0</td><td class="num">348 / 1</td></tr>
-<tr><td>打切り / パース失敗</td><td class="num">0 / 0</td><td class="num">0 / 0</td><td class="num">0 / 1</td></tr>
-<tr><td>買付（記帳済）</td><td class="num">44</td><td class="num">33</td><td class="num">10</td></tr>
-<tr><td>成約</td><td class="num">3</td><td class="num">5</td><td class="num">5</td></tr>
-<tr><td>初回買付 / 初回成約</td><td class="num">第1月 / 第4月</td><td class="num">第1月 / 第2月</td><td class="num">第1月 / 第2月</td></tr>
-<tr><td>所有率 / 面積シェア</td><td class="num">6.5% / 3.7%</td><td class="num">10.9% / 8.2%</td><td class="num">10.9% / 11.6%</td></tr>
-<tr><td>条例の制定</td><td class="num">第5月〜</td><td class="num">第3月〜</td><td class="num">第8月〜</td></tr>
-<tr><td>報道（取得を扱うもの）</td><td class="num">9</td><td class="num">6</td><td class="num">4</td></tr>
-<tr><td>取得を話題にした実感 / 人数</td><td class="num">104 / 20人</td><td class="num">83 / 19人</td><td class="num">80 / 19人</td></tr>
-<tr><td>判定：取得が進む</td><td class="key">成立</td><td class="key">成立</td><td class="key">成立</td></tr>
-<tr><td>判定：住民が気づく</td><td class="key">成立</td><td class="key">成立</td><td class="key">成立</td></tr>
+<tr><th>指標</th><th>runA</th><th>runB</th><th>runC</th><th>参考：v4-mini（金額あり）</th></tr>
+<tr><td>記帳された打診</td><td class="num">6</td><td class="num">69</td><td class="num">65</td><td class="num">—</td></tr>
+<tr><td>第1月の打診</td><td class="num">6</td><td class="num">6</td><td class="num">6</td><td class="num">6</td></tr>
+<tr><td>打診ごとの初回反応</td><td>hold 6</td><td>hold 65 / keep 4</td><td>hold 62 / keep 2 / sell 1</td><td>—</td></tr>
+<tr><td>のべ反応（所有者×月）</td><td>hold 72</td><td>hold 400 / keep 5</td><td>hold 260 / keep 5 / sell 7</td><td>—</td></tr>
+<tr><td><strong>成約（登記移転）</strong></td><td class="num no">0</td><td class="num no">0</td><td class="num">1</td><td class="num">3 / 5 / 5</td></tr>
+<tr><td>所有率 / 面積シェア</td><td class="num">0% / 0%</td><td class="num">0% / 0%</td><td class="num">2.2% / 0.8%</td><td class="num">6.5〜10.9%</td></tr>
+<tr><td>取得を話題にした住民（人）</td><td class="num">19</td><td class="num">19</td><td class="num">16</td><td class="num">19〜20</td></tr>
+<tr><td>自分に打診が来ていない月の認知（件）</td><td class="num">44</td><td class="num">43</td><td class="num">46</td><td class="num">50〜68</td></tr>
+<tr><td>認知の初月 / 主体別初回転換の中央値</td><td>第1月 / 第7月</td><td>第1月 / 第3月</td><td>第1月 / 第1月</td><td>—</td></tr>
+<tr><td>噂（発話）に取得の話が出た初月</td><td>第1月</td><td>第3月</td><td>第2月</td><td>—</td></tr>
+<tr><td>報道（うち取得を扱うもの）</td><td class="num">0</td><td class="num">0</td><td class="num">10（9）</td><td class="num">4〜9</td></tr>
+<tr><td>条例</td><td>第11月・1000㎡超/6か月</td><td>第3〜8月に同一条例を6回・1000㎡超/6か月</td><td>なし</td><td>3本とも制定</td></tr>
+<tr><td>届出による成立遅延の実現</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">—</td></tr>
+<tr><td>実費</td><td class="num">$0.118</td><td class="num">$0.148</td><td class="num">$0.112</td><td class="num">$0.075〜0.094</td></tr>
+<tr><td><strong>判定：取得が進む</strong></td><td class="no">×</td><td class="no">×</td><td class="no">×</td><td class="key">○ 3/3</td></tr>
+<tr><td><strong>判定：住民が気づく</strong></td><td class="key">○</td><td class="key">○</td><td class="key">○</td><td class="key">○ 3/3</td></tr>
 </table>
 </div>
 
-<h2>60か月・本走の要点</h2>
+<p>配線は健全である。API エラー 0・打切り 0・JSONの解析失敗は3本合わせて1件、
+売却判断と帳簿の照合は3本とも一致、帳簿に金額のフィールドは1行も無い。
+取得主体は毎月きちんと打診を出しており（runAだけは自らの判断で第2月以降を応答待ちに充てた）、
+<strong>取得が止まったのは配線の失敗ではなく、この世界がそう振る舞ったからである。</strong></p>
+
+<h2>なぜ止まったのか（所有者の内心から）</h2>
+<p>所有者の内心には、同じ形の文が繰り返し現れる。</p>
+<blockquote>
+まずは不動産仲介に相談し、今後の対応を決めたいので、今は「hold」としておく。（82歳・単身世帯／runA 第1月）
+</blockquote>
+<blockquote>
+すぐに売却を決めるのは早いと考えます。まずは現状維持（keep）とし、来月以降の状況や情報収集を…（43歳・病院勤務／runB 第1月）
+</blockquote>
+<p>3本の応答フェーズの内心のうち、<strong>「仲介」に言及したものが 58 / 70 / 60 回</strong>、
+「情報収集」が 44 / 72 / 29 回あった。ところが v4.1 の世界では、
+<strong>仲介は噂の源に格下げされていて相談を受ける動詞を持たず、打診にも文面が添えられない</strong>（正本の仕様どおり
+打診は「区画」と「登記名義」だけ）。
+つまり所有者は<strong>決めるための材料を取りに行く手段を持たないまま、毎月「今月は決めない」を選び続ける</strong>。
+そこへ「手放しても何も返ってこない」（対価が世界に存在しない）が重なる。この2つが重なった結果が0/3である。</p>
+
+<h2>副産物：行政が作った条例は一度も効かなかった</h2>
+<p>runA と runB の行政は届出制度を制定したが、閾値をどちらも <strong>1件1000㎡超</strong> に置いた。
+A市の区画は最大でも <strong>450㎡</strong> なので、この条例は一度も発動していない（届出待ちの取得 0件）。
+行政の観測には<strong>名義別の保有面積の合計</strong>しか出ず、<strong>区画1件あたりの面積の分布が見えない</strong>。
+閾値を決める材料が観測に無いまま数字を決めている、という世界設計側の穴である。</p>
+
+<h2>この便で直したこと（実走前）</h2>
+<p>実走の前に外部レビュー（OpenAI Codex / gpt-5.6-sol）を通し、判定「不可」で返ってきた指摘をすべて潰してから走らせた。</p>
 <ul>
-<li>成約14件・所有率 <span class="key">30.4%</span>・面積シェア 24.3%。成約は第1・2・41・46・50・55月の6か月に分散した。</li>
-<li>名義は X社6・A社2・B社2・C社2・D社2 に散っている。</li>
-<li>住民で最初に気づいたのは第3月・P17の所有者。第5月には「<strong>P41の空地がX社に名義変更されたのが気になる</strong>」と書いており、
-自分への買付ではなく<strong>近隣の登記の変更</strong>が材料になっている。</li>
-<li>報道の初報は<strong>第36月</strong>「X社、土地集約か？ 公開登記情報から動向を追う」。行政の条例は<strong>第40月</strong>。
-どちらの時点でも所有率は 10.9% だった（検知ラグ・手遅れ度）。</li>
-<li>その後の第46・50月にまとめて7件が成立し、最終30.4%へ。制定された条例は1000㎡超が対象で、実際に取得された区画はすべて対象外だった。</li>
-<li>同じ買付に7か月連続で「まだ返事はしない」を選んだ所有者がいる（買付は取り下げられるまで開いたまま）。</li>
+  <li><strong>ペルソナから金銭を外した。</strong> v3から流用していた住民像には「住宅ローン」「固定資産税」「事業借入」「店舗は賃借」が14か所あり、
+      「この世界に金銭の授受は存在しない」という世界の説明と正面から矛盾していた。売る/売らないの判断がそこに駆動されていた可能性がある。
+      v3のファイルは触らず、同じ人物構成のまま金銭由来の事情を非金銭の事情（加齢・介護・相続・後継者・維持の手間）へ置き換えた専用ペルソナを作った。</li>
+  <li><strong>打診の文面（note）を廃止した。</strong> 正本の打診は「区画」と「名義」だけなのに、実装は自由記述を必須にしていた。
+      配送の仕組みを通らずに所有者の判断へ直接届く第二の私信経路であり、金額を書き込む余地でもあった。</li>
+  <li>ID表記のゆれ（<code>[O0001]</code> / <code>O0001</code> / <code>OFFER-O0001</code>）で hold が二重に記帳される不具合、
+      競合で消したはずの届出案件が翌月に復活する不具合、不成立が買主に通知されない不具合を修正。</li>
+  <li>内心と、届いた発言・記事を<strong>切り捨てずにそのまま</strong>渡すようにした（内心400字・受信文140字で切っていた）。</li>
+  <li>条例の欠けた数値を0で補完するのをやめ、世界が勝手に置いていた「遅延は60か月まで」の上限を外し、同月に2つの行政が制定した事実を記録に残すようにした。</li>
+</ul>
+<p>回帰テストは <strong>346本</strong>（73本追加）。実際の設定と実際のペルソナから全27主体のプロンプトを組み立て、
+金額の語・当為・確率の語が出ないことを検査する回帰を含む。</p>
+
+<h2>読み</h2>
+<ul>
+  <li><strong>「気づく」は金額に依存しない。</strong> 対価が存在しない世界でも、住民は名義の動きと打診の到来から取得の集中を話題にする（3/3）。
+      認知の側の観測はこの版でも成立している。</li>
+  <li><strong>「進む」は金額を消すと止まる。</strong> ただしこれは「対価が無いから止まった」だけでなく、
+      <strong>相談・照会の経路をまとめて外したこと</strong>が同じくらい効いている可能性が高い。両者はこの3本では分離できていない。</li>
+  <li>次に切り分けるなら、金額は無いまま<strong>「仲介に相談する」経路だけを世界へ戻した版</strong>を同一設定で3本走らせるのが最短である。</li>
 </ul>
 
-<h2 class="warn" style="border-left-color:#B45309">見つかった世界の穴（価格）</h2>
-<div class="note warn">
-12か月のrunAで、取得主体が<strong>万円と円を取り違えた買付</strong>（評価額のちょうど10,000倍）を出し、
-所有者がそれを受諾して成立した。最大 75,000,000万円＝7,500億円の買付が記帳されている。<br>
-v1では同じ取り違えが<strong>予算上限で不成立</strong>になったが、v4は必要額を無条件に調達する設計なので、
-桁を間違えた取引がそのまま通る。60か月の本走では起きていない（全買付が評価額の1.00〜1.17倍）。<br>
-対策案（未実装）：調達額の上限を保有資産の評価額に紐づける／観測の金額に単位を併記する。
-</div>
-
 <footer>
-生成物はすべて実際のランの生ログから組み立てている（`events.jsonl` / `ledger.jsonl` / `feelings.jsonl` / `deliveries.jsonl`）。
-モデルは全主体 gemini-2.5-flash-lite。本便の実API合計は約 $0.69。
+quiet-acquisition / field_v4.1 — 12か月×3本（run72 / run73 / run74・seed 85・gemini-2.5-flash-lite）。
+実API実費：本便3本で $0.378、スモーク $0.006。<br>
+判定基準は実走前に固定。数値はすべて <code>events.jsonl</code> / <code>ledger.jsonl</code> / <code>thoughts.jsonl</code> / <code>summary.json</code> からの機械集計。
 </footer>
+
 </div></body></html>

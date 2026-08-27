@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>静かな占領 — field_v4-mini（同期3フェーズ・手続き動詞の全廃）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0A0A0A;--accent:#10B981;--line:#E5E7EB;--muted:#6B7280;}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--black);font-family:"Noto Sans JP",system-ui,sans-serif;
+     line-height:1.75;-webkit-text-size-adjust:100%}
+.wrap{max-width:960px;margin:0 auto;padding:32px 20px 80px}
+h1{font-size:26px;font-weight:900;letter-spacing:.01em;margin:0 0 6px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 28px}
+h2{font-size:18px;font-weight:700;margin:40px 0 10px;padding-left:10px;border-left:4px solid var(--accent)}
+p{margin:10px 0}
+.cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:18px 0}
+a.card{display:block;border:1px solid var(--line);border-radius:10px;padding:16px 18px;text-decoration:none;color:inherit}
+a.card:hover{border-color:var(--accent)}
+a.card .name{font-weight:700;font-size:16px}
+a.card .meta{color:var(--muted);font-size:13px;margin-top:4px}
+.tblwrap{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:640px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#F9FAFB;font-weight:700;white-space:nowrap}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.key{font-weight:700;color:var(--accent)}
+ul{margin:10px 0 10px 20px;padding:0}
+li{margin:6px 0}
+.note{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:12px 16px;
+      background:#F9FAFB;font-size:14px}
+.warn{border-left-color:#B45309;background:#FFFBEB}
+footer{margin-top:48px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+code{background:#F3F4F6;padding:1px 5px;border-radius:4px;font-size:13px}
+blockquote{margin:10px 0;padding:8px 14px;border-left:3px solid var(--line);color:#374151;font-size:14px}
+</style></head><body><div class="wrap">
+
+<h1>静かな占領 — field_v4-mini</h1>
+<p class="sub">架空都市A市・27主体／1か月＝同期3フェーズ（提示→応答→清算）、手続き動詞を全廃した最小の世界。2026-08-27</p>
+
+<div class="note">
+v3までは「登記を調べる」「社内で検討する」「資金を確認する」といった<strong>世界の状態を変えない行為</strong>が
+選択肢にあり、取得主体の月次実務の97%がそこに吸われて60か月で買付がほぼ出なかった。<br>
+v4はその行為群を<strong>語彙から消し</strong>、登記を最初から公開情報として全員に見せ、
+買付→応答→清算を<strong>同じ月のうちに</strong>閉じるようにした。会話の往復を待つ設計を捨てている。
+</div>
+
+<h2>レポート</h2>
+<div class="cards">
+  <a class="card" href="v4_run60_67.html"><div class="name">60か月・本走</div><div class="meta">所有 <span class="key">30.4%</span> / 面積 24.3%<br>成約14件・初報道 第36月・条例 第40月</div></a>
+  <a class="card" href="v4_runA_64.html"><div class="name">12か月 runA</div><div class="meta">所有 6.5% / 成約3件<br>桁外れ価格あり（後述）</div></a>
+  <a class="card" href="v4_runB_65.html"><div class="name">12か月 runB</div><div class="meta">所有 10.9% / 成約5件</div></a>
+  <a class="card" href="v4_runC_66.html"><div class="name">12か月 runC</div><div class="meta">所有 10.9% / 成約5件<br>全買付が評価額の1.0〜1.2倍</div></a>
+  <a class="card" href="v3_phase2.html"><div class="name">前便（field_v3）</div><div class="meta">同一設定3本・所有 0%<br>比較用に保存</div></a>
+</div>
+
+<h2>12か月×3本（同一設定・実API）</h2>
+<p>実走の前に判定基準を固定した（「有効な登記移転が2か月以上に分散し所有面積が増える」＝取得が進む、
+「住民の月次の実感のうち取得を話題にしたものが2人以上から出て、うち1件以上はその月に自分へ買付が来ていない人」＝住民が気づく）。</p>
+<div class="tblwrap">
+<table>
+<tr><th>指標</th><th>runA</th><th>runB</th><th>runC</th></tr>
+<tr><td>実費</td><td class="num">$0.0938</td><td class="num">$0.0810</td><td class="num">$0.0752</td></tr>
+<tr><td>API呼出 / エラー</td><td class="num">380 / 0</td><td class="num">369 / 0</td><td class="num">348 / 1</td></tr>
+<tr><td>打切り / パース失敗</td><td class="num">0 / 0</td><td class="num">0 / 0</td><td class="num">0 / 1</td></tr>
+<tr><td>買付（記帳済）</td><td class="num">44</td><td class="num">33</td><td class="num">10</td></tr>
+<tr><td>成約</td><td class="num">3</td><td class="num">5</td><td class="num">5</td></tr>
+<tr><td>初回買付 / 初回成約</td><td class="num">第1月 / 第4月</td><td class="num">第1月 / 第2月</td><td class="num">第1月 / 第2月</td></tr>
+<tr><td>所有率 / 面積シェア</td><td class="num">6.5% / 3.7%</td><td class="num">10.9% / 8.2%</td><td class="num">10.9% / 11.6%</td></tr>
+<tr><td>条例の制定</td><td class="num">第5月〜</td><td class="num">第3月〜</td><td class="num">第8月〜</td></tr>
+<tr><td>報道（取得を扱うもの）</td><td class="num">9</td><td class="num">6</td><td class="num">4</td></tr>
+<tr><td>取得を話題にした実感 / 人数</td><td class="num">104 / 20人</td><td class="num">83 / 19人</td><td class="num">80 / 19人</td></tr>
+<tr><td>判定：取得が進む</td><td class="key">成立</td><td class="key">成立</td><td class="key">成立</td></tr>
+<tr><td>判定：住民が気づく</td><td class="key">成立</td><td class="key">成立</td><td class="key">成立</td></tr>
+</table>
+</div>
+
+<h2>60か月・本走の要点</h2>
+<ul>
+<li>成約14件・所有率 <span class="key">30.4%</span>・面積シェア 24.3%。成約は第1・2・41・46・50・55月の6か月に分散した。</li>
+<li>名義は X社6・A社2・B社2・C社2・D社2 に散っている。</li>
+<li>住民で最初に気づいたのは第3月・P17の所有者。第5月には「<strong>P41の空地がX社に名義変更されたのが気になる</strong>」と書いており、
+自分への買付ではなく<strong>近隣の登記の変更</strong>が材料になっている。</li>
+<li>報道の初報は<strong>第36月</strong>「X社、土地集約か？ 公開登記情報から動向を追う」。行政の条例は<strong>第40月</strong>。
+どちらの時点でも所有率は 10.9% だった（検知ラグ・手遅れ度）。</li>
+<li>その後の第46・50月にまとめて7件が成立し、最終30.4%へ。制定された条例は1000㎡超が対象で、実際に取得された区画はすべて対象外だった。</li>
+<li>同じ買付に7か月連続で「まだ返事はしない」を選んだ所有者がいる（買付は取り下げられるまで開いたまま）。</li>
+</ul>
+
+<h2 class="warn" style="border-left-color:#B45309">見つかった世界の穴（価格）</h2>
+<div class="note warn">
+12か月のrunAで、取得主体が<strong>万円と円を取り違えた買付</strong>（評価額のちょうど10,000倍）を出し、
+所有者がそれを受諾して成立した。最大 75,000,000万円＝7,500億円の買付が記帳されている。<br>
+v1では同じ取り違えが<strong>予算上限で不成立</strong>になったが、v4は必要額を無条件に調達する設計なので、
+桁を間違えた取引がそのまま通る。60か月の本走では起きていない（全買付が評価額の1.00〜1.17倍）。<br>
+対策案（未実装）：調達額の上限を保有資産の評価額に紐づける／観測の金額に単位を併記する。
+</div>
+
+<footer>
+生成物はすべて実際のランの生ログから組み立てている（`events.jsonl` / `ledger.jsonl` / `feelings.jsonl` / `deliveries.jsonl`）。
+モデルは全主体 gemini-2.5-flash-lite。本便の実API合計は約 $0.69。
+</footer>
+</div></body></html>
