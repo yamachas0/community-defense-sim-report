@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>静かな占領 — 二枚の地図の時差</title>
+<style>
+:root{--black:#0A0A0A;--accent:#047857;--accent-bg:#ECFDF5;--g50:#F9FAFB;--g100:#F3F4F6;
+ --g200:#E5E7EB;--g300:#D1D5DB;--g500:#6B7280;--g600:#4B5563;--g700:#374151;--g900:#111827;
+ --warn:#B45309;--warn-bg:#FFFBEB;--blue:#1D4ED8;--purple:#6D28D9;--line:#E5E7EB;
+ --font:'Noto Sans JP','Hiragino Kaku Gothic ProN','Meiryo',system-ui,sans-serif;}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--g900);font-family:var(--font);font-size:16px;line-height:1.7;
+ overflow-x:hidden}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px 64px}
+header{background:var(--black);color:#fff;padding:20px 0 16px;margin-bottom:20px}
+header .wrap{padding-bottom:0}
+h1{font-size:26px;margin:0 0 4px;font-weight:900;letter-spacing:.02em}
+.sub{color:#E5E7EB;font-size:14px;margin:0}
+h2{font-size:20px;margin:32px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--black)}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0 6px}
+button,select{font-family:var(--font);font-size:15px;padding:8px 14px;border:1px solid var(--g300);
+ background:#fff;color:var(--g900);border-radius:8px;cursor:pointer}
+button:hover,select:hover{background:var(--g50)}
+button:focus-visible,select:focus-visible,input:focus-visible,.cell:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button.primary{background:var(--black);color:#fff;border-color:var(--black);font-weight:700;min-width:104px}
+input[type=range]{flex:1 1 240px;min-width:180px;accent-color:var(--black)}
+.month{font-size:22px;font-weight:900;font-variant-numeric:tabular-nums;min-width:118px}
+.maps{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:start;margin-top:8px}
+.mapbox{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--g50)}
+.mapbox h3{margin:0 0 2px;font-size:16px}
+.mapbox .cap{margin:0 0 10px;font-size:13px;color:var(--g600);min-height:36px}
+.grid{display:grid;gap:3px}
+.cell{aspect-ratio:1/1;border-radius:3px;background:var(--g200);border:1px solid transparent;
+ position:relative;padding:0;cursor:default;font:inherit;color:inherit}
+.cell.public{background:repeating-linear-gradient(45deg,#fff,#fff 3px,var(--g200) 3px,var(--g200) 6px)}
+.cell.lease::after{content:"";position:absolute;inset:0;border-radius:3px;
+ background:repeating-linear-gradient(45deg,rgba(255,255,255,.85),rgba(255,255,255,.85) 2px,transparent 2px,transparent 5px)}
+.cell.linked::before{content:"";position:absolute;inset:22% 22%;border:2px solid #fff;border-radius:50%}
+.cell.silent{cursor:pointer;box-shadow:0 0 0 2px var(--warn) inset}
+.cell.flash{animation:flash 1s ease-out}
+@keyframes flash{from{transform:scale(1.25)}to{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.cell.flash{animation:none}}
+.gap{display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:56px;min-width:96px}
+.gapnum{font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
+.gaplabel{font-size:12px;color:var(--g600);text-align:center}
+.gapbar{width:14px;height:120px;background:var(--g200);border-radius:7px;position:relative;overflow:hidden}
+.gapfill{position:absolute;bottom:0;left:0;right:0;background:var(--warn);height:0}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--g600);margin-top:8px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-2px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff}
+.stat .k{font-size:12px;color:var(--g600);display:block}
+.stat .v{font-size:22px;font-weight:900;font-variant-numeric:tabular-nums}
+.stat .v.no{color:var(--warn)}
+.stat .v.key{color:var(--accent)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 12px}
+.tabs button[aria-selected=true]{background:var(--black);color:#fff;border-color:var(--black)}
+.panel{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff}
+.panel[hidden]{display:none}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--g50)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+blockquote{margin:10px 0;padding:8px 14px;border-left:3px solid var(--line);color:var(--g700);font-size:14px}
+.note{background:var(--g50);border:1px solid var(--line);border-left:4px solid var(--black);
+ border-radius:8px;padding:12px 14px;font-size:14px;margin:14px 0}
+.note.warn{background:var(--warn-bg);border-left-color:var(--warn)}
+.helix{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px}
+.helix .hd{font-weight:700;position:sticky;top:0;background:#fff;padding:4px 0;border-bottom:1px solid var(--line)}
+.helix .row{border-bottom:1px dashed var(--g200);padding:6px 0}
+.helix .mo{font-size:11px;color:var(--g500)}
+.helix .only{background:var(--warn-bg)}
+.replay .line{border-bottom:1px solid var(--g100);padding:6px 0;font-size:14px}
+.replay .who{font-weight:700;font-size:12px;color:var(--g600)}
+dialog{border:1px solid var(--g300);border-radius:12px;padding:0;max-width:640px;width:92vw}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+.dlg{padding:18px}
+.dlg h3{margin:0 0 8px}
+.tiny{font-size:12px;color:var(--g500)}
+.err{background:var(--warn-bg);border:1px solid var(--warn);border-radius:8px;padding:12px;margin:12px 0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:860px){
+ .maps{grid-template-columns:1fr}
+ .gap{flex-direction:row;padding-top:0;align-items:center;justify-content:center}
+ .gapbar{width:120px;height:14px}
+ .gapfill{top:0;bottom:0;right:auto;height:100%!important;width:0}
+ .helix{grid-template-columns:1fr}
+ h1{font-size:20px}
+}
+</style></head><body>
+<header><div class="wrap">
+<h1>静かな占領 — 二枚の地図の時差</h1>
+<p class="sub">左：取引の真実（登記が動いた／使い手が変わった）。右：街が語った区画。</p>
+</div></header>
+
+<div class="wrap">
+
+<div id="err" class="err" hidden role="alert"></div>
+
+<div class="controls">
+  <label class="tiny" for="runsel">ラン</label>
+  <select id="runsel" aria-label="表示するランを選ぶ"></select>
+  <button id="play" class="primary">▶ 再生</button>
+  <span class="month" id="monthlabel">第 0 月</span>
+  <input id="slider" type="range" min="0" max="12" value="0" aria-label="月を選ぶ">
+  <button id="reset">最初から</button>
+</div>
+
+<div class="maps">
+  <div class="mapbox">
+    <h3 id="hL">取引の真実</h3>
+    <p class="cap" id="capL"></p>
+    <div class="grid" id="mapL" role="group" aria-labelledby="hL"></div>
+    <div class="legend" id="legendL"></div>
+  </div>
+  <div class="gap">
+    <div class="gapnum" id="gapnum">0</div>
+    <div class="gaplabel">区画の差<br>（左−右）</div>
+    <div class="gapbar"><div class="gapfill" id="gapfill"></div></div>
+  </div>
+  <div class="mapbox">
+    <h3 id="hR">街が語った区画</h3>
+    <p class="cap" id="capR"></p>
+    <div class="grid" id="mapR" role="group" aria-labelledby="hR"></div>
+    <div class="legend">
+      <span><i style="background:#1D4ED8"></i>語られた（濃いほど語った人数が多い）</span>
+      <span><i style="background:#6D28D9"></i>○印＝公の場で「同じ動き」として結ばれた</span>
+      <span><i style="background:#E5E7EB;box-shadow:0 0 0 2px #B45309 inset"></i>最後まで語られなかった（押すと詳細）</span>
+    </div>
+  </div>
+</div>
+<p id="live" class="sr" role="status" aria-live="polite"></p>
+
+<div class="stats" id="stats"></div>
+<p class="tiny" id="checkline"></p>
+
+<div class="tabs" role="tablist" aria-label="補助パネル">
+  <button role="tab" id="tD" aria-controls="pD" data-p="D" aria-selected="true">内心と発話</button>
+  <button role="tab" id="tE" aria-controls="pE" data-p="E" aria-selected="false" tabindex="-1">窓口の一括照会</button>
+  <button role="tab" id="tF" aria-controls="pF" data-p="F" aria-selected="false" tabindex="-1">街が作った結びつき</button>
+  <button role="tab" id="tG" aria-controls="pG" data-p="G" aria-selected="false" tabindex="-1">足して動かず、引いて動いた</button>
+  <button role="tab" id="tH" aria-controls="pH" data-p="H" aria-selected="false" tabindex="-1">言えること／言えないこと</button>
+</div>
+
+<section class="panel" id="pD" role="tabpanel" aria-labelledby="tD">
+  <h2 style="margin-top:0">内心と発話の二重らせん</h2>
+  <p class="tiny" id="dNote"></p>
+  <div class="controls"><label class="tiny" for="agentsel">主体</label>
+    <select id="agentsel" aria-label="主体を選ぶ"></select></div>
+  <div class="helix" id="helix"></div>
+</section>
+
+<section class="panel" id="pE" role="tabpanel" aria-labelledby="tE" hidden>
+  <h2 style="margin-top:0">役所の窓口で起きたこと</h2>
+  <p class="tiny" id="eNote"></p>
+  <div class="replay" id="replay"></div>
+</section>
+
+<section class="panel" id="pF" role="tabpanel" aria-labelledby="tF" hidden>
+  <h2 style="margin-top:0">台本に無いものを、街が結びつけた</h2>
+  <div id="invented"></div>
+</section>
+
+<section class="panel" id="pG" role="tabpanel" aria-labelledby="tG" hidden>
+  <h2 style="margin-top:0">足して動かず、引いて動いた</h2>
+  <div id="history"></div>
+  <p class="tiny">v4系の「動かなかった」は<strong>取得</strong>の話、v5の「動いた」は<strong>認知</strong>の話。
+  同じ指標が改善したのではなく、問いを立て直した。</p>
+</section>
+
+<section class="panel" id="pH" role="tabpanel" aria-labelledby="tH" hidden>
+  <h2 style="margin-top:0">言えること／言えないこと</h2>
+  <div class="note"><strong>言える</strong>：この固定した取得列と兆候の露出条件のもとで、街の会話がどう反応したかの事例記述。
+  どの兆候・どの場面から話題が立ち上がり、誰を経由して広がったか。</div>
+  <div class="note warn"><strong>言えない</strong>：気づく確率、一般的な未認知率、揺らぎに対する頑健性。
+  <strong>1本は1実現</strong>。偽陰性の人手監査は未実施＝「保存された出力の中に、事前に定義した表現は無かった」までしか言わない。
+  配線の判定（D3）は<span id="d3line"></span>のため<strong>不合格</strong>。都合の悪い数字も出す。</div>
+  <div class="note"><strong>この画面の測り方の限界</strong>：右地図は「事後LLM分類を通った発話」だけで塗っている。
+  記事・私信には分類ラベルが無いので地図には載せず、<span id="ruleonly"></span>として別に数えた。
+  沈黙の区画は取得月がばらばらで<strong>追跡できた月数が違う</strong>（詳細は各区画を押すと出る）。
+  <span id="cohortline"></span></div>
+</section>
+
+<dialog id="dlg" aria-labelledby="dlgTitle"><div class="dlg">
+  <h3 id="dlgTitle"></h3>
+  <div id="dlgBody"></div>
+  <p style="text-align:right;margin:12px 0 0"><button id="dlgClose">閉じる</button></p>
+</div></dialog>
+
+</div>
+
+<script>
+const RUNS=[["run94","run94 — 12か月（1件ずつの気づき）"],
+            ["v5bA","v5b runA — 24か月"],
+            ["v5bB","v5b runB — 24か月"],
+            ["v5bC","v5b runC — 24か月"]];
+const HOLDER_COLORS={"A社":"#047857","B社":"#1D4ED8","C社":"#B45309","D社":"#6D28D9"};
+let D=null,HIST=null,step=0,timer=null,loadToken=0,lastFocus=null;
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function showErr(msg){ const e=$("err"); e.hidden=false; e.textContent=msg; }
+
+function buildGrid(el,side){
+  el.style.gridTemplateColumns=`repeat(${D.grid.cols},1fr)`;
+  el.innerHTML="";
+  D.grid.parcels.forEach(p=>{
+    const c=document.createElement("button");
+    c.type="button"; c.className="cell"+(p.use==="public"?" public":"");
+    c.dataset.pid=p.pid; c.tabIndex=-1; c.setAttribute("aria-hidden","true");
+    el.appendChild(c);
+  });
+}
+const cells=el=>Array.from(el.children);
+
+function draw(){
+  const L=$("mapL"),R=$("mapR");
+  const done=D.events.filter(e=>e.month<=step);
+  const byPid={}; done.forEach(e=>byPid[e.parcel_id]=e);
+  cells(L).forEach(c=>{
+    const e=byPid[c.dataset.pid];
+    c.classList.remove("lease");
+    if(e){ c.style.background=HOLDER_COLORS[e.holder]||"#374151";
+           if(e.kind==="lease") c.classList.add("lease");
+           c.title=`${e.parcel_id}／第${e.month}月／${e.holder}／${e.kind==="lease"?"賃借（登記は動かない）":"売買"}`;}
+    else { c.style.background=""; c.title=c.dataset.pid; }
+  });
+  const o1=D.o1_month||{};
+  let spokenN=0,linkedN=0;
+  cells(R).forEach(c=>{
+    const pid=c.dataset.pid, a=D.awareness[pid], lm=o1[pid];
+    c.classList.remove("silent","linked");
+    c.tabIndex=-1; c.setAttribute("aria-hidden","true");
+    const acquired=byPid[pid];
+    if(a && a.first_month<=step){
+      spokenN++;
+      const n=a.cumulative_speakers[String(step)]||1;
+      const t=Math.min(1,n/8);
+      if(lm!=null && lm<=step){ linkedN++;
+        c.style.background=`rgba(109,40,217,${0.4+0.55*t})`; c.classList.add("linked");
+        c.title=`${pid}／第${a.first_month}月から語られ、第${lm}月に公の場で「同じ動き」として結ばれた／のべ${n}人`; }
+      else { c.style.background=`rgba(29,78,216,${0.28+0.62*t})`;
+        c.title=`${pid}／第${a.first_month}月から語られた／のべ${n}人`; }
+    } else {
+      c.style.background="";
+      if(acquired && step>=D.stats.steps && D.silent.indexOf(pid)>=0){
+        c.classList.add("silent"); c.tabIndex=0; c.removeAttribute("aria-hidden");
+        c.setAttribute("aria-label",`${pid}：第${acquired.month}月に動いたが最後まで誰も名指ししなかった。詳細を開く`);
+        c.title=`${pid}／第${acquired.month}月に動いたが、最後まで誰も名指ししなかった`;
+      } else if(acquired){ c.title=`${pid}／第${acquired.month}月に動いた（まだ語られていない）`; }
+      else { c.title=pid; }
+    }
+  });
+  const leftN=done.length, diff=leftN-spokenN;
+  $("gapnum").textContent=diff;
+  const pct=Math.min(100,diff*100/Math.max(1,D.events.length));
+  const gf=$("gapfill");
+  if(window.matchMedia("(max-width:860px)").matches){ gf.style.width=pct+"%"; gf.style.height="100%"; }
+  else { gf.style.height=pct+"%"; gf.style.width=""; }
+  $("monthlabel").textContent=`第 ${step} 月`;
+  $("capL").textContent=`${leftN} 区画が動いた（売買と賃借の合計・全${D.events.length}件）`;
+  $("capR").textContent=`${spokenN} 区画が、当事者以外の口から名指しされた`
+    +(linkedN?`／うち ${linkedN} 区画は「同じ動き」として結ばれた`:"");
+  $("slider").value=step;
+  $("live").textContent=`第${step}月：動いた区画 ${leftN}、語られた区画 ${spokenN}、差 ${diff}`;
+  if(step>=D.stats.steps) markSilent();
+}
+function markSilent(){
+  cells($("mapR")).forEach(c=>{ if(c.classList.contains("silent")) c.classList.add("flash"); });
+  setTimeout(()=>cells($("mapR")).forEach(c=>c.classList.remove("flash")),1000);
+}
+
+function renderStats(){
+  const s=D.stats, pc=v=>v==null?"—":(v*100).toFixed(1)+"%";
+  const items=[
+    ["取引（売買／賃借）",`${s.deals}（${s.sales}／${s.leases}）`,""],
+    ["X社の所有｜所有＋賃借",`${pc(s.ownership_share)}｜${pc(s.control_share)}`,"no"],
+    ["発話",s.utterances,""],
+    ["語られた区画",s.noticed,"key"],
+    ["最後まで語られない",s.silent,"no"],
+    ["発話しなかったターンの割合",pc(s.silence_rate),""],
+    ["平均同席",s.mean_group_size,""],
+    ["記事｜私信",`${s.articles}｜${s.directs}`,""],
+  ];
+  if(s.O1_count!=null){
+    items.push(["O1 連結 全件（うち公の場）",`${s.O1_count}（${s.O1_public}）`,"key"]);
+    items.push(["O2 街ぐるみの意図",s.O2_count,"no"]);
+    items.push(["公に口にした主体",`${s.O3_public_agents} / ${s.agents}`,"key"]);
+    items.push(["内心だけの主体",s.O3_private_only,""]);
+  }
+  items.push(["LLMコール｜推計費用",`${s.calls}｜$${s.cost_usd}`,""]);
+  $("stats").innerHTML=items.map(([k,v,c])=>
+    `<div class="stat"><span class="k">${esc(k)}</span><span class="v ${c}">${esc(v)}</span></div>`).join("");
+  const ck=D.checks||{};
+  const ok=ck.loose_basis_matches_metrics && ck.deals_matches_metrics;
+  $("checkline").textContent=`出所：${s.run}（${s.version}・${s.model}・${(D.meta||{}).generated_at||""}）。`
+    +`画面の数値と塗りは tools/build_present_data.py が焼いた JSON だけから描いている。`
+    +`地図の基準＝${ck.map_basis||"—"}。`
+    +`集計（metrics_v5）との突き合わせ：${ok?"一致（区画IDと初出月まで照合）":"不一致あり"}`
+    +`／metrics と同じ基準に直すと ${ck.noticed_metrics_basis_sale} 区画（売買のみ）。`;
+  $("d3line").textContent=`打切り ${s.max_token_finishes} 本・解釈できなかった応答 ${s.parse_fail} 本`
+    +`（配送誤り ${s.misdelivered}・API失敗 ${s.api_errors}）`;
+  $("ruleonly").textContent=`記事・私信だけで名指しされた区画 ${s.rule_only_parcels} 件`;
+  $("cohortline").textContent=s.cohort_unnoticed_ratio!=null
+    ? `追跡3か月以上に絞った未認知の割合は ${(s.cohort_unnoticed_ratio*100).toFixed(1)}%（集計側の値・売買のみ）。` : "";
+  const used=[...new Set(D.events.map(e=>e.holder))];
+  $("legendL").innerHTML=used.map(h=>`<span><i style="background:${HOLDER_COLORS[h]||"#374151"}"></i>${esc(h)}</span>`).join("")
+    +`<span><i style="background:#fff;border:1px solid #D1D5DB"></i>斜線＝賃借（登記は動かない）</span>`;
+}
+
+function renderHelix(){
+  const ids=Object.keys(D.agent_timeline||{});
+  $("agentsel").innerHTML=ids.map(a=>{
+    const d=((D.agent_deals||{})[a]||[])[0];
+    return `<option value="${a}">${a}${d?`（第${d.month}月に${d.parcel_id}を${d.kind==="lease"?"賃貸":"売却"}）`:""}</option>`;
+  }).join("");
+  $("dNote").textContent=D.stats.version==="field_v5b"
+    ? "この主体は自分が売った／貸したことを当事者として知っている。左＝誰にも伝わらない内心、右＝その月に実際に口にしたこと。黄色い行＝内心はあるのに何も言わなかった月。"
+    : "左＝誰にも伝わらない内心、右＝その月に実際に口にしたこと。黄色い行＝内心はあるのに何も言わなかった月。"
+      +"run94 の売主に渡るのは「名義が移った」という事実までで、「自分が売った」という当事者の文言は v5b からになる。";
+  drawHelix();
+}
+function drawHelix(){
+  const a=$("agentsel").value, rows=(D.agent_timeline||{})[a]||[];
+  const dealMonths={}; ((D.agent_deals||{})[a]||[]).forEach(d=>dealMonths[d.month]=d);
+  let h=`<div class="hd">内心（誰にも伝わらない）</div><div class="hd">発話（同席者に届いた）</div>`;
+  rows.forEach(r=>{
+    const d=dealMonths[r.month], said=(r.texts||[]).join(" ／ ");
+    const silent=r.thought && !said;
+    h+=`<div class="row ${silent?"only":""}"><span class="mo">第${r.month}月`
+      +`${d?`・自分が${d.parcel_id}を${d.kind==="lease"?"賃貸":"売却"}`:""}</span><br>${esc(r.thought)||"<span class='tiny'>—</span>"}</div>`;
+    h+=`<div class="row ${silent?"only":""}"><span class="mo">第${r.month}月</span><br>${esc(said)||"<span class='tiny'>この月は何も言わなかった</span>"}</div>`;
+  });
+  $("helix").innerHTML=h;
+}
+
+function renderReplay(){
+  const s=D.scene_replay;
+  if(!s||!s.month){ $("replay").innerHTML="<p class='tiny'>この本には窓口の場面がない。</p>"; $("eNote").textContent=""; return; }
+  $("eNote").textContent=`第${s.month}月・${s.venue_label||s.venue}（${s.scene}）。`
+    +`そこへ行くと決めた主体 ${(s.attendees||[]).length} 人（うち発言した人 ${(s.speakers||[]).length} 人）。`
+    +`この月までに窓口で見られた名義変更の記録 ${s.registry_records} 件。`
+    +`太字の発話が、1つの中に取得区画を ${s.widest_query} 件まとめて並べたもの。`
+    +`登記を見に行った者は誰でも同じ履歴を見る（記者に特権はない）。`;
+  let h=(s.rows||[]).map(r=>`<div class="line"${r.trigger?' style="background:#FFFBEB"':''}>`
+    +`<span class="who">${esc(r.name||r.from)}（${esc(r.from)}）／${r.round}巡目${r.trigger?"／一括照会":""}</span>`
+    +`<br>${r.trigger?"<strong>":""}${esc(r.text)}${r.trigger?"</strong>":""}</div>`).join("");
+  if(s.article) h+=`<div class="note"><strong>同じ月に書かれ、翌月に全員へ届いた記事</strong><br>${esc(s.article.text)}</div>`;
+  $("replay").innerHTML=h;
+}
+
+function renderInvented(){
+  const v=D.invented_link;
+  if(!v){ $("invented").innerHTML="<p class='tiny'>この本には、台本に無い対象と登記を結びつけた言い方が見つからなかった。</p>"; return; }
+  $("invented").innerHTML=
+    `<div class="note"><strong>${esc(v.term)}</strong>は<strong>会場であって区画ではない</strong>`
+    +`（区画IDとして存在しない：${v.is_parcel?"—":"確認済み"}）。台本の取得対象は非公共区画だけで、`
+    +`公共区画の名義は一度も動いていない（このランの実測 ${D.stats.public_transfers} 件）。`
+    +`それでも街の会話には「${esc(v.term)}」と「登記」を結ぶ言い方が`
+    +`<strong>発話${v.utterances}件・内心${v.thoughts}件</strong>現れ、`
+    +`<strong>第${v.first_month}月に初めて出てから第${v.last_month}月まで続き、${v.speakers}人</strong>が口にした。</div>`
+    +`<blockquote>${esc(v.quote.text)}<br><span class="tiny">（${esc(D.stats.run)} 第${v.quote.month}月・${esc(v.quote.from)}・${esc(v.quote.utt_id)}／原文のまま）</span></blockquote>`
+    +`<p class="tiny">出所：<code>docs/present_verification.md</code>（b）。参照の一致・不一致は共起判定であり意味判定ではないため「誤り率」とは呼ばない。</p>`;
+}
+
+function renderHistory(){
+  if(!HIST){ $("history").innerHTML="<p class='tiny'>過去ランの実測（present_data_history.json）を読み込めなかった。</p>"; return; }
+  let h=`<table><caption class="sr">版ごとの成約数と所有率</caption>`
+    +`<tr><th>版</th><th>世界に足したもの</th><th class="num">成約（登記移転）</th><th class="num">X社の所有率</th></tr>`;
+  HIST.phases.forEach(p=>{
+    h+=`<tr><td><strong>${esc(p.label)}</strong></td><td>${esc(p.note)}</td>`
+      +`<td class="num">${esc(p.runs.map(r=>r.transfers).join(" / "))}</td>`
+      +`<td class="num">${esc(p.runs.map(r=>((r.ownership_share||0)*100).toFixed(1)+"%").join(" / "))}</td></tr>`;
+  });
+  h+=`<tr><td><strong>v5</strong></td><td>機構を全部消し、取得を台本に固定した（残したのは登記簿・兆候・シーン）</td>`
+    +`<td class="num">${D.stats.deals}（台本）</td><td class="num">${((D.stats.ownership_share||0)*100).toFixed(1)}%</td></tr></table>`
+    +`<p class="tiny">v4系は3本ぶんを並べた実測（各ランの ledger.jsonl・summary.json）。`
+    +`打診・応答・条例・届出・相談の経路を足しても成約はほとんど起きなかった。</p>`;
+  $("history").innerHTML=h;
+}
+
+function setStep(v){ step=Math.max(0,Math.min(D.stats.steps,v|0)); draw(); }
+function play(){
+  if(timer){ stop(); return; }
+  if(step>=D.stats.steps) step=0;
+  const iv=Math.max(220,Math.round(20000/D.stats.steps));
+  $("play").textContent="⏸ 停止";
+  timer=setInterval(()=>{ if(step>=D.stats.steps){ stop(); return; } setStep(step+1); },iv);
+}
+function stop(){ if(timer) clearInterval(timer); timer=null; $("play").textContent="▶ 再生"; }
+
+function openSilent(pid,src){
+  const d=(D.silent_detail||[]).find(x=>x.parcel_id===pid); if(!d) return;
+  lastFocus=src||null;
+  $("dlgTitle").textContent=`${pid} — 第${d.acquired_month}月に動いたが、最後まで誰も名指ししなかった`;
+  let h=`<p class="tiny">この取得のあと追跡できた月数 ${d.followup_months}／この区画について配られた兆候 ${d.traces_seen} 件</p>`;
+  if(!d.rows.length) h+=`<p>この区画には、誰の目にも入る兆候が配られていない（登記を見に行った者だけが知りうる）。</p>`;
+  d.rows.forEach(r=>{
+    h+=`<div class="note"><strong>第${r.month}月・${esc(r.agent_id)} が見たもの</strong><br>${esc(r.trace_text)}`
+      +`<br><span class="tiny">同じ月にこの人が実際に話したこと：</span><br>${esc(r.said_instead)||"<span class='tiny'>この月は何も話していない</span>"}</div>`;
+  });
+  $("dlgBody").innerHTML=h;
+  $("dlg").showModal();
+}
+
+async function load(label){
+  stop();
+  const token=++loadToken;
+  let data;
+  try{
+    const r=await fetch(`present_data_${label}.json`,{cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    data=await r.json();
+  }catch(e){ showErr(`データ present_data_${label}.json を読み込めなかった（${e.message}）。`); return; }
+  if(token!==loadToken) return;                 // 切替が追い越したら捨てる
+  D=data; $("err").hidden=true;
+  if(!HIST){ try{ const h=await fetch("present_data_history.json",{cache:"no-store"});
+                  HIST=h.ok?await h.json():null; }catch(e){ HIST=null; } }
+  if(token!==loadToken) return;
+  buildGrid($("mapL"),"L"); buildGrid($("mapR"),"R");
+  cells($("mapR")).forEach(c=>{
+    c.addEventListener("click",()=>{ if(c.classList.contains("silent")) openSilent(c.dataset.pid,c); });
+    c.addEventListener("keydown",e=>{
+      if((e.key==="Enter"||e.key===" ")&&c.classList.contains("silent")){
+        e.preventDefault(); e.stopPropagation(); openSilent(c.dataset.pid,c);
+      }
+    });
+  });
+  $("slider").max=D.stats.steps; step=0;
+  renderStats(); renderHelix(); renderReplay(); renderInvented(); renderHistory(); draw();
+}
+
+function selectTab(b){
+  const tabs=Array.from(document.querySelectorAll('[role=tab]'));
+  tabs.forEach(x=>{ const on=x===b; x.setAttribute("aria-selected",String(on));
+                    x.tabIndex=on?0:-1; $("p"+x.dataset.p).hidden=!on; });
+  b.focus();
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  const sel=$("runsel");
+  sel.innerHTML=RUNS.map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+  const q=new URLSearchParams(location.search).get("run");
+  if(q&&RUNS.some(r=>r[0]===q)) sel.value=q;
+  sel.addEventListener("change",()=>load(sel.value));
+  $("slider").addEventListener("input",e=>{stop();setStep(+e.target.value);});
+  $("play").addEventListener("click",play);
+  $("reset").addEventListener("click",()=>{stop();setStep(0);});
+  $("agentsel").addEventListener("change",drawHelix);
+  $("dlgClose").addEventListener("click",()=>$("dlg").close());
+  $("dlg").addEventListener("close",()=>{ if(lastFocus) lastFocus.focus(); });
+  const tabs=Array.from(document.querySelectorAll('[role=tab]'));
+  tabs.forEach((b,i)=>{
+    b.addEventListener("click",()=>selectTab(b));
+    b.addEventListener("keydown",e=>{
+      if(e.key==="ArrowRight"||e.key==="ArrowLeft"){
+        e.preventDefault();
+        selectTab(tabs[(i+(e.key==="ArrowRight"?1:tabs.length-1))%tabs.length]);
+      }
+      if(e.key==="Home"){ e.preventDefault(); selectTab(tabs[0]); }
+      if(e.key==="End"){ e.preventDefault(); selectTab(tabs[tabs.length-1]); }
+    });
+  });
+  document.addEventListener("keydown",e=>{
+    const t=e.target.tagName;
+    if(t==="SELECT"||t==="INPUT"||t==="BUTTON"||t==="TEXTAREA") return;
+    if($("dlg").open) return;
+    if(e.code==="Space"){ e.preventDefault(); play(); }
+    if(e.key==="ArrowRight"){ stop(); setStep(step+1); }
+    if(e.key==="ArrowLeft"){ stop(); setStep(step-1); }
+  });
+  window.addEventListener("resize",()=>{ if(D) draw(); });
+  load(sel.value);
+});
+</script>
+</body></html>
