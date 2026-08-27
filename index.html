@@ -2,7 +2,7 @@
 <html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>静かな占領 — field_v4.1b（相談できる世界／金額は無いまま）</title>
+<title>静かな占領 — field_v5（取得は台本・観測するのは街の会話）</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{--black:#0A0A0A;--accent:#10B981;--line:#E5E7EB;--muted:#6B7280;}
@@ -36,133 +36,110 @@ footer{margin-top:48px;color:var(--muted);font-size:12px;border-top:1px solid va
 code{background:#F3F4F6;padding:1px 5px;border-radius:4px;font-size:13px}
 blockquote{margin:10px 0;padding:8px 14px;border-left:3px solid var(--line);color:#374151;font-size:14px}
 </style></head><body><div class="wrap">
-
-<h1>静かな占領 — field_v4.1b</h1>
-<p class="sub">架空都市A市・27主体／金額は無いまま、所有者が仲介に<strong>相談できる</strong>経路だけを世界へ足した切り分け実験。あわせて行政に区画1件あたりの面積の分布を見せた。2026-08-27</p>
+<h1>静かな占領 — field_v5</h1>
+<p class="sub">架空都市A市・26主体／<strong>取得は台本（固定の出来事）として世界に挿入し、観測するのは街の会話</strong>。1か月＝発話シーン4本×2ラウンド。2026-08-27</p>
 
 <div class="note">
-前便 v4.1（金額を持たない世界）で取得は 3本中0本しか進まなかった。所有者の内心は
-「まずは不動産仲介に相談してから決めたい」で埋まっていたが、その世界の仲介は噂の源で、相談を受ける手段が無かった。
-原因が<strong>(a) 相談の経路が無いこと</strong>なのか<strong>(b) 対価が無いこと</strong>なのかを切り分けるため、
-<strong>金額は戻さず、相談と回答という行為だけを足した。</strong>取引の取次ぎ・手数料・打診の文面は戻していない。
+v4系では「LLMが売買を交渉する」設計にしたため、<strong>取得そのものが起きなかった</strong>（3本で成約0〜1件）。
+観測したい現象＝「街が気づくか」が発生しない。そこで施主指示で構えを反転させた。
+<strong>こっそり行われる不動産取得は60か月ぶんの台本として固定し、LLMの仕事は街の会話だけにする。</strong>
+買い手のX社は主体ではなくなり、一度もLLMを呼ばれない（台帳上の名義の器）。
+問いは「取引が成立するか」ではなく<strong>「どういう場面ときっかけで、それが注目されたり明るみに出たりするのか／しないのか」</strong>。
 </div>
 
 <div class="note warn">
-<strong>結論：相談できるようにしても取得は動かなかった（3本中0本・v4.1と同じ）。住民は気づく（3本中3本・v4.1と同じ）。</strong>
-ただし<strong>相談そのものは猛烈に使われた</strong>——毎月8〜12人が仲介に相談し、12か月で 137 / 110 / 81件。
-所有者の内心240本のうち219〜222本に「相談」の語が出る。<strong>「相談したい」は本物だったが、相談できても売らない。</strong>
+<strong>結論：15件の取得のうち8件が街に気づかれ、7件は誰にも語られないまま終わった</strong>
+（追跡3か月以上のコホートでは33.3%が気づかれない）。気づかれた8件のうち<strong>7件は取得と同じ月</strong>、
+1件は<strong>6か月遅れ</strong>。<strong>最初の情報源は「売った本人」</strong>——第2月、役所の窓口で自分から言った。
+第7月に記者が窓口で5区画を一括照会し、個別の話が「複数物件の連続」に変わる。
+第12月には26人全員が語り、話題は<strong>「B社のP11地区への動き」＝共通の買い手の枠組み</strong>になった。
 </div>
 
 <h2>レポート</h2>
 <div class="cards">
-  <a class="card" href="v41b_runA_81.html"><div class="name">12か月 runA</div><div class="meta">相談137件 / 回答22件<br>成約 <span class="key">1件</span>・所有 2.2%・条例が初めて発動</div></a>
-  <a class="card" href="v41b_runB_82.html"><div class="name">12か月 runB</div><div class="meta">相談110件 / 回答25件<br>成約 <span class="no">0件</span>・報道12本</div></a>
-  <a class="card" href="v41b_runC_83.html"><div class="name">12か月 runC</div><div class="meta">相談81件 / 回答15件<br>成約 <span class="no">0件</span>・打診72件で全部 hold</div></a>
-  <a class="card" href="v41.html"><div class="name">前便（v4.1・相談経路なし）</div><div class="meta">成約 0/0/1件・所有 0〜2.2%<br>「まず仲介に相談したい」で hold が続いた版</div></a>
+  <a class="card" href="v5_run94.html"><div class="name">v5 12か月（1本目）</div><div class="meta">取得15件・発話1,543件<br>気づかれた <span class="key">8件</span>／気づかれない <span class="no">7件</span>・記事18本</div></a>
+  <a class="card" href="v41b.html"><div class="name">前便（v4.1b・仲介に相談できる版）</div><div class="meta">相談は猛烈に使われたが成約は動かず<br>「相談したい」は本物だったが、相談できても売らない</div></a>
+  <a class="card" href="v41.html"><div class="name">v4.1（金額の無い世界）</div><div class="meta">成約 0/0/1件・住民は気づく</div></a>
 </div>
 
-<h2>足したもの（これだけ）</h2>
+<h2>世界の作り（v4系との違い）</h2>
 <ul>
-  <li><strong>相談</strong>：住民・事業者は<strong>月に1件</strong>、仲介を指名して相談できる。相談は世界の配送を通り、仲介が読むのは翌月。</li>
-  <li><strong>回答</strong>：仲介は自分宛の相談に<strong>月に6件まで</strong>答えられる。答えが相談者に届くのも翌月。</li>
-  <li>双方の観測に、相談の一覧と状態（未回答／回答済み）が<strong>機械記録</strong>として出る。</li>
-  <li><strong>行政</strong>の観測に、A市の区画1件あたりの面積の分布（件数・最小・中央値・最大・100㎡刻み）と、
-      施行中の条例が実際に何件に掛かったか（該当0件ならその事実）を足した。</li>
-  <li>戻していないもの：金額・取引の取次ぎ・手数料・逆提示・打診の文面。</li>
+  <li><strong>台本</strong>：60か月ぶんの取得スケジュールと、各取得が残す<strong>兆候</strong>を凍結（seed85・全条件で同一）。
+      兆候は<strong>誰にどこで見えるか</strong>まで台本が決める＝登記（窓口へ出向いた者）／隣接（隣の区画の持ち主・店子）／
+      会場（その場に居た者）／名指し（仲介の見聞）。</li>
+  <li><strong>月＝シーン4本</strong>：朝の商店街／昼の職場・店／夕方の公園・居酒屋／<strong>月替わりの窓口</strong>（町内会→役所窓口→仲介の店先→記者の取材）。
+      行き先は主体が選び、<strong>同じ場所を選んだ者だけ</strong>が同席する。発話はラウンド末に同席者全員へ全文届く（2ラウンド＝往復）。</li>
+  <li><strong>主体の出力</strong>は内心と発話だけ。売買の判断は世界に無い（買い手は台本）。
+      月末に所有者が「手放すことを考えているか」を1回だけ記録するが、<strong>台帳は動かさない</strong>。</li>
+  <li>世界に無いもの：金銭・価格・決済・賃料、条例・届出、打診・応答、相談プロトコル。</li>
 </ul>
 
-<h2>12か月×3本（v4.1と完全同一の設定・seed 85・実API）</h2>
+<h2>結果（判定の定義は走行前に固定）</h2>
 <div class="tblwrap">
 <table>
-<tr><th>指標</th><th>v4.1b runA</th><th>v4.1b runB</th><th>v4.1b runC</th><th>参考：v4.1（相談経路なし）</th></tr>
-<tr><td>記帳された打診</td><td class="num">6</td><td class="num">6</td><td class="num">72</td><td class="num">6 / 69 / 65</td></tr>
-<tr><td><strong>成約（登記移転）</strong></td><td class="num key">1</td><td class="num no">0</td><td class="num no">0</td><td class="num">0 / 0 / 1</td></tr>
-<tr><td>所有率 / 面積シェア</td><td class="num">2.2% / 2.0%</td><td class="num">0% / 0%</td><td class="num">0% / 0%</td><td class="num">0〜2.2%</td></tr>
-<tr><td>のべ反応（所有者×月）</td><td>hold 65 / sell 2</td><td>hold 53 / keep 3</td><td>hold 466 / keep 2</td><td>hold が支配的</td></tr>
-<tr><td><strong>相談（consult）</strong></td><td class="num">137</td><td class="num">110</td><td class="num">81</td><td class="num">—（動詞が無い）</td></tr>
-<tr><td>相談した所有者（20人中）</td><td class="num">18</td><td class="num">16</td><td class="num">13</td><td class="num">—</td></tr>
-<tr><td><strong>仲介の回答（advise）</strong></td><td class="num">22</td><td class="num">25</td><td class="num">15</td><td class="num">—</td></tr>
-<tr><td>回答率 / 未回答のまま終了</td><td class="num">16.1% / 115件</td><td class="num">22.7% / 85件</td><td class="num">18.5% / 66件</td><td class="num">—</td></tr>
-<tr><td>回答が届いた所有者</td><td class="num">12</td><td class="num">8</td><td class="num">9</td><td class="num">—</td></tr>
-<tr><td>助言を読める前 → 後の判断</td><td>hold 32 → hold 33 / sell 2</td><td>hold 44 / keep 2 → hold 9 / keep 1</td><td>hold 218 → hold 248 / keep 2</td><td class="num">—</td></tr>
-<tr><td>参考：私信での相談（所有者→仲介）</td><td class="num">43</td><td class="num">51</td><td class="num">32</td><td class="num">63 / 90 / 31</td></tr>
-<tr><td>取得を話題にした住民（人）</td><td class="num">20</td><td class="num">17</td><td class="num">18</td><td class="num">19 / 19 / 16</td></tr>
-<tr><td>報道（うち取得を扱うもの）</td><td class="num">10（10）</td><td class="num">12（12）</td><td class="num">2（2）</td><td class="num">0 / 0 / 10</td></tr>
-<tr><td>条例の閾値</td><td>第1月〜 <strong>100㎡</strong>超</td><td>制定なし</td><td>1000㎡ → 500㎡超</td><td>1000㎡超（空振り）</td></tr>
-<tr><td><strong>届出が実際に発動した件数</strong></td><td class="num key">1</td><td class="num">0</td><td class="num">0</td><td class="num">0 / 0 / 0</td></tr>
-<tr><td>実費</td><td class="num">$0.142</td><td class="num">$0.114</td><td class="num">$0.147</td><td class="num">$0.112〜0.148</td></tr>
-<tr><td><strong>判定：取得が進む</strong></td><td class="no">×</td><td class="no">×</td><td class="no">×</td><td class="no">× 0/3</td></tr>
-<tr><td><strong>判定：住民が気づく</strong></td><td class="key">○</td><td class="key">○</td><td class="key">○</td><td class="key">○ 3/3</td></tr>
+<tr><th>指標</th><th>v5 12か月 1本目</th></tr>
+<tr><td>台本の取得</td><td class="num">15件（非公共46区画の32.6%）</td></tr>
+<tr><td>発話 / 沈黙率 / 平均同席</td><td class="num">1,543件 / 22.5% / 6.4人</td></tr>
+<tr><td>私信 / 記事</td><td class="num">87通 / 18本</td></tr>
+<tr><td><strong>気づかれた取得</strong></td><td class="num key">8 / 15</td></tr>
+<tr><td><strong>気づかれずに終わった割合</strong></td><td class="num">全体46.7% ／ 追跡3か月以上 <strong>33.3%</strong> ／ 楽観値26.7%</td></tr>
+<tr><td>検知ラグ</td><td class="num">8件中7件が同月・1件が6か月</td></tr>
+<tr><td>D1（当事者以外3人以上が語った取得）</td><td class="num key">7件</td></tr>
+<tr><td>D2① 個別の露見</td><td class="num key">成立（記事・町内会・窓口いずれも）</td></tr>
+<tr><td>D2② 反復・集中の認知</td><td class="num key">成立（606発話）</td></tr>
+<tr><td>D2③ 共通の買い手としての認知</td><td class="num key">成立（7発話が2つ以上の名義を結びつけた）</td></tr>
+<tr><td>元所有者</td><td class="num">15件中12件が自分から語った（3件は沈黙・いずれも第9月以降）</td></tr>
+<tr><td>語り手の広がり</td><td class="num">第1月3人 → 第3月22人 → 第11〜12月 26人（全員）</td></tr>
+<tr><td>配線（D3）</td><td class="num no">不合格：2,442コール中5本が出力打切り（0.2%）でターンが落ちた</td></tr>
 </table>
 </div>
 
-<h2>相談は待ち行列になった</h2>
-<p>所有者は<strong>毎月ほぼ全員</strong>が相談する。仲介2人の回答枠は月12件あるのに、実際の回答は月0〜7件に偏り、
-未回答が積み上がる（runAでは12か月で115件が未回答のまま終わった）。
-回答が届いた所有者でも、その後の月は依然 hold が支配的で、売却に至ったのは runA の2件だけである。</p>
-<p><strong>この非対称は世界の設計ではなく、仲介という主体の振る舞いから出ている</strong>——ただし次の注意書きが付く。</p>
+<h2>何が起きたか</h2>
+<ul>
+  <li><strong>第1月</strong>　取得1件。街の話題は空き家・相続・草刈り。<strong>取得への言及は0件</strong>。</li>
+  <li><strong>第2月（役所窓口の月）</strong>　売った本人が窓口で自分から言う。同席の5人が同じ月に反応し、仲介が登記で裏を取って別の区画まで持ち出す。<strong>ここで2件が1つの話になる</strong>。</li>
+  <li><strong>第5月</strong>　住民が「うちのP12もA社に移ったばかり」と、自分の売却と他人の売却を接続する。</li>
+  <li><strong>第7月</strong>　記者が窓口で<strong>5区画を一括照会</strong>。第1月の取得がここで初めて外から語られる（ラグ6か月）。</li>
+  <li><strong>第9〜12月</strong>　語り手が全員に広がり、話題は個別の区画から<strong>共通の買い手</strong>へ移る。</li>
+</ul>
 
-<div class="note warn">
-<strong>配線の弱点（この便で発見）：</strong>仲介の月次の応答が出力の上限で切れて解析に失敗し、
-<strong>仲介の月がまるごと消えた</strong>（runA 8 / runB 7 / runC 9・いずれも24主体×月のうち）。
-相談の一覧（本文つき）が観測に加わって、仲介の内心と回答が長くなったためである。
-つまり「仲介が答えない」と「仲介の答えが記録されない」が混ざっている。
-この3本の回答率の低さは、その分だけ割り引いて読む必要がある。
+<h2>実際の発話</h2>
+<blockquote><strong>第2月・役所窓口／T01（事業者・P02を売った本人）</strong><br>
+「相続した空き家や土地の活用について…お伺いしたいと思っています。<strong>私の所有していたP02も、先日B社に名義が移りました。</strong>こうした街の変化について、皆様はどのような情報をお持ちでしょうか？」</blockquote>
+
+<blockquote><strong>第2月・役所窓口／B01（仲介）</strong><br>
+「T01さん、P02の件は私も登記簿で確認しました。…<strong>R09さん、P10の件ですが、登記簿でA社への名義変更を確認しました。</strong>」</blockquote>
+
+<blockquote><strong>第5月・商店街／R11（住民）</strong><br>
+「R16さんは、P02の登記について何かご存知ですか？B社への名義変更の件です。<strong>うちのP12もA社に移ったばかりなので、気になりまして。</strong>」</blockquote>
+
+<blockquote><strong>第7月・役所窓口／J02（記者）</strong><br>
+「最近、<strong>B社に名義変更された物件が多いようですが、何か特別な事情があるのでしょうか？特にP02、P18、P04、P20、P17について、記録を確認できますか？</strong>」</blockquote>
+
+<blockquote><strong>第12月・仲介の店先／R01（住民）</strong><br>
+「<strong>うちの店もB社名義になってますよ。</strong>経緯はともかく、共同浴場との関連で何か情報があれば、また教えてください。」</blockquote>
+
+<h2>走行前に塞いだ穴（第三者レビュー2巡・26件）</h2>
+<div class="note">
+結果の妥当性に直結する2件。
+<ul>
+  <li><strong>隣接区画の現在の登記名義が毎月見えていた</strong>。台本が決めた可視範囲（兆候・窓口・人の話）を迂回して、
+      隣人全員に名義変更が漏れる第二の通知機構になっていた。塞いだ。
+      <strong>実証</strong>：塞ぐ前の1か月試走では第1月から取得への言及が9件出ていたが、塞いだ後は0件。本走の第1月も0件だった。</li>
+  <li><strong>月末の姿勢（手放すことを考えているか）を毎コール尋ねていた</strong>＝毎ターン売却を想起させるプライミングで、
+      測りたい話題を世界側が増やしていた。月内の出席は計画確定時に分かるので、
+      <strong>その主体の今月最後のターンで1回だけ</strong>に変えた。</li>
+</ul>
+残り24件（実APIが空文字の選択肢を拒否／会場に1人で行くと兆候が届かない／打切りの検出が効いていない／
+記事の確定タイミング／観測の帰属と右打切り／配線の合否判定 等）は実装仕様の11章に全件記載。
 </div>
 
-<h2>行政に面積の分布を見せたら、条例が初めて効いた</h2>
-<p>v4.1 では行政が置いた閾値は 1件1000㎡超で、A市の区画は最大450㎡だったので、条例は一度も発動しなかった。
-行政の観測に<strong>区画1件あたりの面積の分布</strong>（＝閾値を決める材料）が無かったからである。</p>
-<ul>
-  <li>v4.1b の runA では、行政が<strong>第1月から閾値100㎡</strong>を選んだ。
-      その結果、<strong>本プロジェクトで初めて届出が実際に発動した</strong>（第12月・1件。成立予定は第13月＝12か月の外）。</li>
-  <li>runA の成約1件（第7月）は、この条例の施行後に起きた取得である。</li>
-  <li>runC の行政は 1000㎡ → 500㎡ と下げたが、最大区画450㎡には届かず<strong>空振りのまま</strong>。
-      分布を見せても空振りを選ぶ行政はいる。</li>
-</ul>
-
-<h2>この結果の限界（先に書く）</h2>
-<ul>
-  <li><strong>2つの変更を同時に入れている。</strong>行政は観測を受けて公表と条例を出し、それは全主体へ配送される。
-      したがって取得や認知の変化を「相談経路のおかげ／せい」と言い切ることはできない。</li>
-  <li><strong>v4.1 にも私信による相談は最初からあった</strong>（所有者→仲介 63 / 90 / 31通）。
-      v4.1b は「経路の復活」ではなく、<strong>専用のIDと状態と機械記録と月次の実務量を持つ相談プロトコルの追加</strong>である。</li>
-  <li>仲介の月の3分の1が出力の打切りで失われている（上記）。</li>
-</ul>
-
-<h2>この便で直したこと（実走前・外部レビュー）</h2>
-<p>実走の前に外部レビュー（OpenAI Codex / gpt-5.6-sol）を通し、判定「不可」で返ってきた指摘を潰してから走らせた。</p>
-<ul>
-  <li><strong>回答済みという状態が同じ月のうちに相談者へ漏れていた。</strong>本文が届くのは翌月なので、状態も翌月からにした。
-      相談が届く前に答えることも不成立にした。</li>
-  <li><strong>IDが二重表記だった</strong>（機械記録は <code>[Q0001]</code>、配送は <code>CONSULT-Q0001</code>）。同じ形に統一し、どちらで指されても解決するようにした。</li>
-  <li>月1件・月6件という<strong>有限資源を、入力の形ではなく世界の側で数える</strong>ようにした。</li>
-  <li>遅延0か月の条例で「届出の対象」が偽の0になっていたので、
-      「対象面積に該当した取得」と「届出で待機した取得」を分けて出すようにした。</li>
-  <li><strong>レポートHTMLが金額のある世界を再導入していた。</strong>共通のレポート雛形は金額のある世界のために書かれていて、
-      「平均賃料」「初期評価額」「◯万」が残り、価格を持たない行に <code>undefined万</code> とすら出ていた。
-      この版は金額の欄と文言を外した専用の雛形で描き、<strong>出力HTML全文に金額の語が無いことをテストで固定した</strong>。</li>
-</ul>
-<p>回帰テストは <strong>469本</strong>（123本追加）。v4.1 の挙動が1文字も変わっていないことも実測で固定してある
-（同じmockを再走して帳簿がバイト単位で一致・プロンプト357本が完全一致）。</p>
-
-<h2>読み</h2>
-<ul>
-  <li><strong>「相談したい」は口実ではなかった。</strong>経路を与えると所有者はほぼ全員が毎月使う。
-      だが<strong>相談できても手放さない</strong>。残る候補は「手放しても何も返ってこない」＝対価の不在である。</li>
-  <li><strong>気づきは相談で加速する。</strong>取得を話題にする住民は 20/17/18人、
-      自分に打診が来ていない月の気づきは 99/55/18件（v4.1 は 44/43/46）。相談と回答は噂の運び手にもなった。</li>
-  <li><strong>金額の無い世界でも、主体は「価値」を語り出す。</strong>所有者は相談で「適正価格」「市場価値」「相場」を尋ねる
-      （「価値」は相談 5/20/4件・内心 6/32/7本）。ただし<strong>具体的な金額（◯◯万円）は3本を通じて1件も出なかった</strong>。
-      値打ちという概念は主体が持ち込むが、世界が数字を出さない限り数字は生まれない。</li>
-  <li><strong>行政に材料を渡すと規制は現実になる。</strong>面積の分布を見せただけで、閾値は1000㎡から100㎡へ動き、
-      届出が初めて実際に掛かった。「規制が効かない」のは規制の意思ではなく、観測の不足だった可能性がある。</li>
-</ul>
-
-<footer>
-quiet-acquisition / field_v4.1b — 12か月×3本（run81 / run82 / run83・seed 85・gemini-2.5-flash-lite）。
-実API実費：本便3本で $0.402、スモーク $0.008。<br>
-判定基準は実走前に固定。数値はすべて <code>events.jsonl</code> / <code>ledger.jsonl</code> / <code>thoughts_all.jsonl</code> / <code>deliveries.jsonl</code> / <code>summary.json</code> からの機械集計。
-</footer>
+<h2>この1本で言えること・言えないこと</h2>
+<div class="note">
+<strong>言える</strong>：この固定した取得列と兆候の露出条件のもとで、街の会話がどう反応したかの<strong>事例記述</strong>。
+どの兆候・どの場面から話題が立ち上がり、誰を経由して広がったか。<br>
+<strong>言えない</strong>：気づく確率、一般的な「気づかれない割合」、揺らぎに対する頑健性、長期の共通支配の認知。
+<strong>1本は1実現でしかない</strong>。
+</div>
 
 </div></body></html>
