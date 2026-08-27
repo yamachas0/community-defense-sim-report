@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>静かな占領 — field_v5（取得は台本・観測するのは街の会話）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0A0A0A;--accent:#10B981;--line:#E5E7EB;--muted:#6B7280;}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--black);font-family:"Noto Sans JP",system-ui,sans-serif;
+     line-height:1.75;-webkit-text-size-adjust:100%}
+.wrap{max-width:960px;margin:0 auto;padding:32px 20px 80px}
+h1{font-size:26px;font-weight:900;letter-spacing:.01em;margin:0 0 6px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 28px}
+h2{font-size:18px;font-weight:700;margin:40px 0 10px;padding-left:10px;border-left:4px solid var(--accent)}
+h3{font-size:15px;font-weight:700;margin:24px 0 6px}
+p{margin:10px 0}
+.cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:18px 0}
+a.card{display:block;border:1px solid var(--line);border-radius:10px;padding:16px 18px;text-decoration:none;color:inherit}
+a.card:hover{border-color:var(--accent)}
+a.card .name{font-weight:700;font-size:16px}
+a.card .meta{color:var(--muted);font-size:13px;margin-top:4px}
+.tblwrap{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:640px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#F9FAFB;font-weight:700;white-space:nowrap}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.key{font-weight:700;color:var(--accent)}
+.no{font-weight:700;color:#B45309}
+ul{margin:10px 0 10px 20px;padding:0}
+li{margin:6px 0}
+.note{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:12px 16px;
+      background:#F9FAFB;font-size:14px}
+.warn{border-left-color:#B45309;background:#FFFBEB}
+footer{margin-top:48px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+code{background:#F3F4F6;padding:1px 5px;border-radius:4px;font-size:13px}
+blockquote{margin:10px 0;padding:8px 14px;border-left:3px solid var(--line);color:#374151;font-size:14px}
+</style></head><body><div class="wrap">
+<h1>静かな占領 — field_v5</h1>
+<p class="sub">架空都市A市・26主体／<strong>取得は台本（固定の出来事）として世界に挿入し、観測するのは街の会話</strong>。1か月＝発話シーン4本×2ラウンド。2026-08-27</p>
+
+<div class="note">
+v4系では「LLMが売買を交渉する」設計にしたため、<strong>取得そのものが起きなかった</strong>（3本で成約0〜1件）。
+観測したい現象＝「街が気づくか」が発生しない。そこで施主指示で構えを反転させた。
+<strong>こっそり行われる不動産取得は60か月ぶんの台本として固定し、LLMの仕事は街の会話だけにする。</strong>
+買い手のX社は主体ではなくなり、一度もLLMを呼ばれない（台帳上の名義の器）。
+問いは「取引が成立するか」ではなく<strong>「どういう場面ときっかけで、それが注目されたり明るみに出たりするのか／しないのか」</strong>。
+</div>
+
+<div class="note warn">
+<strong>結論：15件の取得のうち8件が街に気づかれ、7件は誰にも語られないまま終わった</strong>
+（追跡3か月以上のコホートでは33.3%が気づかれない）。気づかれた8件のうち<strong>7件は取得と同じ月</strong>、
+1件は<strong>6か月遅れ</strong>。<strong>最初の情報源は「売った本人」</strong>——第2月、役所の窓口で自分から言った。
+第7月に記者が窓口で5区画を一括照会し、個別の話が「複数物件の連続」に変わる。
+第12月には26人全員が語り、話題は<strong>「B社のP11地区への動き」＝共通の買い手の枠組み</strong>になった。
+</div>
+
+<h2>レポート</h2>
+<div class="cards">
+  <a class="card" href="v5_run94.html"><div class="name">v5 12か月（1本目）</div><div class="meta">取得15件・発話1,543件<br>気づかれた <span class="key">8件</span>／気づかれない <span class="no">7件</span>・記事18本</div></a>
+  <a class="card" href="v41b.html"><div class="name">前便（v4.1b・仲介に相談できる版）</div><div class="meta">相談は猛烈に使われたが成約は動かず<br>「相談したい」は本物だったが、相談できても売らない</div></a>
+  <a class="card" href="v41.html"><div class="name">v4.1（金額の無い世界）</div><div class="meta">成約 0/0/1件・住民は気づく</div></a>
+</div>
+
+<h2>世界の作り（v4系との違い）</h2>
+<ul>
+  <li><strong>台本</strong>：60か月ぶんの取得スケジュールと、各取得が残す<strong>兆候</strong>を凍結（seed85・全条件で同一）。
+      兆候は<strong>誰にどこで見えるか</strong>まで台本が決める＝登記（窓口へ出向いた者）／隣接（隣の区画の持ち主・店子）／
+      会場（その場に居た者）／名指し（仲介の見聞）。</li>
+  <li><strong>月＝シーン4本</strong>：朝の商店街／昼の職場・店／夕方の公園・居酒屋／<strong>月替わりの窓口</strong>（町内会→役所窓口→仲介の店先→記者の取材）。
+      行き先は主体が選び、<strong>同じ場所を選んだ者だけ</strong>が同席する。発話はラウンド末に同席者全員へ全文届く（2ラウンド＝往復）。</li>
+  <li><strong>主体の出力</strong>は内心と発話だけ。売買の判断は世界に無い（買い手は台本）。
+      月末に所有者が「手放すことを考えているか」を1回だけ記録するが、<strong>台帳は動かさない</strong>。</li>
+  <li>世界に無いもの：金銭・価格・決済・賃料、条例・届出、打診・応答、相談プロトコル。</li>
+</ul>
+
+<h2>結果（判定の定義は走行前に固定）</h2>
+<div class="tblwrap">
+<table>
+<tr><th>指標</th><th>v5 12か月 1本目</th></tr>
+<tr><td>台本の取得</td><td class="num">15件（非公共46区画の32.6%）</td></tr>
+<tr><td>発話 / 沈黙率 / 平均同席</td><td class="num">1,543件 / 22.5% / 6.4人</td></tr>
+<tr><td>私信 / 記事</td><td class="num">87通 / 18本</td></tr>
+<tr><td><strong>気づかれた取得</strong></td><td class="num key">8 / 15</td></tr>
+<tr><td><strong>気づかれずに終わった割合</strong></td><td class="num">全体46.7% ／ 追跡3か月以上 <strong>33.3%</strong> ／ 楽観値26.7%</td></tr>
+<tr><td>検知ラグ</td><td class="num">8件中7件が同月・1件が6か月</td></tr>
+<tr><td>D1（当事者以外3人以上が語った取得）</td><td class="num key">7件</td></tr>
+<tr><td>D2① 個別の露見</td><td class="num key">成立（記事・町内会・窓口いずれも）</td></tr>
+<tr><td>D2② 反復・集中の認知</td><td class="num key">成立（606発話）</td></tr>
+<tr><td>D2③ 共通の買い手としての認知</td><td class="num key">成立（7発話が2つ以上の名義を結びつけた）</td></tr>
+<tr><td>元所有者</td><td class="num">15件中12件が自分から語った（3件は沈黙・いずれも第9月以降）</td></tr>
+<tr><td>語り手の広がり</td><td class="num">第1月3人 → 第3月22人 → 第11〜12月 26人（全員）</td></tr>
+<tr><td>配線（D3）</td><td class="num no">不合格：2,442コール中5本が出力打切り（0.2%）でターンが落ちた</td></tr>
+</table>
+</div>
+
+<h2>何が起きたか</h2>
+<ul>
+  <li><strong>第1月</strong>　取得1件。街の話題は空き家・相続・草刈り。<strong>取得への言及は0件</strong>。</li>
+  <li><strong>第2月（役所窓口の月）</strong>　売った本人が窓口で自分から言う。同席の5人が同じ月に反応し、仲介が登記で裏を取って別の区画まで持ち出す。<strong>ここで2件が1つの話になる</strong>。</li>
+  <li><strong>第5月</strong>　住民が「うちのP12もA社に移ったばかり」と、自分の売却と他人の売却を接続する。</li>
+  <li><strong>第7月</strong>　記者が窓口で<strong>5区画を一括照会</strong>。第1月の取得がここで初めて外から語られる（ラグ6か月）。</li>
+  <li><strong>第9〜12月</strong>　語り手が全員に広がり、話題は個別の区画から<strong>共通の買い手</strong>へ移る。</li>
+</ul>
+
+<h2>実際の発話</h2>
+<blockquote><strong>第2月・役所窓口／T01（事業者・P02を売った本人）</strong><br>
+「相続した空き家や土地の活用について…お伺いしたいと思っています。<strong>私の所有していたP02も、先日B社に名義が移りました。</strong>こうした街の変化について、皆様はどのような情報をお持ちでしょうか？」</blockquote>
+
+<blockquote><strong>第2月・役所窓口／B01（仲介）</strong><br>
+「T01さん、P02の件は私も登記簿で確認しました。…<strong>R09さん、P10の件ですが、登記簿でA社への名義変更を確認しました。</strong>」</blockquote>
+
+<blockquote><strong>第5月・商店街／R11（住民）</strong><br>
+「R16さんは、P02の登記について何かご存知ですか？B社への名義変更の件です。<strong>うちのP12もA社に移ったばかりなので、気になりまして。</strong>」</blockquote>
+
+<blockquote><strong>第7月・役所窓口／J02（記者）</strong><br>
+「最近、<strong>B社に名義変更された物件が多いようですが、何か特別な事情があるのでしょうか？特にP02、P18、P04、P20、P17について、記録を確認できますか？</strong>」</blockquote>
+
+<blockquote><strong>第12月・仲介の店先／R01（住民）</strong><br>
+「<strong>うちの店もB社名義になってますよ。</strong>経緯はともかく、共同浴場との関連で何か情報があれば、また教えてください。」</blockquote>
+
+<h2>走行前に塞いだ穴（第三者レビュー2巡・26件）</h2>
+<div class="note">
+結果の妥当性に直結する2件。
+<ul>
+  <li><strong>隣接区画の現在の登記名義が毎月見えていた</strong>。台本が決めた可視範囲（兆候・窓口・人の話）を迂回して、
+      隣人全員に名義変更が漏れる第二の通知機構になっていた。塞いだ。
+      <strong>実証</strong>：塞ぐ前の1か月試走では第1月から取得への言及が9件出ていたが、塞いだ後は0件。本走の第1月も0件だった。</li>
+  <li><strong>月末の姿勢（手放すことを考えているか）を毎コール尋ねていた</strong>＝毎ターン売却を想起させるプライミングで、
+      測りたい話題を世界側が増やしていた。月内の出席は計画確定時に分かるので、
+      <strong>その主体の今月最後のターンで1回だけ</strong>に変えた。</li>
+</ul>
+残り24件（実APIが空文字の選択肢を拒否／会場に1人で行くと兆候が届かない／打切りの検出が効いていない／
+記事の確定タイミング／観測の帰属と右打切り／配線の合否判定 等）は実装仕様の11章に全件記載。
+</div>
+
+<h2>この1本で言えること・言えないこと</h2>
+<div class="note">
+<strong>言える</strong>：この固定した取得列と兆候の露出条件のもとで、街の会話がどう反応したかの<strong>事例記述</strong>。
+どの兆候・どの場面から話題が立ち上がり、誰を経由して広がったか。<br>
+<strong>言えない</strong>：気づく確率、一般的な「気づかれない割合」、揺らぎに対する頑健性、長期の共通支配の認知。
+<strong>1本は1実現でしかない</strong>。
+</div>
+
+</div></body></html>
