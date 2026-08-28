@@ -1160,6 +1160,9 @@ async function load(label){
   $("mapboxL").hidden=false; $("mapboxR").hidden=false;
   buildMap($("mapL")); buildMap($("mapR"));
   $("mapboxL").hidden=(mapSide!=="L"); $("mapboxR").hidden=(mapSide!=="R");
+  // 狭い画面では地図が横にはみ出す＝街の真ん中から見せる。
+  requestAnimationFrame(()=>{ document.querySelectorAll(".mapscroll").forEach(sc=>{
+    sc.scrollLeft=Math.max(0,(sc.scrollWidth-sc.clientWidth)/2); }); });
   cells($("mapR")).forEach(c=>{
     const open=()=>{ if(c.classList.contains("silent")) openSilent(c.dataset.pid,c);
                      else if(c.classList.contains("hot")) openParcel(c.dataset.pid,c); };
