@@ -588,7 +588,7 @@ function sayRow(kind,label,who,text,cls){
 function whoOf(r){
   const VL=D.venue_labels||{};
   return `${r.name||r.from}（${r.from}${r.role?"・"+r.role:""}）`
-    +`／第${r.step}月・${VL[r.venue]||r.venue||(r.scene==="plan"?"自宅・計画":r.scene)}`
+    +`／第${r.step ?? r.month}月・${VL[r.venue]||r.venue||(r.scene==="plan"?"自宅・計画":r.scene)}`
     +(r.utt_id?`・${r.utt_id}`:"");
 }
 function ignitionBlock(color,o){
@@ -630,6 +630,8 @@ function ignitionSlot(color,slot,empty){
   const o=((ig[color]||{})[slot])||null;
   let h=`<div class="ig" style="border-left:6px solid ${STAGE_COLORS[color]}">`;
   h+=`<h3>${esc(STAGE_DEF[color])}</h3>`;
+  const crit=slot==="strict"?((ig.criteria||{})["strict_"+color]||""):"";
+  if(crit) h+=`<p class="tiny">選び方：${esc(crit)}</p>`;
   h+=o?ignitionBlock(color,o):`<p class="tiny">${esc(empty)}</p>`;
   return h+`</div>`;
 }
