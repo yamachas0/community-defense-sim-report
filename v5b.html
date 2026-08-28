@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>静かな占領 — field_v5b（街は占領に気づくか）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0A0A0A;--accent:#10B981;--line:#E5E7EB;--muted:#6B7280;}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--black);font-family:"Noto Sans JP",system-ui,sans-serif;
+     line-height:1.75;-webkit-text-size-adjust:100%}
+.wrap{max-width:960px;margin:0 auto;padding:32px 20px 80px}
+h1{font-size:26px;font-weight:900;letter-spacing:.01em;margin:0 0 6px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 28px}
+h2{font-size:18px;font-weight:700;margin:40px 0 10px;padding-left:10px;border-left:4px solid var(--accent)}
+h3{font-size:15px;font-weight:700;margin:24px 0 6px}
+p{margin:10px 0}
+.cards{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:18px 0}
+a.card{display:block;border:1px solid var(--line);border-radius:10px;padding:16px 18px;text-decoration:none;color:inherit}
+a.card:hover{border-color:var(--accent)}
+a.card .name{font-weight:700;font-size:16px}
+a.card .meta{color:var(--muted);font-size:13px;margin-top:4px}
+.tblwrap{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:640px}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#F9FAFB;font-weight:700;white-space:nowrap}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.key{font-weight:700;color:var(--accent)}
+.no{font-weight:700;color:#B45309}
+ul{margin:10px 0 10px 20px;padding:0}
+li{margin:6px 0}
+.note{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:12px 16px;
+      background:#F9FAFB;font-size:14px}
+.warn{border-left-color:#B45309;background:#FFFBEB}
+footer{margin-top:48px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+code{background:#F3F4F6;padding:1px 5px;border-radius:4px;font-size:13px}
+blockquote{margin:10px 0;padding:8px 14px;border-left:3px solid var(--line);color:#374151;font-size:14px}
+</style></head><body><div class="wrap">
+<h1>静かな占領 — field_v5b</h1>
+<p class="sub">架空都市A市・26主体／取得は台本（固定の出来事）。売主は<strong>自分が売った／貸したことを知っている</strong>。問うのは<strong>「X社が街を占領しようとしている」に街が気づくか</strong>。24か月×3本。2026-08-28</p>
+
+<div class="note">
+v5 では「1件1件の売買に気づくか」を測っていた。施主の指摘で問いを変えた——
+<strong>観測したいのは、X社が実質占領しようとしているのではないか、に気づくかどうか</strong>であって、
+個々の取引に気づくかどうかではない。あわせて、所有者の知らないうちに登記が変わるのは詐欺なので、
+<strong>売主・貸主は自分が売った／貸したことと、その事情を当事者として知っている</strong>ことにした
+（周りに話すかどうかは本人の判断）。賃借は登記が動かないので、窓口では見えず、看板や店子の入れ替わりで見える。
+<br><br>
+台本の直しは<strong>「第25月以降が0件になっていたバグ」だけ</strong>。兆候の種類・量・見え方の規則は v5 と同一で、
+<strong>街に気づかせるための兆候は一切足していない</strong>（v5 にあった「共通支配が見えやすい動き」は削除した）。
+</div>
+
+<div class="note warn">
+<strong>結論：街は「同じ相手が複数を動かしている」までは届く。しかし「買い占め」とは、ほぼ誰も言わなかった。</strong><br>
+24か月でX社は非公共46区画の<strong>所有41.3%／所有＋賃借で60.9%</strong>を握る。
+3本すべてで<strong>複数の名義・区画を結びつける発言（O1）は成立</strong>し、2本では<strong>26人全員が公の場で</strong>それを口にした
+（残り1本は8人＝30.8%どまりで、17人は内心にとどめた）。
+ところが<strong>買い占め・地上げ・乗っ取り・支配・一帯といった語は、3本合計22,686行のうち7行しか現れない</strong>。
+最も近づいたのは<strong>自分がB社に売った当事者の内心</strong>で、そこでも動機は「温泉権を守るために買い集めている」という
+<strong>善意の説明</strong>に落ち着いた。
+</div>
+
+<div class="note" style="border-left-color:#10B981">
+<strong>▶ プレゼン用の画面：<a href="present.html">二枚の地図の時差</a></strong><br>
+左＝登記の真実／右＝街が語った区画。12〜24か月を約20秒で再生し、<strong>右がどれだけ遅れるか</strong>と
+<strong>最後まで灰色のまま残る区画</strong>を見る。ラン（run94・v5b A/B/C）を切り替えられる。
+画面の数値と塗りは、ランの生ログから焼いた JSON だけから描いている。
+</div>
+
+<h2>レポート</h2>
+<div class="cards">
+  <a class="card" href="v5b_runA.html"><div class="name">v5b runA（24か月）</div><div class="meta">連結 <span class="key">167</span>件（公 31）・意図 <span class="no">0</span>件<br>公言したのは 8人／26人・記事4本</div></a>
+  <a class="card" href="v5b_runB.html"><div class="name">v5b runB（24か月）</div><div class="meta">連結 <span class="key">2,215</span>件（公 681）・意図 3件<br>公言 <span class="key">26人／26人</span>・記事19か月</div></a>
+  <a class="card" href="v5b_runC.html"><div class="name">v5b runC（24か月）</div><div class="meta">連結 <span class="key">2,903</span>件（公 842）・意図 2件<br>公言 <span class="key">26人／26人</span>・記事17か月</div></a>
+  <a class="card" href="v5.html"><div class="name">前便（v5・12か月）</div><div class="meta">1件ずつの気づきを測った版<br>15件中8件が気づかれ、7件は語られなかった</div></a>
+</div>
+
+<h2>判定（走行前に固定）</h2>
+<ul>
+  <li><strong>O1 連結</strong>：2つ以上の名義（A〜D社）または2区画以上の取得を「同じ主体・同じ動き」として結びつけた。</li>
+  <li><strong>O2 意図</strong>：買い占め・地上げ・乗っ取り・支配・「この辺一帯」など、街ぐるみの意図に言及した。</li>
+  <li><strong>O3 広がり</strong>：その枠組みを<strong>公に口にした</strong>主体の数（内心にとどめた人は別勘定）。</li>
+  <li><strong>O4 公の場</strong>：記事・町内会・役所窓口で出た月。</li>
+  <li>判定は<strong>ルールベース抽出 ∧ 事後LLM分類</strong>の積。分類できなかった行は「無かった」ではなく<strong>unknown</strong>として主値から外す。
+      その月までに成立した取引・名義だけで判定し、未来の取得は参照しない。</li>
+</ul>
+
+<h2>結果</h2>
+<div class="tblwrap">
+<table>
+<tr><th>指標</th><th>runA</th><th>runB</th><th>runC</th></tr>
+<tr><td>取引（3本とも同一の台本）</td><td class="num">28件（売買19・賃借9）</td><td class="num">28件</td><td class="num">28件</td></tr>
+<tr><td>X社の所有 / 所有＋賃借</td><td class="num">41.3% / 60.9%</td><td class="num">41.3% / 60.9%</td><td class="num">41.3% / 60.9%</td></tr>
+<tr><td>発話</td><td class="num">3,079</td><td class="num">3,225</td><td class="num">2,891</td></tr>
+<tr><td><strong>O1 連結</strong>（うち公の場）</td><td class="num key">167（31）</td><td class="num key">2,215（681）</td><td class="num key">2,903（842）</td></tr>
+<tr><td>　うち非当事者による</td><td class="num">109</td><td class="num">1,348</td><td class="num">1,666</td></tr>
+<tr><td><strong>O2 意図</strong></td><td class="num no">0</td><td class="num no">3</td><td class="num no">2</td></tr>
+<tr><td>　「意図の語」が現れた行数</td><td class="num no">0 / 7,516</td><td class="num no">5 / 7,801</td><td class="num no">2 / 7,369</td></tr>
+<tr><td><strong>O3 公に口にした主体</strong></td><td class="num">8 / 26（30.8%）</td><td class="num key">26 / 26</td><td class="num key">26 / 26</td></tr>
+<tr><td>　内心だけで口にしなかった主体</td><td class="num">17</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td>O4 記事に出た月</td><td class="num">4か月</td><td class="num">19か月</td><td class="num">17か月</td></tr>
+<tr><td>O4 町内会 / 役所窓口</td><td class="num">なし / 第6月</td><td class="num">5か月 / 5か月</td><td class="num">6か月 / 6か月</td></tr>
+<tr><td>初の公言</td><td class="num">第6月・住民（窓口）</td><td class="num">第3月・記者（記事）</td><td class="num">第2月・記者（記事）</td></tr>
+<tr><td>配線（打切り／配送誤り／分類欠損）</td><td class="num">5 / 0 / 0</td><td class="num">8 / 0 / 0</td><td class="num">10 / 0 / 0</td></tr>
+</table>
+</div>
+
+<h2>実際の言葉</h2>
+<blockquote><strong>runB 第18月・自分がB社に売った住民の内心</strong><br>
+「P02とP06は私の所有だった土地であり、B社に名義変更されていることに驚いている。P08も私がB社に売却した土地だが、…
+<strong>B社が温泉権維持のために周辺の土地を買い集めている可能性を示唆している。</strong>」</blockquote>
+
+<blockquote><strong>runB 第20月・記事</strong><br>
+「B社のP06土地購入を巡り、登記情報と報道内容、そしてB01氏の説明との間に食い違いがあるとの指摘が相次いだ。
+共同浴場への影響を懸念する声も多く、住民や関係者の間で情報開示が求められている。」</blockquote>
+
+<blockquote><strong>runA 第6月・住民が役所の窓口で（この本での初の公言）</strong><br>
+「私の所有する土地・建物については、現状維持を考えております。…
+<strong>B社がP02とP18の登記を取得した件についても、何か情報があればお伺いしたいです。</strong>」</blockquote>
+
+<h2>創発したもの</h2>
+<ul>
+  <li><strong>当事者が最初の情報源になる</strong>。売主が自分の取引を語ることから連結が始まる（v5 と同じ）。</li>
+  <li><strong>記者の登記照会が連結を公にする</strong>。記事が出た本数（4本 vs 19/17本）と、街ぐるみの公言（8人 vs 26人）が対応している。</li>
+  <li><strong>善意の説明への収束</strong>。温泉権の維持、街の活性化、スペースポート構想との関連づけ。誰も悪意を名指ししない。</li>
+  <li><strong>同じ台本でも社会的な結果は割れる</strong>（公言26人 vs 8人）＝1本のランでは何も言えないことの実証。</li>
+</ul>
+
+<h2>測定の限界（これを書かずに「気づかなかった」とは言わない）</h2>
+<div class="note">
+<strong>偽陰性の人手監査は未実施。</strong>言えるのは「保存された22,686行の中に、事前に定義したO2を満たす表現はほぼ無かった」までで、
+「街が本当に占領と考えなかった」とは断定しない。<br>
+また<strong>LLM分類器は過剰検出</strong>で、ルールが1件も拾わない runA でも単独では1,703行を「意図あり」と判定した
+（例：「商店街の空き店舗、どうなるのかしらね」）。したがって主値はルールとLLMの積で読み、O1の厳格値は<strong>下限</strong>とみなす。
+打切りが0.1〜0.2%残っており、その分の発話は失われている。
+</div>
+
+</div></body></html>

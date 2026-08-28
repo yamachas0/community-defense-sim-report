@@ -122,7 +122,7 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
     <h3 id="hR">街が語った区画</h3>
     <p class="cap" id="capR"></p>
     <div class="grid" id="mapR" role="group" aria-labelledby="hR"></div>
-    <div class="legend">
+    <div class="legend" id="legendR">
       <span><i style="background:#1D4ED8"></i>語られた（濃いほど語った人数が多い）</span>
       <span><i style="background:#6D28D9"></i>○印＝公の場で「同じ動き」として結ばれた</span>
       <span><i style="background:#E5E7EB;box-shadow:0 0 0 2px #B45309 inset"></i>最後まで語られなかった（押すと詳細）</span>
@@ -139,6 +139,7 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
   <button role="tab" id="tE" aria-controls="pE" data-p="E" aria-selected="false" tabindex="-1">窓口の一括照会</button>
   <button role="tab" id="tF" aria-controls="pF" data-p="F" aria-selected="false" tabindex="-1">街が作った結びつき</button>
   <button role="tab" id="tG" aria-controls="pG" data-p="G" aria-selected="false" tabindex="-1">足して動かず、引いて動いた</button>
+  <button role="tab" id="tI" aria-controls="pI" data-p="I" aria-selected="false" tabindex="-1">色の推移と、火が点いた場</button>
   <button role="tab" id="tH" aria-controls="pH" data-p="H" aria-selected="false" tabindex="-1">言えること／言えないこと</button>
 </div>
 
@@ -168,6 +169,11 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
   同じ指標が改善したのではなく、問いを立て直した。</p>
 </section>
 
+<section class="panel" id="pI" role="tabpanel" aria-labelledby="tI" hidden>
+  <h2 style="margin-top:0">どこまで色が進み、どの場で火が点いたか</h2>
+  <div id="stagebox"></div>
+</section>
+
 <section class="panel" id="pH" role="tabpanel" aria-labelledby="tH" hidden>
   <h2 style="margin-top:0">言えること／言えないこと</h2>
   <div class="note"><strong>言える</strong>：この固定した取得列と兆候の露出条件のもとで、街の会話がどう反応したかの事例記述。
@@ -193,7 +199,14 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 const RUNS=[["run94","run94 — 12か月（1件ずつの気づき）"],
             ["v5bA","v5b runA — 24か月"],
             ["v5bB","v5b runB — 24か月"],
-            ["v5bC","v5b runC — 24か月"]];
+            ["v5bC","v5b runC — 24か月"],
+            ["v5cA","v5c runA — 24か月（買い手の戦略・日常の場）"],
+            ["v5cB","v5c runB — 24か月"],
+            ["v5cC","v5c runC — 24か月"]];
+const STAGE_COLORS={blue:"#1D4ED8",green:"#047857",yellow:"#CA8A04",red:"#B91C1C"};
+const STAGE_JA={blue:"青＝個別の売買の話題",green:"緑＝複数の売買・面的な話",
+                yellow:"黄＝名義違いを同じ買い手として結んだ",red:"赤＝行政が対応に動いた"};
+const STAGE_ORDER=["blue","green","yellow","red"];
 const HOLDER_COLORS={"A社":"#047857","B社":"#1D4ED8","C社":"#B45309","D社":"#6D28D9"};
 let D=null,HIST=null,step=0,timer=null,loadToken=0,lastFocus=null;
 
@@ -226,12 +239,35 @@ function draw(){
     else { c.style.background=""; c.title=c.dataset.pid; }
   });
   const o1=D.o1_month||{};
+  const SBP=D.stage_by_parcel||{}, useStage=Object.keys(SBP).length>0;
   let spokenN=0,linkedN=0;
   cells(R).forEach(c=>{
     const pid=c.dataset.pid, a=D.awareness[pid], lm=o1[pid];
     c.classList.remove("silent","linked");
     c.tabIndex=-1; c.setAttribute("aria-hidden","true");
     const acquired=byPid[pid];
+    const st=useStage?SBP[pid]:null;
+    if(useStage){
+      // v5c は4色そのものを塗る（基準＝stage_stats.basis）。
+      if(st && st.month<=step){
+        spokenN++;
+        if(st.color!=="blue") linkedN++;
+        const n=(a&&a.cumulative_speakers[String(step)])||1;
+        c.style.background=STAGE_COLORS[st.color];
+        c.style.opacity=String(0.45+0.55*Math.min(1,n/8));
+        c.title=`${pid}／第${st.month}月に ${STAGE_JA[st.color]}`;
+      } else {
+        c.style.background=""; c.style.opacity="";
+        const sil=(D.stage_stats&&D.stage_stats.silent)||[];
+        if(acquired && step>=D.stats.steps && sil.indexOf(pid)>=0){
+          c.classList.add("silent"); c.tabIndex=0; c.removeAttribute("aria-hidden");
+          c.setAttribute("aria-label",`${pid}：第${acquired.month}月に動いたが最後まで色が付かなかった。詳細を開く`);
+          c.title=`${pid}／第${acquired.month}月に動いたが、最後まで誰も名指ししなかった`;
+        } else if(acquired){ c.title=`${pid}／第${acquired.month}月に動いた（まだ語られていない）`; }
+        else { c.title=pid; }
+      }
+      return;
+    }
     if(a && a.first_month<=step){
       spokenN++;
       const n=a.cumulative_speakers[String(step)]||1;
@@ -242,6 +278,7 @@ function draw(){
       else { c.style.background=`rgba(29,78,216,${0.28+0.62*t})`;
         c.title=`${pid}／第${a.first_month}月から語られた／のべ${n}人`; }
     } else {
+      c.style.opacity="";
       c.style.background="";
       if(acquired && step>=D.stats.steps && D.silent.indexOf(pid)>=0){
         c.classList.add("silent"); c.tabIndex=0; c.removeAttribute("aria-hidden");
@@ -260,7 +297,13 @@ function draw(){
   $("monthlabel").textContent=`第 ${step} 月`;
   $("capL").textContent=`${leftN} 区画が動いた（売買と賃借の合計・全${D.events.length}件）`;
   $("capR").textContent=`${spokenN} 区画が、当事者以外の口から名指しされた`
-    +(linkedN?`／うち ${linkedN} 区画は「同じ動き」として結ばれた`:"");
+    +(linkedN?(useStage?`／うち ${linkedN} 区画は緑以上（面・同じ買い手・行政）まで進んだ`
+                       :`／うち ${linkedN} 区画は「同じ動き」として結ばれた`):"");
+  if(useStage){
+    $("legendR").innerHTML=STAGE_ORDER.map(c=>
+      `<span><i style="background:${STAGE_COLORS[c]}"></i>${esc(STAGE_JA[c])}</span>`).join("")
+      +`<span><i style="background:#E5E7EB;box-shadow:0 0 0 2px #B45309 inset"></i>最後まで語られなかった（押すと詳細）</span>`;
+  }
   $("slider").value=step;
   $("live").textContent=`第${step}月：動いた区画 ${leftN}、語られた区画 ${spokenN}、差 ${diff}`;
   if(step>=D.stats.steps) markSilent();
@@ -282,6 +325,13 @@ function renderStats(){
     ["平均同席",s.mean_group_size,""],
     ["記事｜私信",`${s.articles}｜${s.directs}`,""],
   ];
+  if(s.C_state_public){
+    items.push(["会場（日常の場）",s.venues,""]);
+    items.push(["到達した最高段階（公言・青/緑/黄/赤）",
+      STAGE_ORDER.map(c=>s.C_state_public[c]).join(" / "),"key"]);
+    items.push(["一度でもその色に達した主体（青→緑→黄→赤）",
+      STAGE_ORDER.map(c=>s.C_ever_public_agents[c]).join(" → "),""]);
+  }
   if(s.O1_count!=null){
     items.push(["O1 連結 全件（うち公の場）",`${s.O1_count}（${s.O1_public}）`,"key"]);
     items.push(["O2 街ぐるみの意図",s.O2_count,"no"]);
@@ -363,6 +413,63 @@ function renderInvented(){
     +`<p class="tiny">出所：<code>docs/present_verification.md</code>（b）。参照の一致・不一致は共起判定であり意味判定ではないため「誤り率」とは呼ばない。</p>`;
 }
 
+function renderStage(){
+  const box=$("stagebox"), st=D.stage_stats, se=D.stage_series, pe=D.prime_event;
+  if(!st||!Object.keys(st).length){
+    box.innerHTML="<p class='tiny'>この本には4段階の色の判定が無い（v5c から）。</p>"; return; }
+  const VL=D.venue_labels||{};
+  let h=`<p class="tiny">色は走行前に固定した定義で、保存された発話・内心・記事を事後に分類したもの`
+    +`（ルール1次抽出 ∧ LLM ラベル。分類できなかった行 ${st.unknown} 行は数に入れていない）。`
+    +`主体は全${D.stats.agents}人。</p>`;
+  h+=`<table><caption class="sr">色ごとの到達</caption><tr><th>色</th><th class="num">該当した行</th>`
+    +`<th class="num">公に口にした主体</th><th class="num">内心だけの主体</th><th>初出（月・主体・場）</th></tr>`;
+  STAGE_ORDER.forEach(c=>{
+    const f=(st.first||{})[c];
+    h+=`<tr><td><i style="display:inline-block;width:12px;height:12px;border-radius:3px;`
+      +`background:${STAGE_COLORS[c]};margin-right:6px;vertical-align:-2px"></i>${esc(STAGE_JA[c])}</td>`
+      +`<td class="num">${st.rows_by_color[c]}</td>`
+      +`<td class="num">${(st.public_agents_final||{})[c]}</td>`
+      +`<td class="num">${(st.private_only_final||{})[c]}</td>`
+      +`<td>${f?`第${f.month}月・${esc(f.from)}・${esc(VL[f.venue]||f.venue||(f.kind==="article"?"記事":"自宅・計画"))}`:"—（出なかった）"}</td></tr>`;
+  });
+  h+=`</table>`;
+  h+=`<h3>その色に最初に達した場</h3><table><caption class="sr">場ごとの火種</caption>`
+    +`<tr><th>色</th><th>場（人数）</th></tr>`;
+  STAGE_ORDER.forEach(c=>{
+    const vf=(st.venue_first||{})[c]||{};
+    const cells=Object.keys(vf).sort((a,b)=>vf[b]-vf[a])
+      .map(k=>`${esc(VL[k]||k)} ${vf[k]}`).join("／")||"—";
+    h+=`<tr><td>${esc(STAGE_JA[c])}</td><td>${cells}</td></tr>`;
+  });
+  h+=`</table>`;
+  if(se&&se.public){
+    h+=`<h3>公に口にした主体の推移（累計）</h3><table><caption class="sr">月ごとの人数</caption>`
+      +`<tr><th>月</th>${STAGE_ORDER.map(c=>`<th class="num">${c}</th>`).join("")}</tr>`;
+    for(let m=1;m<=D.stats.steps;m++){
+      h+=`<tr><td class="num">${m}</td>`
+        +STAGE_ORDER.map(c=>`<td class="num">${(se.public[c]||{})[String(m)]||0}</td>`).join("")+`</tr>`;
+    }
+    h+=`</table>`;
+  }
+  if(pe){
+    const b=pe.before_window,a=pe.after_window;
+    h+=`<h3>一等地の売買（第${pe.month}月・${esc(pe.parcel_id)}）の前後</h3>`
+      +`<p class="tiny">${esc(pe.zone)}・${esc(pe.frontage)}・${pe.area_sqm}㎡・${esc(pe.use_detail)}`
+      +`（この街で最も目立つ店舗）。兆候の規則は他の取得と同じで、増やしていない。</p>`
+      +`<table><tr><th>期間</th><th class="num">記事</th>`
+      +STAGE_ORDER.map(c=>`<th class="num">${c}の行</th>`).join("")
+      +STAGE_ORDER.map(c=>`<th class="num">${c}の人</th>`).join("")+`</tr>`;
+    [["前（第"+b.months[0]+"〜"+b.months[1]+"月）",b],["後（第"+a.months[0]+"〜"+a.months[1]+"月）",a]]
+      .forEach(([label,w])=>{
+        h+=`<tr><td>${esc(label)}</td><td class="num">${w.articles}</td>`
+          +STAGE_ORDER.map(c=>`<td class="num">${w.rows_by_color[c]}</td>`).join("")
+          +STAGE_ORDER.map(c=>`<td class="num">${w.agents_by_color[c]}</td>`).join("")+`</tr>`;
+      });
+    h+=`</table>`;
+  }
+  box.innerHTML=h;
+}
+
 function renderHistory(){
   if(!HIST){ $("history").innerHTML="<p class='tiny'>過去ランの実測（present_data_history.json）を読み込めなかった。</p>"; return; }
   let h=`<table><caption class="sr">版ごとの成約数と所有率</caption>`
@@ -427,7 +534,8 @@ async function load(label){
     });
   });
   $("slider").max=D.stats.steps; step=0;
-  renderStats(); renderHelix(); renderReplay(); renderInvented(); renderHistory(); draw();
+  renderStats(); renderHelix(); renderReplay(); renderInvented(); renderHistory();
+  renderStage(); draw();
 }
 
 function selectTab(b){

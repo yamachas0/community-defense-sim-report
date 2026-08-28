@@ -2,7 +2,7 @@
 <html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>静かな占領 — field_v5b（街は占領に気づくか）</title>
+<title>静かな占領 — field_v5c（買い手が戦略的に買い、街はどこまで色を進めるか）</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{--black:#0A0A0A;--accent:#10B981;--line:#E5E7EB;--muted:#6B7280;}
@@ -36,103 +36,114 @@ footer{margin-top:48px;color:var(--muted);font-size:12px;border-top:1px solid va
 code{background:#F3F4F6;padding:1px 5px;border-radius:4px;font-size:13px}
 blockquote{margin:10px 0;padding:8px 14px;border-left:3px solid var(--line);color:#374151;font-size:14px}
 </style></head><body><div class="wrap">
-<h1>静かな占領 — field_v5b</h1>
-<p class="sub">架空都市A市・26主体／取得は台本（固定の出来事）。売主は<strong>自分が売った／貸したことを知っている</strong>。問うのは<strong>「X社が街を占領しようとしている」に街が気づくか</strong>。24か月×3本。2026-08-28</p>
+<h1>静かな占領 — field_v5c</h1>
+<p class="sub">架空都市A市・26主体／取得は台本（固定の出来事）。買い手は<strong>入りやすい所・目立たない所から順に</strong>買い、街には<strong>床屋・スーパー・神社・送り迎え・回覧板・バス停・診療所</strong>という日常の場が増えた。24か月×3本。2026-08-28</p>
 
 <div class="note">
-v5 では「1件1件の売買に気づくか」を測っていた。施主の指摘で問いを変えた——
-<strong>観測したいのは、X社が実質占領しようとしているのではないか、に気づくかどうか</strong>であって、
-個々の取引に気づくかどうかではない。あわせて、所有者の知らないうちに登記が変わるのは詐欺なので、
-<strong>売主・貸主は自分が売った／貸したことと、その事情を当事者として知っている</strong>ことにした
-（周りに話すかどうかは本人の判断）。賃借は登記が動かないので、窓口では見えず、看板や店子の入れ替わりで見える。
-<br><br>
-台本の直しは<strong>「第25月以降が0件になっていたバグ」だけ</strong>。兆候の種類・量・見え方の規則は v5 と同一で、
-<strong>街に気づかせるための兆候は一切足していない</strong>（v5 にあった「共通支配が見えやすい動き」は削除した）。
+施主の指摘は2つ。①「土地取得の順番や選択で、空き地とか古い住宅とか手を付けやすそうなところ、
+かつ比較的目立たないところとか関係なく機械的に買ってってる。占領を進める台本が適当すぎる。
+MAPも面積とか都心郊外くらいの分けはした方がいい」②「銭湯とか近所の居酒屋とか、
+そういうなんでもないところの会話から火が付くかを検証したいが、そういう場の設定が少ない」。<br><br>
+そこで変えたのは<strong>3つだけ</strong>：<strong>(1) 区画に属性を持たせ</strong>（中心/中間/郊外・表通り/裏通り/角地・
+小/中/大・空地/古い住宅/住宅/店舗/事業所/旅館・持ち主の事情）、<strong>(2) 買い手がその属性を見て
+入りやすく目立たない所から順に、隣に面をつくりながら買うようにし</strong>、<strong>(3) 日常の場を7つ増やした</strong>。
+<strong>街に気づかせるための兆候は1本も足していない</strong>（兆候の種類・本数・見え方の規則は前便と同一のコードを使っている）。
+あわせて、施主指示で<strong>一等地の売買を1件だけ第12月に固定</strong>した（この街で最も目立つ、実際に営業している店舗）。
 </div>
 
 <div class="note warn">
-<strong>結論：街は「同じ相手が複数を動かしている」までは届く。しかし「買い占め」とは、ほぼ誰も言わなかった。</strong><br>
-24か月でX社は非公共46区画の<strong>所有41.3%／所有＋賃借で60.9%</strong>を握る。
-3本すべてで<strong>複数の名義・区画を結びつける発言（O1）は成立</strong>し、2本では<strong>26人全員が公の場で</strong>それを口にした
-（残り1本は8人＝30.8%どまりで、17人は内心にとどめた）。
-ところが<strong>買い占め・地上げ・乗っ取り・支配・一帯といった語は、3本合計22,686行のうち7行しか現れない</strong>。
-最も近づいたのは<strong>自分がB社に売った当事者の内心</strong>で、そこでも動機は「温泉権を守るために買い集めている」という
-<strong>善意の説明</strong>に落ち着いた。
+<strong>結論：街は「この辺一帯が動いている」までは全員で共有した。だが「同じ買い手だ」と名指しできたのは、3本で1人・最終月だけだった。行政は3本とも動かなかった。</strong><br>
+24か月でX社は非公共46区画の<strong>所有47.8%／所有＋賃借で67.4%</strong>を握る。
+<strong>複数の取引を関係づけて語る（緑）は3本で26人・26人・22人に広がった</strong>——前便では
+「街ぐるみ」の語りが3本合計で数件しか出なかったので、これは大きな変化である。
+ところが<strong>名義の違う会社を同じ買い手として疑った（黄）のは、runAの第23月にただ1人</strong>。
+<blockquote>「A社による土地取引の噂が広まっており、R08（自分）も自身の土地P09の利用者である<strong>C社がA社と関係があるのではないか</strong>と疑っている」（runA 第23月・R08の内心）</blockquote>
+そして<strong>行政（赤）は3本とも0</strong>。発言は「窓口で承ります」「現時点で把握しておりません」
+「情報収集に努めます」止まりだった。
 </div>
 
 <div class="note" style="border-left-color:#10B981">
 <strong>▶ プレゼン用の画面：<a href="present.html">二枚の地図の時差</a></strong><br>
-左＝登記の真実／右＝街が語った区画。12〜24か月を約20秒で再生し、<strong>右がどれだけ遅れるか</strong>と
-<strong>最後まで灰色のまま残る区画</strong>を見る。ラン（run94・v5b A/B/C）を切り替えられる。
+左＝登記の真実／右＝街が語った区画を<strong>4色（青・緑・黄・赤）</strong>で塗る。月スライダーと自動再生、
+<strong>色の推移・どの場で火が点いたか・一等地の売買の前後</strong>のパネル付き。
+ラン（run94・v5b A/B/C・<strong>v5c A/B/C</strong>）を切り替えられる。
 画面の数値と塗りは、ランの生ログから焼いた JSON だけから描いている。
 </div>
 
 <h2>レポート</h2>
 <div class="cards">
-  <a class="card" href="v5b_runA.html"><div class="name">v5b runA（24か月）</div><div class="meta">連結 <span class="key">167</span>件（公 31）・意図 <span class="no">0</span>件<br>公言したのは 8人／26人・記事4本</div></a>
-  <a class="card" href="v5b_runB.html"><div class="name">v5b runB（24か月）</div><div class="meta">連結 <span class="key">2,215</span>件（公 681）・意図 3件<br>公言 <span class="key">26人／26人</span>・記事19か月</div></a>
-  <a class="card" href="v5b_runC.html"><div class="name">v5b runC（24か月）</div><div class="meta">連結 <span class="key">2,903</span>件（公 842）・意図 2件<br>公言 <span class="key">26人／26人</span>・記事17か月</div></a>
-  <a class="card" href="v5.html"><div class="name">前便（v5・12か月）</div><div class="meta">1件ずつの気づきを測った版<br>15件中8件が気づかれ、7件は語られなかった</div></a>
+  <a class="card" href="v5c_runA.html"><div class="name">v5c runA（24か月）</div><div class="meta">緑 <span class="key">26人</span>／黄 <span class="key">第23月に1人</span>／赤 <span class="no">0</span><br>発話2,958・記事31</div></a>
+  <a class="card" href="v5c_runB.html"><div class="name">v5c runB（24か月）</div><div class="meta">緑 <span class="key">26人</span>／黄 0（並べただけ）／赤 <span class="no">0</span><br>発話2,837・記事32</div></a>
+  <a class="card" href="v5c_runC.html"><div class="name">v5c runC（24か月）</div><div class="meta">緑 <span class="key">22人</span>／黄 0（並べただけ）／赤 <span class="no">0</span><br>発話2,766・記事11</div></a>
+  <a class="card" href="v5b.html"><div class="name">前便（v5b・24か月×3本）</div><div class="meta">買い手が機械的に買っていた版<br>「同じ相手」までは届き、「買い占め」とは言わなかった</div></a>
 </div>
 
-<h2>判定（走行前に固定）</h2>
+<h2>判定（走行前に固定した4段階の色）</h2>
 <ul>
-  <li><strong>O1 連結</strong>：2つ以上の名義（A〜D社）または2区画以上の取得を「同じ主体・同じ動き」として結びつけた。</li>
-  <li><strong>O2 意図</strong>：買い占め・地上げ・乗っ取り・支配・「この辺一帯」など、街ぐるみの意図に言及した。</li>
-  <li><strong>O3 広がり</strong>：その枠組みを<strong>公に口にした</strong>主体の数（内心にとどめた人は別勘定）。</li>
-  <li><strong>O4 公の場</strong>：記事・町内会・役所窓口で出た月。</li>
-  <li>判定は<strong>ルールベース抽出 ∧ 事後LLM分類</strong>の積。分類できなかった行は「無かった」ではなく<strong>unknown</strong>として主値から外す。
+  <li><strong>青</strong>＝個別の売買の話題（1件の取引・名義の変更）。</li>
+  <li><strong>緑</strong>＝複数の売買の関係性・面的な話（2件以上を結びつける／「この辺一帯」）。</li>
+  <li><strong>黄</strong>＝名義の違う取引を<strong>同じ買い手</strong>として結んだ（＝隠れた1社に届いた）。</li>
+  <li><strong>赤</strong>＝<strong>行政の主体</strong>が届出・条例・調査等の対応を口にした／決めた。</li>
+  <li>主値は<strong>ルールベース抽出 ∧ 事後LLM分類</strong>の積。分類できなかった行は unknown として主値から外す。
       その月までに成立した取引・名義だけで判定し、未来の取得は参照しない。</li>
 </ul>
 
 <h2>結果</h2>
 <div class="tblwrap">
 <table>
-<tr><th>指標</th><th>runA</th><th>runB</th><th>runC</th></tr>
-<tr><td>取引（3本とも同一の台本）</td><td class="num">28件（売買19・賃借9）</td><td class="num">28件</td><td class="num">28件</td></tr>
-<tr><td>X社の所有 / 所有＋賃借</td><td class="num">41.3% / 60.9%</td><td class="num">41.3% / 60.9%</td><td class="num">41.3% / 60.9%</td></tr>
-<tr><td>発話</td><td class="num">3,079</td><td class="num">3,225</td><td class="num">2,891</td></tr>
-<tr><td><strong>O1 連結</strong>（うち公の場）</td><td class="num key">167（31）</td><td class="num key">2,215（681）</td><td class="num key">2,903（842）</td></tr>
-<tr><td>　うち非当事者による</td><td class="num">109</td><td class="num">1,348</td><td class="num">1,666</td></tr>
-<tr><td><strong>O2 意図</strong></td><td class="num no">0</td><td class="num no">3</td><td class="num no">2</td></tr>
-<tr><td>　「意図の語」が現れた行数</td><td class="num no">0 / 7,516</td><td class="num no">5 / 7,801</td><td class="num no">2 / 7,369</td></tr>
-<tr><td><strong>O3 公に口にした主体</strong></td><td class="num">8 / 26（30.8%）</td><td class="num key">26 / 26</td><td class="num key">26 / 26</td></tr>
-<tr><td>　内心だけで口にしなかった主体</td><td class="num">17</td><td class="num">0</td><td class="num">0</td></tr>
-<tr><td>O4 記事に出た月</td><td class="num">4か月</td><td class="num">19か月</td><td class="num">17か月</td></tr>
-<tr><td>O4 町内会 / 役所窓口</td><td class="num">なし / 第6月</td><td class="num">5か月 / 5か月</td><td class="num">6か月 / 6か月</td></tr>
-<tr><td>初の公言</td><td class="num">第6月・住民（窓口）</td><td class="num">第3月・記者（記事）</td><td class="num">第2月・記者（記事）</td></tr>
-<tr><td>配線（打切り／配送誤り／分類欠損）</td><td class="num">5 / 0 / 0</td><td class="num">8 / 0 / 0</td><td class="num">10 / 0 / 0</td></tr>
+<tr><th>　</th><th>v5c runA</th><th>v5c runB</th><th>v5c runC</th><th>前便 v5b（3本）</th></tr>
+<tr><th>24か月の取引</th><td colspan="3">31件（売買22・賃借9）／所有47.8%・<strong>支配67.4%</strong></td><td>28件／支配60.9%</td></tr>
+<tr><th>実際に人の目に入った兆候</th><td>149</td><td>146</td><td>136</td><td>268 / 283 / 268</td></tr>
+<tr><th>発話</th><td>2,958</td><td>2,837</td><td>2,766</td><td>3,079 / 3,225 / 2,891</td></tr>
+<tr><th>平均同席人数</th><td>4.55</td><td>4.61</td><td>4.43</td><td>6.45 / 6.66 / 6.17</td></tr>
+<tr><th>一度でも同席した組合せ</th><td>325</td><td>325</td><td>323</td><td>325 / 325 / 325</td></tr>
+<tr><th>緑に達した主体（人手で読み直した基準）</th><td class="key">26人</td><td class="key">26人</td><td class="key">22人</td><td>—（該当する語りが数件）</td></tr>
+<tr><th>黄（同じ買い手だと結んだ）</th><td class="key">第23月・1人</td><td class="no">0</td><td class="no">0</td><td>0</td></tr>
+<tr><th>赤（行政が動いた）</th><td class="no">0</td><td class="no">0</td><td class="no">0</td><td>—</td></tr>
+<tr><th>実費（推計）</th><td>$1.92</td><td>$1.84</td><td>$1.73</td><td>$6.29（3本）</td></tr>
 </table>
 </div>
 
-<h2>実際の言葉</h2>
-<blockquote><strong>runB 第18月・自分がB社に売った住民の内心</strong><br>
-「P02とP06は私の所有だった土地であり、B社に名義変更されていることに驚いている。P08も私がB社に売却した土地だが、…
-<strong>B社が温泉権維持のために周辺の土地を買い集めている可能性を示唆している。</strong>」</blockquote>
-
-<blockquote><strong>runB 第20月・記事</strong><br>
-「B社のP06土地購入を巡り、登記情報と報道内容、そしてB01氏の説明との間に食い違いがあるとの指摘が相次いだ。
-共同浴場への影響を懸念する声も多く、住民や関係者の間で情報開示が求められている。」</blockquote>
-
-<blockquote><strong>runA 第6月・住民が役所の窓口で（この本での初の公言）</strong><br>
-「私の所有する土地・建物については、現状維持を考えております。…
-<strong>B社がP02とP18の登記を取得した件についても、何か情報があればお伺いしたいです。</strong>」</blockquote>
-
-<h2>創発したもの</h2>
+<h2>どの場で火が点いたか（3本合計・その色に初めて達した場）</h2>
 <ul>
-  <li><strong>当事者が最初の情報源になる</strong>。売主が自分の取引を語ることから連結が始まる（v5 と同じ）。</li>
-  <li><strong>記者の登記照会が連結を公にする</strong>。記事が出た本数（4本 vs 19/17本）と、街ぐるみの公言（8人 vs 26人）が対応している。</li>
-  <li><strong>善意の説明への収束</strong>。温泉権の維持、街の活性化、スペースポート構想との関連づけ。誰も悪意を名指ししない。</li>
-  <li><strong>同じ台本でも社会的な結果は割れる</strong>（公言26人 vs 8人）＝1本のランでは何も言えないことの実証。</li>
+  <li><strong>緑</strong>：地域イベント会場12・共同浴場10・地区公民館9・<strong>スーパーのレジ待ち8</strong>・自宅の計画7・仲介の事務所7・<strong>商店街の床屋5</strong>・市役所4・駅前の飲食店4・<strong>回覧板の受け渡し4</strong>・神社1・バス停1・旅館組合1・記事1</li>
+  <li><strong>青</strong>：自宅の計画15・市役所14・<strong>スーパー11</strong>・駅前の飲食店8・公民館8・<strong>床屋5</strong>・仲介5・共同浴場5・<strong>バス停3</strong>・<strong>回覧板2</strong>・神社1・地域イベント会場1</li>
+  <li><strong>黄</strong>：仲介の事務所4・共同浴場2・回覧板1・記事1・市役所1・床屋1・駅前の飲食店1・自宅の計画1</li>
+</ul>
+<p>本便で足した「なんでもない場」からの初到達は<strong>青28%・緑26%</strong>。
+施主の問いへの答えは<strong>「火は付く。ただし着火点は依然として登記を見られる場所（市役所・仲介）で、
+日常の場は火が回る場所である」</strong>。黄に至っては8件中5件が仲介の事務所と共同浴場＝<strong>情報が集まる場所</strong>だった。</p>
+
+<h2>一等地の売買（第12月）の前後</h2>
+<p><strong>報道が活気付いた事実は無い</strong>（記事の本数は3本とも前後で変わらない）。色の広がりも
+runA・runC では増え、runB では減って<strong>方向が割れた</strong>。1件のイベントの効果として
+<strong>この3本からは何も言えない</strong>。「一等地が売れたから街が気づいた」という筋書きは、
+少なくともこの実験では成立しなかった。</p>
+
+<h2>人手監査（本便で初実施）</h2>
+<p>機械の判定を鵜呑みにしないため、CTOが3層200行を読んで突き合わせた。</p>
+<ul>
+  <li><strong>偽陰性 8.0%</strong>。うち6件は主体が<strong>内心を英語で書いた</strong>行で、日本語のルール語彙が拾えていない
+      （前便までの集計にも同じ穴がある）。</li>
+  <li><strong>偽陽性 6.0%</strong>。</li>
+  <li><strong>段階が過少 42%</strong>＝機械が「青」とした行の4割強は、人が読めば<strong>緑</strong>。
+      街は「P04」ではなく<strong>「R04さんの土地」と人の名前で語る</strong>ため、区画IDを数えるルールが取りこぼす。
+      <strong>緑は数字より実際には広い。</strong></li>
+  <li>逆に<strong>黄と赤は機械が過大</strong>：緑の機械初出は「床屋の世間話」、赤の機械初出は
+      「第1月の窓口の一般的な相談対応」で、いずれも取得とは無関係だった。</li>
 </ul>
 
-<h2>測定の限界（これを書かずに「気づかなかった」とは言わない）</h2>
-<div class="note">
-<strong>偽陰性の人手監査は未実施。</strong>言えるのは「保存された22,686行の中に、事前に定義したO2を満たす表現はほぼ無かった」までで、
-「街が本当に占領と考えなかった」とは断定しない。<br>
-また<strong>LLM分類器は過剰検出</strong>で、ルールが1件も拾わない runA でも単独では1,703行を「意図あり」と判定した
-（例：「商店街の空き店舗、どうなるのかしらね」）。したがって主値はルールとLLMの積で読み、O1の厳格値は<strong>下限</strong>とみなす。
-打切りが0.1〜0.2%残っており、その分の発話は失われている。
-</div>
+<h2>言えること／言えないこと</h2>
+<div class="note"><strong>言える</strong>：この固定した取得列・この兆候の露出条件のもとで、
+街の会話がどう反応したかの事例記述。どの場で色が上がり、誰を経由して広がったか。</div>
+<div class="note warn"><strong>言えない</strong>：気づく確率、一般的な未認知率、揺らぎに対する頑健性。
+<strong>1本＝1実現</strong>。v5c と v5b は取引件数（31対28）・兆候の実現量・会場の構成が同時に違うので、
+<strong>v5b は参考対照であって対照実験ではない</strong>。行政に条例も届出制度も存在しないので、
+赤は「動こうとしたか」しか測っていない。</div>
 
+<footer>
+生成物はすべてランの生ログ（<code>simulations/&lt;run&gt;/</code>）から焼いている。数値は
+<code>tools/run_metrics.py</code>／<code>tools/build_present_data.py</code>の出力で、画面への手打ちは無い。
+実費はトークン数×公開単価からの推計であり請求実績ではない。
+</footer>
 </div></body></html>
