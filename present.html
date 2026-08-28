@@ -40,6 +40,8 @@ input[type=range]{flex:1 1 240px;min-width:180px;accent-color:var(--black)}
 .mapbox[hidden]{display:none}
 .mapbox h3{margin:0 0 2px;font-size:16px}
 .mapbox .cap{margin:0 0 8px;font-size:13px;color:var(--g600)}
+.capbar{display:flex;flex-wrap:wrap;gap:6px 20px;margin:0 0 8px}
+.capbar .cap{margin:0;font-size:13px;color:var(--g600)}
 .mapscroll{max-width:100%;overflow-x:auto;overflow-y:hidden}
 .grid{display:grid;gap:3px}
 .grid .cell{aspect-ratio:1/1;border-radius:3px;background:var(--g200);border:1px solid transparent;
@@ -63,7 +65,7 @@ input[type=range]{flex:1 1 240px;min-width:180px;accent-color:var(--black)}
 .svgmap .deco .hill{fill:#EFF6EF;stroke:#DFEADF;stroke-width:1.5}
 .svgmap .deco .plaza{fill:#F1F0EA;stroke:#E2E0D6;stroke-width:2}
 .svgmap .deco text{fill:#9AA1A9;font-size:17px;font-weight:700}
-.svgmap .icon{pointer-events:none;fill:none;stroke:currentColor;stroke-width:1.6;
+.svgmap .icon{pointer-events:none;fill:none;stroke:currentColor;
  stroke-linejoin:round;stroke-linecap:round;color:var(--g600)}
 .svgmap .icon .solid{fill:currentColor;stroke:none}
 .svgmap .lead{stroke:#B9BFC6;stroke-width:1;fill:none}
@@ -196,15 +198,17 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
   <button role="tab" id="tmL" aria-controls="mapboxL" data-m="L" aria-selected="true">登記が動いた区画</button>
   <button role="tab" id="tmR" aria-controls="mapboxR" data-m="R" aria-selected="false" tabindex="-1">街の人が口にした区画</button>
 </div>
+<div class="capbar">
+  <p class="cap" id="capL"></p>
+  <p class="cap" id="capR"></p>
+</div>
 <div class="mapbox" id="mapboxL" role="tabpanel" aria-labelledby="tmL">
   <h3 id="hL">登記が動いた区画</h3>
-  <p class="cap" id="capL"></p>
   <div class="mapscroll"><div class="grid" id="mapL" role="group" aria-labelledby="hL"></div></div>
   <div class="legend" id="legendL"></div>
 </div>
 <div class="mapbox" id="mapboxR" role="tabpanel" aria-labelledby="tmR" hidden>
   <h3 id="hR">街の人が口にした区画</h3>
-  <p class="cap" id="capR"></p>
   <div class="mapscroll"><div class="grid" id="mapR" role="group" aria-labelledby="hR"></div></div>
   <div class="legend" id="legendR"></div>
 </div>
