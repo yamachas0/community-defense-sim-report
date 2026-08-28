@@ -306,13 +306,15 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 
 </div>
 <script>
-const RUNS=[["run94","run94 — 12か月（1件ずつの気づき）"],
-            ["v5bA","v5b runA — 24か月"],
-            ["v5bB","v5b runB — 24か月"],
-            ["v5bC","v5b runC — 24か月"],
-            ["v5cA","v5c runA — 24か月（買い手の戦略・日常の場）"],
-            ["v5cB","v5c runB — 24か月"],
-            ["v5cC","v5c runC — 24か月"]];
+// 3要素目＝そのランに layout（街の地図データ）があるか。無い旧ラン（run94/v5b系）は
+// 昔ながらの区画グリッドしか描けない＝既定選択の候補から外す（下のロード時ロジック参照）。
+const RUNS=[["run94","run94 — 12か月（1件ずつの気づき）",false],
+            ["v5bA","v5b runA — 24か月",false],
+            ["v5bB","v5b runB — 24か月",false],
+            ["v5bC","v5b runC — 24か月",false],
+            ["v5cA","v5c runA — 24か月（買い手の戦略・日常の場）",true],
+            ["v5cB","v5c runB — 24か月",true],
+            ["v5cC","v5c runC — 24か月",true]];
 const STAGE_COLORS={blue:"#1D4ED8",green:"#047857",yellow:"#CA8A04",red:"#B91C1C"};
 const STAGE_JA={blue:"青＝個別の売買の話題",green:"緑＝複数の売買・面的な話",
                 yellow:"黄＝名義違いを同じ買い手として結んだ",red:"赤＝行政が対応に動いた"};
@@ -1192,6 +1194,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   sel.innerHTML=RUNS.map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
   const q=new URLSearchParams(location.search).get("run");
   if(q&&RUNS.some(r=>r[0]===q)) sel.value=q;
+  else{ const withLayout=RUNS.find(r=>r[2]); if(withLayout) sel.value=withLayout[0]; }
   sel.addEventListener("change",()=>load(sel.value));
   $("slider").addEventListener("input",e=>{stop();setStep(+e.target.value);});
   $("play").addEventListener("click",play);
