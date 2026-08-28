@@ -109,6 +109,9 @@ blockquote{margin:10px 0;padding:8px 14px;border-left:3px solid var(--line);colo
 .say.trace .tag{background:var(--warn);color:#fff}
 .say.fire{border:2px solid var(--accent);background:var(--accent-bg)}
 .say.fire .tag{background:var(--accent);color:#fff}
+#ignition>.lead{font-size:14px;font-weight:700;margin:0 0 10px}
+.igloose{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:18px 0 0;background:var(--g100)}
+.igloose>summary{cursor:pointer;font-size:14px;font-weight:700}
 dialog{border:1px solid var(--g300);border-radius:12px;padding:0;max-width:640px;width:92vw}
 dialog::backdrop{background:rgba(0,0,0,.45)}
 .dlg{padding:18px}
@@ -588,44 +591,63 @@ function whoOf(r){
     +`／第${r.step}月・${VL[r.venue]||r.venue||(r.scene==="plan"?"自宅・計画":r.scene)}`
     +(r.utt_id?`・${r.utt_id}`:"");
 }
+function ignitionBlock(color,o){
+  const VL=D.venue_labels||{};
+  const place=VL[o.venue]||o.venue||(o.scene==="plan"?"自宅・計画":o.scene);
+  let h=`<p class="lead">${esc(o.name||o.from)}（${esc(o.from)}）が第${o.month}月・${esc(place)}で、`
+    +`${o.kind==="thought"?"<strong>頭の中で思っただけ</strong>":(o.kind==="article"?"<strong>記事に書いた</strong>":"<strong>口に出した</strong>")}。</p>`;
+  if(o.matched){
+    const items=(o.matched.parcels||[]).concat(o.matched.holders||[]);
+    if(items.length) h+=`<p class="tiny">並んだもの：${items.map(esc).join("・")}</p>`;
+  }
+  if(o.heard_before.length){
+    h+=`<div class="stepname">① その直前に、この人が聞いていた発言</div>`;
+    o.heard_before.forEach(r=>{ h+=sayRow("u","口に出した（同席者に届いた）",whoOf(r),r.text,"speech"); });
+  }
+  if(o.traces_that_month.length){
+    h+=`<div class="stepname">② その月に、この人の目に入った記録</div>`;
+    o.traces_that_month.forEach(t=>{
+      h+=sayRow("t","目に入った記録"+(t.kind==="registry_lookup"?"（登記の照会）":""),
+                `${t.kind}${t.parcel_id?"／"+t.parcel_id:""}${t.acq_id?"／"+t.acq_id:""}`,t.text,"trace"); });
+  }
+  if(o.own_thoughts_that_month.length){
+    h+=`<div class="stepname">③ その月の、この人の頭の中</div>`;
+    o.own_thoughts_that_month.forEach(t=>{
+      h+=sayRow("th","頭の中（誰にも伝わっていない）",`第${o.month}月・${t.scene}`,t.text,"thought"); });
+  }
+  h+=`<div class="stepname">④ 火が点いた行</div>`;
+  h+=sayRow("f",o.kind==="thought"?"頭の中（誰にも伝わっていない）"
+              :(o.kind==="article"?"記事に書いた（翌月に全員へ届く）":"口に出した（同席者に届いた）"),
+            whoOf(o),o.text,"fire");
+  if(o.context_after.length){
+    h+=`<div class="stepname">⑤ 直後の反応</div>`;
+    o.context_after.forEach(r=>{ h+=sayRow("u","口に出した（同席者に届いた）",whoOf(r),r.text,"speech"); });
+  }
+  return h;
+}
+function ignitionSlot(color,slot,empty){
+  const ig=D.ignition||{};
+  const o=((ig[color]||{})[slot])||null;
+  let h=`<div class="ig" style="border-left:6px solid ${STAGE_COLORS[color]}">`;
+  h+=`<h3>${esc(STAGE_DEF[color])}</h3>`;
+  h+=o?ignitionBlock(color,o):`<p class="tiny">${esc(empty)}</p>`;
+  return h+`</div>`;
+}
 function renderIgnition(){
   const box=$("ignition"), ig=D.ignition;
   if(!ig){ box.innerHTML="<p class='tiny'>この本には色の判定が無い（v5c から）。</p>"; return; }
-  const VL=D.venue_labels||{};
-  let h="";
-  ["green","yellow"].forEach(color=>{
-    const o=ig[color];
-    h+=`<div class="ig" style="border-left:6px solid ${STAGE_COLORS[color]}">`;
-    h+=`<h3>${esc(STAGE_DEF[color])}</h3>`;
-    if(!o){ h+=`<p class="tiny">この本ではこの色は出なかった。</p></div>`; return; }
-    const place=VL[o.venue]||o.venue||(o.scene==="plan"?"自宅・計画":o.scene);
-    h+=`<p class="lead">${esc(o.name||o.from)}（${esc(o.from)}）が第${o.month}月・${esc(place)}で、`
-      +`${o.kind==="thought"?"<strong>頭の中で思っただけ</strong>":(o.kind==="article"?"<strong>記事に書いた</strong>":"<strong>口に出した</strong>")}。</p>`;
-    if(o.heard_before.length){
-      h+=`<div class="stepname">① その直前に、この人が聞いていた発言</div>`;
-      o.heard_before.forEach(r=>{ h+=sayRow("u","口に出した（同席者に届いた）",whoOf(r),r.text,"speech"); });
-    }
-    if(o.traces_that_month.length){
-      h+=`<div class="stepname">② その月に、この人の目に入った記録</div>`;
-      o.traces_that_month.forEach(t=>{
-        h+=sayRow("t","目に入った記録"+(t.kind==="registry_lookup"?"（登記の照会）":""),
-                  `${t.kind}${t.parcel_id?"／"+t.parcel_id:""}${t.acq_id?"／"+t.acq_id:""}`,t.text,"trace"); });
-    }
-    if(o.own_thoughts_that_month.length){
-      h+=`<div class="stepname">③ その月の、この人の頭の中</div>`;
-      o.own_thoughts_that_month.forEach(t=>{
-        h+=sayRow("th","頭の中（誰にも伝わっていない）",`第${o.month}月・${t.scene}`,t.text,"thought"); });
-    }
-    h+=`<div class="stepname">④ 火が点いた行</div>`;
-    h+=sayRow("f",o.kind==="thought"?"頭の中（誰にも伝わっていない）"
-                :(o.kind==="article"?"記事に書いた（翌月に全員へ届く）":"口に出した（同席者に届いた）"),
-              whoOf(o),o.text,"fire");
-    if(o.context_after.length){
-      h+=`<div class="stepname">⑤ 直後の反応</div>`;
-      o.context_after.forEach(r=>{ h+=sayRow("u","口に出した（同席者に届いた）",whoOf(r),r.text,"speech"); });
-    }
-    h+=`</div>`;
+  let h=`<p class="lead">区画や名義が実際に2つ以上並んだ、最初の発言・内心。</p>`;
+  ["green","yellow"].forEach(c=>{
+    h+=ignitionSlot(c,"strict","この本ではこの色に、区画や名義が2つ以上並んだ行は無かった。");
   });
+  h+=`<details class="igloose"><summary>判定の定義どおりの初出（畳んである）</summary>`
+    +`<p class="tiny">色の定義は「この辺り」のような面的な言い方だけでも成立する。`
+    +`そのため定義どおりの初出には、まだ何も起きていない月の世間話が入る。`
+    +`両方を出しているのは、判定の甘さも見えるようにするため。</p>`;
+  ["green","yellow"].forEach(c=>{
+    h+=ignitionSlot(c,"loose","この本ではこの色は出なかった。");
+  });
+  h+=`</details>`;
   box.innerHTML=h;
 }
 
