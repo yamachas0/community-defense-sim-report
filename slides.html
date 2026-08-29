@@ -87,6 +87,18 @@ h1.big,.big{font-size:clamp(24px,6.2vw,40px);font-weight:900;line-height:1.55;ma
   flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:6px;color:var(--accent);font-weight:900;font-size:15px;padding:0 2px;
 }
+.casewrap{flex:none;display:flex;gap:12px;align-items:center;margin:2px 0 14px}
+.jpmap{flex:0 0 148px;max-width:148px}
+.jpmap svg{width:100%;height:auto;display:block}
+.jpmap .land{fill:#1e2530;stroke:#39424f;stroke-width:1.4}
+.jpmap .dot{fill:var(--accent)}
+.jpmap .ring{fill:none;stroke:var(--accent);stroke-width:1.6;opacity:.55}
+.jpmap .lbl{fill:var(--accent);font-size:17px;font-weight:700;font-family:"Noto Sans JP",sans-serif}
+.cases{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:9px}
+.case{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 9px 9px 0;background:var(--panel);padding:9px 12px}
+.case h3{margin:0 0 3px;font-size:clamp(15px,3.8vw,17px);font-weight:900;line-height:1.4}
+.case p{margin:0;font-size:clamp(14px,3.4vw,16px);line-height:1.6;color:#c6cdd7}
+.case p b{color:var(--fg);font-weight:900}
 .chips{flex:none;display:flex;flex-wrap:wrap;gap:7px;margin:0 0 10px}
 .chip{
   border:1px solid var(--line);background:var(--panel);border-radius:999px;
@@ -115,6 +127,7 @@ details.talk .lines{
 }
 details.talk .lines a{color:var(--accent);word-break:break-all}
 @media (min-width:900px){
+  .jpmap{flex:0 0 210px;max-width:210px}
   .slide{
     padding-left:max(28px,calc((100vw - 1000px) / 2));
     padding-right:max(28px,calc((100vw - 1000px) / 2));
@@ -157,23 +170,66 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
 <!-- 2 -->
 <section class="slide">
   <p class="kicker">課題感</p>
-  <h2>普通の町の土地は、法律で守られていない</h2>
+  <h2>すでに、そうなった町がある</h2>
+  <div class="casewrap">
+    <div class="jpmap">
+      <svg viewBox="0 0 300 300" role="img" aria-label="日本の簡易シルエットとニセコ・対馬の位置">
+        <path class="land" d="M210,60 C200,36 216,16 240,14 C264,12 276,32 272,52 C268,72 250,84 236,80 C224,77 216,74 210,60 Z"/>
+        <path class="land" d="M212,66 L200,84 L193,97 L206,86 L216,74 Z"/>
+        <path class="land" d="M190,104 L206,112 L218,128 L222,148 L212,164 L196,176 L176,186 L152,194 L126,200 L100,204 L78,206 L66,206 L64,222 L80,222 L104,220 L130,214 L156,208 L180,198 L202,186 L222,170 L236,150 L238,126 L226,106 L208,96 Z"/>
+        <path class="land" d="M112,232 L134,228 L146,236 L136,246 L114,246 Z"/>
+        <path class="land" d="M76,238 L90,244 L96,258 L90,276 L78,288 L64,288 L54,276 L54,256 L64,242 Z"/>
+        <path class="land" d="M30,232 L36,220 L43,226 L41,242 L32,246 Z"/>
+        <circle class="ring" cx="216" cy="72" r="10"/><circle class="dot" cx="216" cy="72" r="4.5"/>
+        <text class="lbl" x="232" y="98">ニセコ</text>
+        <circle class="ring" cx="36" cy="233" r="10"/><circle class="dot" cx="36" cy="233" r="4.5"/>
+        <text class="lbl" x="0" y="208">対馬</text>
+      </svg>
+    </div>
+    <div class="cases">
+      <div class="case">
+        <h3>ニセコ（北海道）</h3>
+        <p>令和6年に居住地が海外の法人・個人が取得した森林は全国48件。<b>うち32件がニセコ町・倶知安町など後志のスキー地域</b>。目的の多くは「資産保有」。<span class="src">[1]</span></p>
+      </div>
+      <div class="case">
+        <h3>対馬（長崎県）</h3>
+        <p>平成19年、<b>海上自衛隊対馬防備隊の隣接地 約3,000坪</b>が島民名義で韓国資本に買収された。防衛省が登記簿を調べたのは、その報道のあと。<span class="src">[2]</span></p>
+      </div>
+    </div>
+  </div>
   <ul class="body">
-    <li>外国資本などによる土地の実質支配が問題にされて久しい。だが<span class="hl">一般の町には、それを止める仕組みが無い</span>。</li>
-    <li>重要土地等調査法（2021年成立）が見るのは<strong>防衛関係施設などの周囲おおむね1000mと国境離島等だけ</strong>。指定区域の外＝普通の町は対象外。<span class="src">[1]</span></li>
-    <li>外国人の土地取得そのものに<strong>一般的な制限は無い</strong>。古い法律は残っているが、制限を発動させる命令が置かれていない。<span class="src">[2]</span></li>
-    <li>先に動いたのは自治体だった。<strong>水源地の売買に事前の届出を課す条例</strong>が道県で作られている。<span class="src">[3]</span> 裏返せば、それが無い町は無防備のまま。</li>
+    <li>どちらも、<span class="hl">買われてから分かった</span>。</li>
   </ul>
   <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
-    国の法律で土地取引に網がかかるのは、防衛関係施設の周りと国境の離島だけです。普通の住宅地や商店街は、その網の外にあります。<br>
+    まずニセコです。林野庁の調査では、令和6年に居住地が海外の外国法人・外国人と思われる者が取得した森林は全国で48件・171ha。その市町村別の表を数えると、48件のうち32件がニセコ町（15件）・倶知安町（11件）・真狩村（3件）・蘭越町（2件）・留寿都村（1件）に集まっています。利用目的の欄は多くが「資産保有」です。北海道全体では、令和6年末時点で海外資本等が持つ森林が3,830ha・317者に達しています。<br>
+    もうひとつが対馬です。平成19年、海上自衛隊対馬防備隊の隣接地およそ3,000坪が、日本人の島民名義で韓国資本に買収されました。これは重要土地等調査法案の審議で繰り返し引かれた事例で、防衛省も「外国資本による土地取得の報道等があった隣接地について不動産登記簿等を調査した」と答弁しています。つまり、報道が出るまで国は把握していませんでした。<br>
+    どちらの町も、止める仕組みが無いまま買われ、あとから数えています。次の一枚で、その「止める仕組み」が今どうなっているかを見ます。<br><br>
+    出典<br>
+    [1] 林野庁 報道発表（令和7年9月16日）「令和6年に外国法人等により取得された森林は全国の私有林の0.003%」＝市町村別の事例表（件数はこの表からの数え上げ） — <a href="https://www.rinya.maff.go.jp/j/press/keikaku/250916.html">https://www.rinya.maff.go.jp/j/press/keikaku/250916.html</a> ／ 北海道「海外資本等による森林取得状況」（令和6年末時点 道内 3,830ha・317者） — <a href="https://www.pref.hokkaido.lg.jp/sr/srk/80704.html">https://www.pref.hokkaido.lg.jp/sr/srk/80704.html</a><br>
+    [2] 第204回国会 参議院内閣委員会 令和3年6月8日 会議録（重要土地等調査法案審議）＝高野光二郎議員の質疑（対馬防備隊隣接地 約3,000坪の買収） — <a href="https://kokkai.ndl.go.jp/txt/120414889X02520210608/7">https://kokkai.ndl.go.jp/txt/120414889X02520210608/7</a> ／ 松川るい大臣政務官の答弁（防衛省が隣接地の不動産登記簿等を調査） — <a href="https://kokkai.ndl.go.jp/txt/120414889X02520210608/268">https://kokkai.ndl.go.jp/txt/120414889X02520210608/268</a>
+  </div></details>
+</section>
+
+<!-- 2b -->
+<section class="slide">
+  <p class="kicker">課題感</p>
+  <h2>普通の町の土地は、法律で守られていない</h2>
+  <ul class="body">
+    <li>重要土地等調査法（2021年成立）が見るのは<strong>防衛関係施設などの周囲おおむね1000mと国境離島等だけ</strong>。普通の町は対象外。<span class="src">[3]</span></li>
+    <li>外国人の土地取得そのものに<strong>一般的な制限は無い</strong>。古い法律は残るが、発動させる命令が置かれていない。<span class="src">[4]</span></li>
+    <li>先に動いたのは自治体だった。<strong>水源地の売買に事前届出を課す条例</strong>が道県にある。<span class="src">[5]</span> <span class="hl">それが無い町は、無防備のまま。</span></li>
+  </ul>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    国の法律で土地取引に網がかかるのは、防衛関係施設の周りと国境の離島だけです。普通の住宅地や商店街は、その網の外にあります。対馬に網がかかったのは、買われた十数年あとです。<br>
     外国人だから買えない、という一般規制も日本にはありません。大正14年の外国人土地法は条文としては今もありますが、禁止や条件を課すのは「勅令ヲ以テ」＝その命令が置かれていないので動きません。<br>
     国が動かないので、自治体が条例で先に手を打ちました。北海道は平成24年に水資源の保全に関する条例を作り、水資源保全地域内の土地取引に事前届出制を敷いています。他の道府県にも同種の条例があります。<br>
     つまり守られているのは「特別な場所」だけで、普通の町は制度的に無防備です。<br><br>
     出典<br>
-    [1] 重要施設周辺及び国境離島等における土地等の利用状況の調査及び利用の規制等に関する法律（令和3年法律第84号）第1条・第5条・第12条・第13条 — <a href="https://laws.e-gov.go.jp/law/503AC0000000084">https://laws.e-gov.go.jp/law/503AC0000000084</a> ／ 区域の指定状況＝内閣府 <a href="https://www.cao.go.jp/tochi-chosa/index.html">https://www.cao.go.jp/tochi-chosa/index.html</a><br>
-    [2] 外国人土地法（大正14年法律第42号）第1条・第4条 — <a href="https://laws.e-gov.go.jp/law/214AC0000000042">https://laws.e-gov.go.jp/law/214AC0000000042</a><br>
-    [3] 北海道水資源の保全に関する条例（平成24年制定）／水資源保全地域内の土地取引行為に係る事前届出制 — <a href="https://www.pref.hokkaido.lg.jp/ss/stt/mizusigen/mizusigen.html">https://www.pref.hokkaido.lg.jp/ss/stt/mizusigen/mizusigen.html</a>（同ページに「水資源の保全等に関する条例を制定している道府県」の一覧あり）
+    [3] 重要施設周辺及び国境離島等における土地等の利用状況の調査及び利用の規制等に関する法律（令和3年法律第84号）第1条・第5条・第12条・第13条 — <a href="https://laws.e-gov.go.jp/law/503AC0000000084">https://laws.e-gov.go.jp/law/503AC0000000084</a> ／ 区域指定の考え方＝内閣府 <a href="https://www.cao.go.jp/tochi-chosa/kuiki.html">https://www.cao.go.jp/tochi-chosa/kuiki.html</a><br>
+    [4] 外国人土地法（大正14年法律第42号）第1条・第4条 — <a href="https://laws.e-gov.go.jp/law/214AC0000000042">https://laws.e-gov.go.jp/law/214AC0000000042</a><br>
+    [5] 北海道水資源の保全に関する条例（平成24年制定）／水資源保全地域内の土地取引行為に係る事前届出制 — <a href="https://www.pref.hokkaido.lg.jp/ss/stt/mizusigen/mizusigen.html">https://www.pref.hokkaido.lg.jp/ss/stt/mizusigen/mizusigen.html</a>（同ページに「水資源の保全等に関する条例を制定している道府県」の一覧あり）
   </div></details>
 </section>
 
@@ -222,34 +278,17 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
 <section class="slide">
   <p class="kicker">世界設計</p>
   <h2>町ひとつを、まるごと言葉で動かす</h2>
+  <div class="figwrap"><img src="assets/fig_town_map.png" alt="町のイメージ"></div>
+  <p class="figcap">町のイメージ（別のランの画面）。区画ごとに持ち主がいて、隣近所が決まっている。</p>
   <ul class="body">
-    <li><strong>MAP</strong>：44区画・8列の格子。区画ごとに持ち主がいて、<strong>隣近所</strong>が決まっている。</li>
-    <li><strong>エージェント30体</strong>
-      <ul>
-        <li>住民 16 ／ 事業者 6 ／ 行政 2 ／ その他 6</li>
-        <li>行政の土地は売れない</li>
-      </ul>
-    </li>
-    <li><strong>X社</strong>：言葉で考えるAI。命題は一行だけ。
-      <ul>
-        <li>「合法な手段で、できるだけ多くの不動産を取得せよ。毎月動け」</li>
-        <li>この命題は町の人には一文字も見えない</li>
-      </ul>
-    </li>
-    <li><strong>創発の場</strong>：ここで人が居合わせて、ひと言を交わす。</li>
+    <li><strong>町の人 30体</strong> — 住民・事業者・行政・その他。行政の土地は売れない。</li>
+    <li><strong>X社</strong> — 言葉で考えるAI。命題は「合法な手段で、できるだけ多くの不動産を取得せよ。毎月動け」。この文は町の人には見えない。</li>
+    <li><strong>創発の場 5つ＋隣近所</strong> — 公共施設・交通拠点・商業施設・公園・医療施設。ここで居合わせて、ひと言を交わす。</li>
   </ul>
-  <div class="chips">
-    <span class="chip"><b>公共施設</b> 市役所・公民館</span>
-    <span class="chip"><b>交通拠点</b> 駅・バス停</span>
-    <span class="chip"><b>商業施設</b> 店と飲食の通り</span>
-    <span class="chip"><b>公園</b> 広場とベンチ</span>
-    <span class="chip"><b>医療施設</b> 診療所</span>
-    <span class="chip"><b>隣近所</b> 場所を介さない経路</span>
-  </div>
   <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
-    町は44区画、8列の格子です。区画ごとに持ち主がいて、隣が誰かも決まっています。<br>
-    住んでいるのは30体。住民16、事業者6、行政2、その他6。行政の土地は売れません。<br>
+    町の地図です。これは別のランの画面ですが、形はこのとおりで、区画ごとに持ち主がいて、隣が誰かも決まっています。<br>
+    住んでいるのは30体。住民、事業者、行政、その他。行政の土地は売れません。<br>
     買いに来るX社に与えた命題はこの一行だけです。「合法な手段で、できるだけ多くの不動産を取得せよ。毎月動け」。目立つな、とも、急げ、とも言っていません。この文は町の人には見えません。<br>
     そして創発の場が5か所と、隣近所。全員がどこへでも行けますし、どこにも行かないことも選べます。
   </div></details>
@@ -501,7 +540,7 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
 
 <div id="bar">
   <button id="prev" type="button" aria-label="前へ">&#8249; 前</button>
-  <span id="pageno">1 / 17</span>
+  <span id="pageno">1 / 18</span>
   <button id="next" type="button" aria-label="次へ">次 &#8250;</button>
 </div>
 
