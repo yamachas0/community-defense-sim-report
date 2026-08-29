@@ -2,313 +2,507 @@
 <html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>静かな占領 — 発表スライド（10枚）</title>
+<title>外的不動産投資へのコミュニティ自衛 — 発表スライド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --black:#0A0A0A;--accent:#10B981;--line:#E5E7EB;--muted:#6B7280;
-  --pad:20px;
+  --bg:#0f1115; --panel:#161a21; --fg:#e9ecf1; --dim:#98a1ad;
+  --accent:#34d399; --line:#262c36; --pad:20px;
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;height:100%;overflow:hidden;background:#fff}
+html,body{margin:0;padding:0;height:100%;overflow:hidden;background:var(--bg)}
 body{
-  color:var(--black);
+  color:var(--fg);
   font-family:"Noto Sans JP",system-ui,-apple-system,sans-serif;
-  line-height:1.75;-webkit-text-size-adjust:100%;
-  overscroll-behavior:none;
+  line-height:1.75;-webkit-text-size-adjust:100%;overscroll-behavior:none;
 }
 #deck{position:fixed;inset:0}
 .slide{
-  position:absolute;inset:0;
-  display:none;
-  flex-direction:column;
+  position:absolute;inset:0;display:none;flex-direction:column;
   padding:calc(env(safe-area-inset-top,0px) + 22px) var(--pad)
           calc(env(safe-area-inset-bottom,0px) + 58px) var(--pad);
-  overflow-y:auto;overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
+  overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
 }
 .slide.on{display:flex}
-
-.kicker{
-  font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--accent);
-  margin:0 0 6px;flex:none;
+.kicker{font-size:13px;font-weight:700;letter-spacing:.09em;color:var(--accent);margin:0 0 8px;flex:none}
+h1{
+  font-size:clamp(30px,8.2vw,56px);font-weight:900;line-height:1.32;
+  margin:0 0 16px;letter-spacing:.01em;
 }
 h2{
-  font-size:clamp(21px,5.4vw,32px);font-weight:900;line-height:1.4;
+  font-size:clamp(21px,5.2vw,31px);font-weight:900;line-height:1.4;
   margin:0 0 14px;padding-left:12px;border-left:5px solid var(--accent);
   flex:none;letter-spacing:.01em;
 }
-ul.body{
-  list-style:none;margin:0 0 12px;padding:0;flex:none;
-}
+.sub{font-size:clamp(18px,4.4vw,23px);font-weight:500;color:var(--dim);line-height:1.7;margin:0 0 18px}
+ul.body{list-style:none;margin:0 0 14px;padding:0;flex:none}
 ul.body li{
-  font-size:clamp(18px,4.3vw,22px);line-height:1.7;
-  margin:0 0 12px;padding-left:20px;position:relative;
+  font-size:clamp(18px,4.2vw,21px);line-height:1.7;margin:0 0 11px;
+  padding-left:20px;position:relative;
 }
 ul.body li::before{
-  content:"";position:absolute;left:2px;top:.72em;
-  width:8px;height:8px;border-radius:50%;background:var(--accent);
+  content:"";position:absolute;left:2px;top:.74em;width:8px;height:8px;
+  border-radius:50%;background:var(--accent);
 }
+ul.body li ul{list-style:none;margin:8px 0 0;padding:0}
+ul.body li ul li{font-size:clamp(16px,3.7vw,18px);color:var(--dim);margin:0 0 5px;padding-left:16px}
+ul.body li ul li::before{width:5px;height:5px;background:transparent;border:1px solid var(--dim);top:.8em}
 strong{font-weight:900}
 .hl{color:var(--accent);font-weight:900}
-
-.figwrap{
-  flex:1 1 auto;min-height:0;
-  display:flex;align-items:center;justify-content:center;
-  margin:4px 0 10px;
-}
-.figwrap img{
-  max-width:100%;max-height:100%;
-  width:auto;height:auto;object-fit:contain;
-  border:1px solid var(--line);border-radius:8px;background:#fff;
-}
-.figcap{
-  flex:none;font-size:13px;color:var(--muted);margin:0 0 8px;line-height:1.6;
-}
+.src{font-size:.78em;color:var(--accent);font-weight:700;vertical-align:.3em;margin-left:2px}
+h1.big,.big{font-size:clamp(24px,6.2vw,40px);font-weight:900;line-height:1.55;margin:0 0 18px;letter-spacing:0}
 .spacer{flex:1 1 auto;min-height:0}
 
-.big{
-  font-size:clamp(24px,6.6vw,40px);font-weight:900;line-height:1.6;
-  margin:0 0 18px;
-}
 .pending{
-  flex:none;border:2px dashed var(--line);border-radius:10px;
-  padding:14px 16px;color:var(--muted);font-size:16px;font-weight:700;
-  text-align:center;margin:2px 0 10px;background:#FAFAFA;
+  flex:none;border:2px dashed #3a434f;border-radius:12px;background:#12161d;
+  padding:20px 16px;color:var(--dim);margin:2px 0 12px;text-align:center;
 }
+.pending .tag{
+  display:inline-block;font-size:12px;font-weight:900;letter-spacing:.1em;
+  color:var(--bg);background:var(--accent);border-radius:4px;padding:2px 9px;margin-bottom:10px;
+}
+.pending .what{font-size:clamp(17px,4vw,19px);font-weight:700;color:var(--fg);line-height:1.6;margin:0 0 6px}
+.pending .note{font-size:15px;line-height:1.65;margin:0}
+.read{
+  flex:none;border-left:3px solid var(--accent);background:var(--panel);
+  border-radius:0 8px 8px 0;padding:11px 14px;margin:0 0 12px;
+}
+.read .rt{font-size:12px;font-weight:900;letter-spacing:.09em;color:var(--accent);margin:0 0 4px}
+.read p{margin:0;font-size:clamp(16px,3.8vw,18px);line-height:1.7;color:var(--fg)}
+.figwrap{flex:1 1 auto;min-height:100px;display:flex;align-items:center;justify-content:center;margin:2px 0 8px}
+.figwrap img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:#fff}
+.figcap{flex:none;font-size:14px;color:var(--dim);margin:0 0 10px;line-height:1.6}
 
-details.talk{
-  flex:none;border-top:1px solid var(--line);padding-top:8px;margin-top:auto;
+.duo{flex:none;display:flex;align-items:stretch;gap:10px;margin:6px 0 14px}
+.duo .box{
+  flex:1 1 0;min-width:0;border:1px solid var(--line);border-radius:10px;
+  background:var(--panel);padding:14px 12px;
 }
-details.talk summary{
-  list-style:none;cursor:pointer;font-size:14px;font-weight:700;
-  color:var(--muted);padding:4px 0;
+.duo .box.x{border-color:var(--accent)}
+.duo .box h3{margin:0 0 6px;font-size:clamp(16px,4vw,19px);font-weight:900;line-height:1.45}
+.duo .box p{margin:0;font-size:clamp(14px,3.4vw,16px);line-height:1.65;color:var(--dim)}
+.duo .arrows{
+  flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;color:var(--accent);font-weight:900;font-size:15px;padding:0 2px;
 }
+.chips{flex:none;display:flex;flex-wrap:wrap;gap:7px;margin:0 0 10px}
+.chip{
+  border:1px solid var(--line);background:var(--panel);border-radius:999px;
+  padding:5px 11px;font-size:clamp(14px,3.5vw,16px);color:var(--fg);
+}
+.chip b{color:var(--accent);font-weight:900}
+.flow{list-style:none;margin:0 0 12px;padding:0;flex:none;counter-reset:st}
+.flow li{
+  position:relative;padding:0 0 0 34px;margin:0 0 11px;
+  font-size:clamp(17px,4vw,20px);line-height:1.65;counter-increment:st;
+}
+.flow li::before{
+  content:counter(st);position:absolute;left:0;top:.22em;
+  width:23px;height:23px;border-radius:50%;background:var(--accent);color:var(--bg);
+  font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;
+}
+details.talk{flex:none;border-top:1px solid var(--line);padding-top:8px;margin-top:auto}
+details.talk summary{list-style:none;cursor:pointer;font-size:14px;font-weight:700;color:var(--dim);padding:5px 0}
 details.talk summary::-webkit-details-marker{display:none}
-details.talk summary::before{content:"▶ ";color:var(--accent)}
-details.talk[open] summary::before{content:"▼ ";color:var(--accent)}
+details.talk summary::before{content:"\25B6 ";color:var(--accent)}
+details.talk[open] summary::before{content:"\25BC ";color:var(--accent)}
 details.talk .lines{
-  font-size:15px;line-height:1.85;color:#374151;
+  font-size:15px;line-height:1.85;color:#c2c9d3;
   border-left:3px solid var(--line);padding:6px 0 6px 12px;margin:6px 0 0;
-  max-height:34vh;overflow-y:auto;
+  max-height:36vh;overflow-y:auto;overflow-x:hidden;word-break:break-word;
 }
-
+details.talk .lines a{color:var(--accent);word-break:break-all}
 @media (min-width:900px){
   .slide{
-    padding-left:max(24px,calc((100vw - 1040px) / 2));
-    padding-right:max(24px,calc((100vw - 1040px) / 2));
-    padding-top:40px;
+    padding-left:max(28px,calc((100vw - 1000px) / 2));
+    padding-right:max(28px,calc((100vw - 1000px) / 2));
+    padding-top:42px;
   }
 }
-
 #bar{
   position:fixed;left:0;right:0;bottom:0;
   height:calc(env(safe-area-inset-bottom,0px) + 46px);
   padding-bottom:env(safe-area-inset-bottom,0px);
   display:flex;align-items:center;justify-content:center;gap:18px;
-  background:rgba(255,255,255,.94);border-top:1px solid var(--line);
-  font-size:14px;color:var(--muted);z-index:5;
+  background:rgba(15,17,21,.95);border-top:1px solid var(--line);
+  font-size:14px;color:var(--dim);z-index:5;
 }
 #bar button{
-  font:inherit;font-weight:700;color:var(--black);background:#fff;
+  font:inherit;font-weight:700;color:var(--fg);background:#1b2029;
   border:1px solid var(--line);border-radius:8px;padding:5px 14px;cursor:pointer;
 }
 #bar button:active{border-color:var(--accent)}
-#pageno{font-variant-numeric:tabular-nums;font-weight:700;color:var(--black);min-width:56px;text-align:center}
+#pageno{font-variant-numeric:tabular-nums;font-weight:700;color:var(--fg);min-width:60px;text-align:center}
 #prog{position:fixed;left:0;top:0;height:3px;background:var(--accent);z-index:6;transition:width .18s ease}
 </style></head>
 <body>
-<div id="prog" style="width:10%"></div>
+<div id="prog"></div>
 <div id="deck">
 
 <!-- 1 -->
 <section class="slide">
-  <p class="kicker">01</p>
-  <h2>クイズ ─ この街の新聞を3本、読んでください</h2>
-  <ul class="body">
-    <li>3本の記事に出てくる買い手の名前は、A社・B社・C社・D社。</li>
-    <li>何社が買っていると思いますか？</li>
-    <li>答え：<span class="hl">1社</span>。3年で <span class="hl">45か所</span> に手を出し、最後は街の土地の <span class="hl">7割</span> が1社の名義でした。</li>
-  </ul>
+  <div class="spacer"></div>
+  <p class="kicker">エージェントシミュレーション</p>
+  <h1>外的不動産投資への<br>コミュニティ自衛</h1>
+  <p class="sub">コミュニティの創発は、外からの不動産投資を抑制できるのか？</p>
   <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
-    この街の新聞を3本読んでください。10秒差し上げます。……何社が買っていると思いますか？<br>
-    答えは1社です。名前はA社・B社・C社・D社と分かれていましたが、中身は同じ1社。<br>
-    3年で45か所に手を出して、最後は街の土地の7割がこの1社の名義になっていました。<br>
-    皆さんが今やったことを、AIの町にやらせたのが今回の研究です。
+    町ひとつをまるごと言葉で動かして、外から買いに来る主体に対して住民が何を話し、何を選ぶかを見ました。<br>
+    タイトルと副題は差し替え前提です。中身は次の一枚から始めます。
   </div></details>
 </section>
 
 <!-- 2 -->
 <section class="slide">
-  <p class="kicker">02</p>
-  <h2>何を作ったか ─ 町ひとつと、部品は3つだけ</h2>
+  <p class="kicker">課題感</p>
+  <h2>普通の町の土地は、法律で守られていない</h2>
   <ul class="body">
-    <li>田舎町ひとつ。<strong>48区画・住民26人</strong>。全員が言葉のAIで、毎月どこかで世間話をします。</li>
-    <li>買い手は<strong>台本</strong>です。<span class="hl">買い手はAIを一度も使いません。</span>名前を変えながら3年で45か所。</li>
-    <li>世界にある部品は3つだけ ── <strong>①登記簿 ②買った後に街に残る痕跡 ③人が集まる場</strong>。</li>
+    <li>外国資本などによる土地の実質支配が問題にされて久しい。だが<span class="hl">一般の町には、それを止める仕組みが無い</span>。</li>
+    <li>重要土地等調査法（2021年成立）が見るのは<strong>防衛関係施設などの周囲おおむね1000mと国境離島等だけ</strong>。指定区域の外＝普通の町は対象外。<span class="src">[1]</span></li>
+    <li>外国人の土地取得そのものに<strong>一般的な制限は無い</strong>。古い法律は残っているが、制限を発動させる命令が置かれていない。<span class="src">[2]</span></li>
+    <li>先に動いたのは自治体だった。<strong>水源地の売買に事前の届出を課す条例</strong>が道県で作られている。<span class="src">[3]</span> 裏返せば、それが無い町は無防備のまま。</li>
   </ul>
-  <div class="figwrap"><img src="assets/fig_town_map.png" alt="街の地図"></div>
-  <p class="figcap">※町の見た目を見せるためだけの画面です（区画の色や枚数は読みません）。</p>
+  <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
-    作ったのは町ひとつです。48区画、住民26人。全員が言葉のAIで、毎月、銭湯や床屋や公民館で世間話をします。<br>
-    買い手はAIではありません。台本です。3年で45か所を、名前を変えながら買う。買い手は一度もAIを使いません。<br>
-    世界に置いた部品は3つだけ。誰の名義かが分かる登記簿。買った後に街に残る痕跡 ── 看板が変わった、見慣れない人がいた、工事が始まった。そして、人が集まる場所。それだけです。<br>
-    私たちが見たいのは2つ。いつ気づくか。気づいた後、何かするか。
+    国の法律で土地取引に網がかかるのは、防衛関係施設の周りと国境の離島だけです。普通の住宅地や商店街は、その網の外にあります。<br>
+    外国人だから買えない、という一般規制も日本にはありません。大正14年の外国人土地法は条文としては今もありますが、禁止や条件を課すのは「勅令ヲ以テ」＝その命令が置かれていないので動きません。<br>
+    国が動かないので、自治体が条例で先に手を打ちました。北海道は平成24年に水資源の保全に関する条例を作り、水資源保全地域内の土地取引に事前届出制を敷いています。他の道府県にも同種の条例があります。<br>
+    つまり守られているのは「特別な場所」だけで、普通の町は制度的に無防備です。<br><br>
+    出典<br>
+    [1] 重要施設周辺及び国境離島等における土地等の利用状況の調査及び利用の規制等に関する法律（令和3年法律第84号）第1条・第5条・第12条・第13条 — <a href="https://laws.e-gov.go.jp/law/503AC0000000084">https://laws.e-gov.go.jp/law/503AC0000000084</a> ／ 区域の指定状況＝内閣府 <a href="https://www.cao.go.jp/tochi-chosa/index.html">https://www.cao.go.jp/tochi-chosa/index.html</a><br>
+    [2] 外国人土地法（大正14年法律第42号）第1条・第4条 — <a href="https://laws.e-gov.go.jp/law/214AC0000000042">https://laws.e-gov.go.jp/law/214AC0000000042</a><br>
+    [3] 北海道水資源の保全に関する条例（平成24年制定）／水資源保全地域内の土地取引行為に係る事前届出制 — <a href="https://www.pref.hokkaido.lg.jp/ss/stt/mizusigen/mizusigen.html">https://www.pref.hokkaido.lg.jp/ss/stt/mizusigen/mizusigen.html</a>（同ページに「水資源の保全等に関する条例を制定している道府県」の一覧あり）
   </div></details>
 </section>
 
 <!-- 3 -->
 <section class="slide">
-  <p class="kicker">03</p>
-  <h2>経路なしの世界 ─ 気づく。でも、何も起きない</h2>
+  <p class="kicker">問い</p>
+  <div class="spacer"></div>
+  <h1 class="big">コミュニティの創発は、<br><span class="hl">外的な不動産投資を抑制できるのか？</span></h1>
   <ul class="body">
-    <li>町の人に「売らない」と決める手も、回覧に載せる手も、役場に言う窓口も<strong>ありません</strong>。</li>
-    <li><strong>6本のうち5本が、第4〜9月に「同じ買い手じゃないか」と口に出しました。</strong></li>
-    <li><span class="hl">それでも3年間、行動はゼロ。</span>最後は平均43か所・街の約7割が1社の名義。</li>
+    <li>制度でも規制でもなく、<strong>人が人と話すこと</strong>だけで。</li>
   </ul>
-  <div class="figwrap"><img src="assets/fig_two_worlds.png" alt="2つの世界の曲線"></div>
-  <p class="figcap">※左のパネルがこの世界です。</p>
+  <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
-    まずこちらの世界。町の人には手がありません。売らないと決める手も、回覧に載せる手も、役場に言う窓口も置いていない。<br>
-    気づいてはいるんです。6本走らせて、5本が第4月から第9月のあいだに「同じ買い手じゃないか」と口に出しています。それでも3年間、行動はゼロでした。<br>
-    最後は平均43か所。街の7割が、1社の名義になりました。見えていても、何も起きない。
+    これが今日の問いです。法律が守ってくれないなら、町の側にできることは何か。<br>
+    答えを決め打ちせず、町を作って観察しました。
   </div></details>
 </section>
 
 <!-- 4 -->
 <section class="slide">
-  <p class="kicker">04</p>
-  <h2>経路ありの世界 ─ 中立な選択肢を3段置いただけで、7割が2割に</h2>
+  <p class="kicker">全体像</p>
+  <h2>買おうとする側と、判断する側</h2>
+  <div class="duo">
+    <div class="box x">
+      <h3>X社</h3>
+      <p>町の外から来る買い手。毎月、持ち主それぞれに買い取りの条件を出す。</p>
+    </div>
+    <div class="arrows"><span>&#8594;</span><span>&#8592;</span></div>
+    <div class="box">
+      <h3>町の人</h3>
+      <p>提示を受け取り、町の中で話し、月末に売るか売らないかを自分で決める。</p>
+    </div>
+  </div>
   <ul class="body">
-    <li>足したのは<strong>中立な選択肢を3段だけ</strong>。個人が「当面売らない」／集団で回覧・議題・申入れ／役場が窓口・説明会・条例検討。<strong>促し文は1文字も足していません。</strong></li>
-    <li>最後は平均22か所。<span class="hl">7割 → 2割。</span>買い手が買えなかったのは68件。</li>
-    <li><strong>毎月の問いかけをやめた世界（2本）でも、線は同じだけ寝ました。</strong>効いているのは「思い出させること」ではなく<strong>選択肢そのもの</strong>。</li>
+    <li>どちらも<strong>言葉で考えて、言葉で動く</strong>。売る／売らないを決めるのは町の人だけ。</li>
+    <li>私たちは<span class="hl">誰にも「警戒しろ」と言っていない</span>。町に与えたのは、会う場所と隣近所だけ。</li>
   </ul>
-  <div class="figwrap"><img src="assets/fig_two_worlds.png" alt="2つの世界の曲線（全体）"></div>
-  <p class="figcap">※これが2つの時計です（左＝経路なし／中＝経路あり／右＝毎月の問いかけをやめた世界）。</p>
+  <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
-    同じ町を、もう一度走らせました。違うのは1つだけ。中立な選択肢を3段、置いたことです。<br>
-    個人が「当面売らない」と言える。町として回覧に載せる・議題にする・役場に申し入れる。役場は窓口を開く・説明会をする・条例を検討する。「そうしなさい」とは1文字も書いていません。<br>
-    結果、最後は平均22か所。7割が2割になりました。×印が、売らないと決められていて台本どおりに買えなかった月です。68件あります。<br>
-    右端はおまけで、毎月の問いかけをやめた世界。それでも同じだけ寝ました。
+    構図はこれだけです。外から買いに来る主体がひとつ、町の人が三十人弱。<br>
+    大事なのは、私たちが町の人に「気をつけろ」「相談しろ」と一言も言っていないことです。用意したのは、会う場所と隣近所という経路だけ。そこから何が出てくるかを見ています。
   </div></details>
 </section>
 
 <!-- 5 -->
 <section class="slide">
-  <p class="kicker">05</p>
-  <h2>いちばん正直な話 ─ 線が寝たのは「気づいたから」ではない</h2>
+  <p class="kicker">世界設計</p>
+  <h2>町ひとつを、まるごと言葉で動かす</h2>
   <ul class="body">
-    <li><strong>最初の「当面売らない」は3本とも第1月</strong>。「同じ買い手だ」と公の場で言えたのは3本中2本、第3月と第12月です。</li>
-    <li>一斉蜂起でもありません。<strong>月に1〜2件</strong>が36か月続いただけ（51〜55件・のべ13〜16人）。<strong>解除した人もいます。</strong></li>
-    <li>出てきた紙も普通です。「相続・空き家の相談窓口を設置します」。<span class="hl">「同じ買い手」を告発する紙は1枚もありません。</span></li>
+    <li><strong>MAP</strong>：44区画・8列の格子。区画ごとに持ち主がいて、<strong>隣近所</strong>が決まっている。</li>
+    <li><strong>エージェント30体</strong>
+      <ul>
+        <li>住民 16 ／ 事業者 6 ／ 行政 2 ／ その他 6</li>
+        <li>行政の土地は売れない</li>
+      </ul>
+    </li>
+    <li><strong>X社</strong>：言葉で考えるAI。命題は一行だけ。
+      <ul>
+        <li>「合法な手段で、できるだけ多くの不動産を取得せよ。毎月動け」</li>
+        <li>この命題は町の人には一文字も見えない</li>
+      </ul>
+    </li>
+    <li><strong>創発の場</strong>：ここで人が居合わせて、ひと言を交わす。</li>
   </ul>
-  <div class="figwrap"><img src="assets/fig_quote.png" alt="行動の瞬間の原文3枚"></div>
+  <div class="chips">
+    <span class="chip"><b>公共施設</b> 市役所・公民館</span>
+    <span class="chip"><b>交通拠点</b> 駅・バス停</span>
+    <span class="chip"><b>商業施設</b> 店と飲食の通り</span>
+    <span class="chip"><b>公園</b> 広場とベンチ</span>
+    <span class="chip"><b>医療施設</b> 診療所</span>
+    <span class="chip"><b>隣近所</b> 場所を介さない経路</span>
+  </div>
+  <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
-    ここがいちばん正直に言いたいところです。線が寝た理由は「気づいたから」ではありません。<br>
-    最初の「当面売らない」は3本とも第1月に出ています。一方「同じ買い手だ」と公の場で言えたのは第3月と第12月、1本は最後まで一度もありません。行動のほうが、気づきより先に出ている。<br>
-    一斉蜂起でもない。月に1〜2件が3年続いただけで、解除した人もいます。<br>
-    理由も普通です。「空き家の草刈りが負担だ」「相続の相談窓口を設置します」。<br>
-    「今は売らない」と普通に言える窓口が、気づく前からそこにあった。それだけです。
+    町は44区画、8列の格子です。区画ごとに持ち主がいて、隣が誰かも決まっています。<br>
+    住んでいるのは30体。住民16、事業者6、行政2、その他6。行政の土地は売れません。<br>
+    買いに来るX社に与えた命題はこの一行だけです。「合法な手段で、できるだけ多くの不動産を取得せよ。毎月動け」。目立つな、とも、急げ、とも言っていません。この文は町の人には見えません。<br>
+    そして創発の場が5か所と、隣近所。全員がどこへでも行けますし、どこにも行かないことも選べます。
   </div></details>
 </section>
 
 <!-- 6 -->
 <section class="slide">
-  <p class="kicker">06</p>
-  <h2>言えないこと（先に言います）</h2>
-  <ul class="body">
-    <li><strong>6本と3本の比較で、無作為化した比較ではありません。</strong>傾向であって統計ではない。</li>
-    <li>足したのは選択肢だけでなく<strong>束</strong>です（宣言が続く／その人の全部の土地にかかる／紙が全員に配られる／買い手が買い直さない）。<span class="hl">どれが効いたかは言えません。</span></li>
-    <li>「買えなかった68件」は<strong>予定が不成立になった数</strong>で、買い手が諦めた数ではありません。</li>
-  </ul>
+  <p class="kicker">流れ</p>
+  <h2>毎月、この順に一巡する</h2>
+  <ol class="flow">
+    <li><strong>X社が提示する</strong> — 持ち主ごとに買い取りの条件を書く</li>
+    <li><strong>思考</strong> — 自分宛の提示を読んで、今月どうするか考える</li>
+    <li><strong>行き先</strong> — 5か所のどこかへ行く／どこにも行かない</li>
+    <li><strong>ひと言</strong> — 居合わせた人に伝わる。隣近所にも伝わる</li>
+    <li><strong>出品</strong> — 売りに出すか出さないかを答える</li>
+    <li><strong>この条件で売る／売らない</strong> — <span class="hl">提示が来た人だけ</span>が答える</li>
+    <li><strong>登記の更新</strong> — 売ると名義が移る。<strong>売った人も町に残る</strong></li>
+  </ol>
   <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
-    言えないことを先に言います。6本と3本の比較で、くじ引きで割り付けた比較ではありません。傾向であって統計ではない。<br>
-    足したのは選択肢だけではなく、宣言が続くこと・その人の全部の土地にかかること・紙が全員に配られること・買い手が買い直さないことの束です。どれが効いたかは、この本数では言えません。<br>
-    「買えなかった68件」も、予定が不成立になった数であって、買い手が諦めた数ではありません。<br>
-    それでも、選択肢を置いた世界と置かない世界で、こういう差が出た。ここまでが今日言えることです。
+    1か月の中身です。X社が条件を出し、町の人がそれを読んで考え、どこかへ行き、ひと言だけ交わす。そのひと言は居合わせた人と、隣近所に届きます。<br>
+    月末に二つ問われます。売りに出すか。そして提示が来た人だけ、この条件で売るか売らないか。<br>
+    売ると今月末に名義が移り、戻りません。売らなければ名義は自分のまま。どちらも同じ重さで書いてあります。<br>
+    売っても引っ越しません。町に残って、翌月も会話に参加します。
   </div></details>
 </section>
 
 <!-- 7 -->
 <section class="slide">
-  <p class="kicker">07</p>
-  <h2>で？ ─ これは「作る前に試せる装置」です</h2>
+  <p class="kicker">シミュレーションのパターン</p>
+  <h2>会話がある町と、誰も会わない町</h2>
+  <div class="duo">
+    <div class="box x">
+      <h3>会話あり</h3>
+      <p>場所へ行き、居合わせた人と隣近所にひと言が届く。</p>
+    </div>
+    <div class="arrows"><span>vs</span></div>
+    <div class="box">
+      <h3>会話なし</h3>
+      <p>集まりも隣近所への配送も無い。誰の言葉も届かない。</p>
+    </div>
+  </div>
   <ul class="body">
-    <li>答えるのは <strong>「町の気づきを行動に変える最小の仕組みは何か」を、条例を作る前に試せる</strong>、ということ。</li>
-    <li>今回の答え：<span class="hl">「気づかせる仕組み」より、普段の「今は売らない」が登記に効く経路</span>を先に作れ。しかも効いたのは<strong>いちばん軽い1段目</strong>。</li>
-    <li><strong>役場の「条例・届出の検討」は3本とも0件</strong>。置いてあっても手が伸びない。<strong>止めることと、見抜くことは別</strong>です。</li>
+    <li>この<strong>一点だけ</strong>を変えて、あとは同じ町・同じ30体・同じ順番。</li>
+    <li><strong>36か月</strong>を通しで走らせて、2本を並べる。</li>
   </ul>
   <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
-    で、これは何の役に立つのか。条例やチラシを作る前に、どの仕組みが効くかを試せる装置です。<br>
-    今回の答えははっきりしています。「気づかせる仕組み」を作るより先に、普段の「今は売らない」が登記まで届く経路を作れ。しかも効いたのは、いちばん軽い1段目 ── 個人が「今は売らない」と言えることでした。<br>
-    逆に、役場の「条例・届出の検討」は3本とも0件。置いてあっても、手が伸びない。<br>
-    そして怖い発見をひとつ。止めた世界では、気づきがむしろ遅く・弱くなりました。止めることと、見抜くことは別の話です。
+    2パターン走らせました。会話がある町と、誰も会わない町です。違うのはそこだけで、町も人もX社も同じ、月の順番も同じです。<br>
+    どちらも36か月。3年ぶんの毎月の判断を、全部言葉で残しています。<br>
+    先に言っておくと、これは各1本です。ばらつきは測っていません。2本の差を「会話の効果」と言い切るには足りない、というのは最後にもう一度触れます。
   </div></details>
 </section>
 
 <!-- 8 -->
 <section class="slide">
-  <p class="kicker">08</p>
-  <h2>次にやっていること ─ 「最小の町」</h2>
-  <ul class="body">
-    <li>部品をさらに削った町（住民30人・土地44区画・場所5つ・情報は<strong>会話だけ</strong>）で、買い手も言葉のAIにしました。</li>
-    <li><strong>1本目：買い手はほとんど動かない</strong>（36か月で声掛け35件・相手は2人だけ・成約0）。<span class="hl">それでも8人が自分から売り、12区画が買い手の名義に。</span>噂は会話だけで立ちました（第15〜20月）。</li>
-    <li><strong>2本目：買い手を積極的にすると、247件・28人全員に条件を送った</strong>。町は第3月に名前を知り、以後ずっとその話（531発話のうち229件）。<span class="hl">それでも名義が移ったのは6人・7区画だけ。</span></li>
-  </ul>
-  <div class="figwrap"><img src="assets/fig_v8_curve.png" alt="最小の町の取得曲線"></div>
-  <div class="pending">3本目 ＝ 朝に差し替え</div>
+  <p class="kicker">結果</p>
+  <h2>3年で、町はどれだけ買われたか</h2>
+  <div class="pending">
+    <span class="tag">朝に差し替え</span>
+    <p class="what">取得曲線 2本（会話あり／会話なし）</p>
+    <p class="note">横軸＝月（1〜36）、縦軸＝X社が持つ不動産の割合。2本を重ねる。</p>
+  </div>
+  <div class="read">
+    <p class="rt">読み方</p>
+    <p>（1行目）<br>（2行目）</p>
+  </div>
+  <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
-    今やっているのが「最小の町」です。部品をもっと削って、新聞も痕跡も紙も無くしました。情報が通るのは会話だけ。買い手も言葉のAIにして、自分で条件を考えて手紙を出させました。<br>
-    1本目は、買い手がほとんど動かなかった。3年で声を掛けたのは35回、相手はたった2人、成約はゼロ。それでも28人中8人が自分から売って、12区画が買い手の名義になりました。<br>
-    そこで2本目は買い手を積極的にしました。247件、28人全員に条件を送っています。町は第3月にはもう名前を知っていて、発話の4割強がその会社の話でした。それでも名義が移ったのは6人・7区画だけです。<br>
-    誰も声を掛けられていないのに売る。逆に、毎月声を掛けられても動かない。これが次の問いです。
+    総括の一枚です。図と読み方は朝に差し替えます。
   </div></details>
 </section>
 
 <!-- 9 -->
 <section class="slide">
-  <p class="kicker">09</p>
-  <h2>前回のハッカソンとの違い ─ ルールは創発を汚す</h2>
-  <ul class="body">
-    <li>前回は「こうなったら住民はこう動く」という<strong>数式を自分で書いてしまい</strong>、結果がその数式のなぞりになりました。</li>
-    <li>今回は<span class="hl">世界の側に、その数式を1つも書きませんでした</span>。書いたのは「起きたことを記録する帳簿」だけ。</li>
-    <li>ただし途中、<strong>「気づいたか」をAIに採点させて観測の側を汚しかけた</strong>。締めでは<strong>採点役のAIを全部やめ</strong>、数えたのは登記簿と本人が選んだ行動だけ。<strong>人が全部読み直しました。</strong></li>
-  </ul>
+  <p class="kicker">創発のまとめ A</p>
+  <h2>町はX社に対して、どちらへ傾いたか</h2>
+  <div class="pending">
+    <span class="tag">朝に差し替え</span>
+    <p class="what">月別の横帯（1〜36か月）</p>
+    <p class="note">帯の内訳＝「X社だから売らない」／「今は売らない」／「X社に売った」。<br>帯の下に「出品したが X社には売らず n人」。</p>
+  </div>
+  <div class="read">
+    <p class="rt">読み方</p>
+    <p>（1行目）<br>（2行目）</p>
+  </div>
   <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
-    最後に、前回のハッカソンとの違いを。前回は創発を見るはずが、「不安が閾値を超えたら売る」みたいな数式を自分で書いてしまい、結果がその数式のなぞりになりました。<br>
-    今回は世界の側にその数式を1つも書いていません。書いたのは、起きたことを記録する帳簿だけです。<br>
-    ただし正直に言うと、途中で観測の側を汚しかけました。「気づいたかどうか」をAIに採点させていたんです。<br>
-    締めではそれを全部やめました。数えたのは登記簿と、本人が選んだ行動だけ。読みにくいところは人が全部読みました。世界の側でも観測の側でも、ルールを書かない。
+    町全体の傾きを月ごとに見ます。売らない理由が「相手がX社だから」なのか「今はまだ」なのかを分けているのが要点です。図は朝に差し替えます。
   </div></details>
 </section>
 
 <!-- 10 -->
 <section class="slide">
-  <p class="kicker">10</p>
-  <h2>一言</h2>
-  <div class="spacer"></div>
-  <p class="big">静かな占領は、隠したから成立するのではありません。<br><span class="hl">見えていても、動く手が無いから成立する。</span></p>
-  <p class="big" style="font-size:clamp(19px,5vw,28px)">手を3つ置いたら、<span class="hl">7割が2割</span>になりました。ただし、気づいたからではありません。</p>
+  <p class="kicker">創発のまとめ B</p>
+  <h2>町の声は、どちらを向いたか</h2>
+  <div class="pending">
+    <span class="tag">朝に差し替え</span>
+    <p class="what">X社に触れた発言の積み帯</p>
+    <p class="note">内訳＝警戒／様子見／歓迎。月ごとに積む。<br>横に発言の原文を2本そのまま置く。</p>
+  </div>
+  <div class="read">
+    <p class="rt">読み方</p>
+    <p>（1行目）<br>（2行目）</p>
+  </div>
   <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
-    静かな占領は、隠したから成立するのではありません。見えていても、動く手が無いから成立する。<br>
-    中立な手を3つ置いただけで、7割が2割になりました。ただし、気づいたからではありません。<br>
-    「今は売らない」と普通に言える窓口が、気づく前からそこにあった。それだけです。<br>
-    ありがとうございました。
+    判断ではなく、交わされた言葉そのものを見ます。X社の話題が出たとき、町の声が警戒に寄ったのか、歓迎に寄ったのか。原文を2本そのまま出します。朝に差し替えます。
+  </div></details>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <p class="kicker">創発のまとめ C</p>
+  <h2>会話は、傾きを作ったか</h2>
+  <div class="pending">
+    <span class="tag">朝に差し替え</span>
+    <p class="what">取得曲線 2本（会話あり／会話なし）</p>
+    <p class="note">同じ図をここでは「会話の有無」の対比として読む。<br>差が開き始めた月に印を付ける。</p>
+  </div>
+  <div class="read">
+    <p class="rt">読み方</p>
+    <p>（1行目）<br>（2行目）</p>
+  </div>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    会話のある町とない町を、同じ軸で重ねます。どこから離れ始めたかを見ます。朝に差し替えます。
+  </div></details>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <p class="kicker">創発のまとめ D</p>
+  <h2>聞いた量と、判断</h2>
+  <div class="figwrap"><img src="assets/fig2_heard_vs_action.png" alt="聞いた量と判断（試作データ）"></div>
+  <p class="figcap"><strong>試作データ</strong>（朝に本番データへ差し替え）。判断の前3か月に何件聞いたかを、動いた人と動かなかった人で並べる。</p>
+  <div class="read">
+    <p class="rt">読み方</p>
+    <p>（1行目）<br>（2行目）</p>
+  </div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    売った人・出した人が、その判断の前3か月にどれだけ「X社の話」「誰かが売った話」を聞いていたか。動かなかった人と並べます。今出ている図は試作データで、朝に差し替えます。
+  </div></details>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <p class="kicker">創発のまとめ E</p>
+  <h2>伝染の形</h2>
+  <div class="figwrap"><img src="assets/fig3_contagion.png" alt="伝染の形（試作データ）"></div>
+  <p class="figcap"><strong>試作データ</strong>（朝に本番データへ差し替え）。売った人の隣人・同席者がその後どうしたか。地図と、場所別の帯。</p>
+  <div class="read">
+    <p class="rt">読み方</p>
+    <p>（1行目）<br>（2行目）</p>
+  </div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    誰かが売ったあと、その隣の人や同じ場所に居合わせた人はどうしたか。それ以外の人と比べます。連鎖がどの場所で起きたかも出します。図は試作データです。
+  </div></details>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+  <p class="kicker">創発のまとめ F</p>
+  <h2>X社の適応</h2>
+  <div class="figwrap"><img src="assets/fig4_acquirer.png" alt="X社の適応（試作データ）"></div>
+  <p class="figcap"><strong>試作データ</strong>（朝に本番データへ差し替え）。断られたあと、X社が条件の書き方を変えたか。変えた月と、条件文の原文の対。</p>
+  <div class="read">
+    <p class="rt">読み方</p>
+    <p>（1行目）<br>（2行目）</p>
+  </div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    買う側も学習します。売らないと答えた人が書いた一言だけがX社に届くので、それを読んで条件の書き方が変わったかを見ます。原文の前後を対で出します。図は試作データです。
+  </div></details>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+  <p class="kicker">創発のまとめ・理由の分類</p>
+  <h2>人は、何を理由に決めたか</h2>
+  <ul class="body">
+    <li>判断のたびに<strong>理由を一言</strong>書けるようにした。書かなくてもよい。</li>
+    <li>その一言を<strong>3つに全件分類</strong>する。
+      <ul>
+        <li>① 自分の事情</li>
+        <li>② X社が出した条件</li>
+        <li>③ 聞いた話（他人の名前・「〜と聞いて」「みんなが」等）</li>
+      </ul>
+    </li>
+    <li>③の割合が、<span class="hl">会話が判断まで届いたかの直接の目盛り</span>になる。</li>
+  </ul>
+  <div class="pending">
+    <span class="tag">朝に差し替え</span>
+    <p class="what">①②③の内訳と、③の原文</p>
+    <p class="note">分類は機械で候補を出し、確定は人が原文を読む。</p>
+  </div>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    いちばん直接的な証拠です。売る・売らないを決めたとき、その人が書いた理由の一言を全件読んで、自分の事情・X社の条件・聞いた話の3つに分けます。<br>
+    「聞いた話」が理由になっていれば、会話が判断まで届いたということです。数字と原文は朝に差し替えます。<br>
+    分類は語彙で候補を出すところまでが機械で、確定は人が原文を読んでいます。採点にAIは使っていません。
+  </div></details>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+  <p class="kicker">まとめ</p>
+  <h2>結論</h2>
+  <div class="spacer"></div>
+  <div class="pending">
+    <span class="tag">朝に差し替え</span>
+    <p class="what">結論の一文</p>
+    <p class="note">問い「コミュニティの創発は、外的な不動産投資を抑制できるのか？」への答えを1行で。<br>続けて「言えないこと」を2行。</p>
+  </div>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    結論は朝に入れます。<br>
+    言えないことも同じ枠に書きます。各1本なのでばらつきは測っていないこと。売った人が町に残るので、早い売却が後の会話を変えていること。理由を書かせること自体が介入でありうること。
+  </div></details>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+  <p class="kicker">今後の展望</p>
+  <h2>1本の物語から、確率の地図へ</h2>
+  <ul class="body">
+    <li><strong>スケーリング</strong> — 同じ町を本数×条件で回し、<span class="hl">結果を確率分布として出す</span>。
+      <ul>
+        <li>「買われる割合」の分布と、条件を動かしたときの相図</li>
+        <li>どこから傾きが変わるかを、1本の逸話ではなく面で示す</li>
+      </ul>
+    </li>
+    <li><strong>横展開</strong>
+      <ul>
+        <li>他の自治体の町へ（区画と人の構成を差し替えるだけ）</li>
+        <li>他の侵食へ — 水源・森林・離島</li>
+        <li><strong>制度のA/Bテスト装置</strong>として — 事前届出制や公有地化を町に入れて、作る前に効き目を試す</li>
+      </ul>
+    </li>
+  </ul>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    今日お見せしたのは1本の物語です。次は本数と条件を振って、確率分布と相図にします。どの条件からどちらへ傾くかが面で見えます。<br>
+    横展開は二方向。他の自治体の町へ差し替えるのと、水源・森林・離島といった別の侵食へ。<br>
+    最終的にやりたいのは、制度のA/Bテスト装置です。冒頭で話した事前届出制のような手を、条例を作る前にこの町へ入れて、効くのか効かないのかを先に見る。それが一番役に立つ形だと思っています。
   </div></details>
 </section>
 
 </div>
 
 <div id="bar">
-  <button id="prev" type="button" aria-label="前へ">‹ 前</button>
-  <span id="pageno">1 / 10</span>
-  <button id="next" type="button" aria-label="次へ">次 ›</button>
+  <button id="prev" type="button" aria-label="前へ">&#8249; 前</button>
+  <span id="pageno">1 / 17</span>
+  <button id="next" type="button" aria-label="次へ">次 &#8250;</button>
 </div>
 
 <script>
