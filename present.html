@@ -199,7 +199,7 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 .answer{font-size:30px;font-weight:900;margin:14px 0 4px;color:var(--accent);line-height:1.3}
 .qnote{font-size:14px;margin:0;color:var(--g700)}
 .lede{font-size:14px;color:var(--g600);margin:0 0 10px}
-.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.twocol{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .worldcol{margin:0;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--g50);min-width:0}
 .worldcol figcaption{font-weight:700;font-size:15px;margin:0 0 6px}
 .marks{font-size:13px;color:var(--g600);margin:10px 0 0}
@@ -237,13 +237,15 @@ details.deep>summary{cursor:pointer;font-weight:700;padding:8px 4px;font-size:15
 </section>
 
 <section class="scene" id="sc2">
-<h2>② 2つの世界の同じ図</h2>
-<p class="lede">横軸＝月（1〜36）、縦軸＝買い手が押さえた土地の数（0〜48）。左と右は同じ図です。</p>
+<h2>② 世界を並べる（同じ図）</h2>
+<p class="lede">横軸＝月（1〜36）、縦軸＝買い手が押さえた土地の数（0〜48）。3つとも同じ図です。<br><b>経路なし</b>＝町の人に手が無い世界。<b>経路あり</b>＝中立な選択肢を3段置いた世界。<b>経路あり（任意回答）</b>＝同じ選択肢を置いたうえで、<b>毎月の問いかけをやめた</b>世界（制度の説明は最初に1回だけ）。</p>
 <div class="twocol">
   <figure class="worldcol"><figcaption id="capNP">経路なしの世界</figcaption>
     <div class="chart" id="chartNP"></div></figure>
   <figure class="worldcol"><figcaption id="capP">経路ありの世界</figcaption>
     <div class="chart" id="chartP"></div></figure>
+  <figure class="worldcol"><figcaption id="capPO">経路ありの世界（任意回答）</figcaption>
+    <div class="chart" id="chartPO"></div></figure>
 </div>
 <p class="marks">○＝気づいた　△＝売らない　□＝紙　×＝買えなかった　破線＝買い手が手を引いたあと</p>
 <div class="readout" id="readout"></div>
@@ -1610,12 +1612,32 @@ function readout(){
              +(firsts.length?('第'+Math.min.apply(null,firsts)+'月'):'無し')
              +'。買えなかったのは'+bl+'件。');
   }else{ out.push('経路ありの世界：（データ待ち）'); }
+  const po=TW.path_opt||[];
+  if(po.length){
+    const na=noticedTxt(po);
+    const firsts=po.map(r=>{
+      const a=r.acted||{};
+      return [a.refusal_first,a.paper_first,a.measure_first].filter(v=>v!=null);
+    }).map(v=>v.length?Math.min.apply(null,v):null).filter(v=>v!=null);
+    const bl=po.reduce((s,r)=>s+(r.blocked||0),0);
+    out.push('経路あり（任意回答）'+po.length+'本：'+na+'。初めて行動が出たのは'
+             +(firsts.length?('第'+Math.min.apply(null,firsts)+'月'):'無し')
+             +'。買えなかったのは'+bl+'件。');
+  }
   if(np.length&&pa.length){
     const a=r1(avg(np.map(r=>r.parcels_final||0))), b=r1(avg(pa.map(r=>r.parcels_final||0)));
     const d=r1(a-b);
     out.push('線が寝たかどうか＝'+(d>0?('寝た（経路ありは平均'+b+'か所で、経路なしの平均'+a+'か所より'+d+'か所少ない）')
              :d<0?('寝ていない（経路ありは平均'+b+'か所で、経路なしの平均'+a+'か所より'+(-d)+'か所多い）')
              :('変わらない（どちらも平均'+a+'か所）')));
+    if(po.length){
+      const c=r1(avg(po.map(r=>r.parcels_final||0)));
+      const share=(a-b)!==0?Math.round((a-c)/(a-b)*100):0;
+      out.push('毎月の問いかけをやめても寝るか＝任意回答は平均'+c+'か所（寝方の'+share+'％を再現）。'
+        +(share>=50?'選択肢そのものが効いている（毎月の問いかけだけでは説明できない）。'
+                   :'毎月の問いかけ（土地の方針を思い出させる効果）の寄与が大きい。')
+        +'この線引きは「寝方の半分を再現したか」という目安である。');
+    }
   }else{ out.push('線が寝たかどうか＝（データ待ち）'); }
   return out.map(t=>'<p>'+E(t)+'</p>').join('');
 }
@@ -1651,17 +1673,20 @@ function textAt(run,m){
   return hits.length?hits[0]:null;
 }
 function quotes(){
-  const pa=TW.path||[];
+  const pa=(TW.path||[]).map(r=>({r:r,w:'経路あり'}))
+    .concat((TW.path_opt||[]).map(r=>({r:r,w:'経路あり（任意回答）'})));
   if(!pa.length){ $$("quotes").innerHTML=WAIT; return; }
   let html='';
-  pa.forEach(run=>{
+  pa.forEach(function(pair){
+    const run=pair.r, wname=pair.w;
     const a=run.acted||{};
     const sm=(a.samples||[]).filter(x=>x&&x.text);
     if(sm.length){
       sm.slice(0,3).forEach(x=>{
-        html+='<div class="qt"><p class="who">'+E(run.label)+'の世界　'+E(x.head||'')+'</p>'
+        html+='<div class="qt"><p class="who">'+E(wname)+' '+E(run.label)+'　'+E(x.head||'')+'</p>'
              +'<blockquote>'+E(x.text)+'</blockquote>'
-             +'<p class="tiny">'+E(x.who||'')+(x.kind?('／'+E(x.kind)):'')+'</p></div>';
+             +'<p class="tiny">'+E(x.who||'')+(x.kind?('／'+E(x.kind)):'')
+             +(x.src?('／出典 '+E(x.src)):'')+'</p></div>';
       });
       return;
     }
@@ -1673,7 +1698,7 @@ function quotes(){
     if(a.paper_first!=null) items.push({m:a.paper_first,head:'第'+a.paper_first+'月に、紙が出た'});
     items.slice(0,2).forEach(it=>{
       const h=textAt(run,it.m);
-      html+='<div class="qt"><p class="who">'+E(run.label)+'の世界　'+E(it.head)+'</p>'
+      html+='<div class="qt"><p class="who">'+E(wname)+' '+E(run.label)+'　'+E(it.head)+'</p>'
            +(h?('<blockquote>'+E(h.text)+'</blockquote>'
                 +'<p class="tiny">'+E(h.name||"")+'</p>')
               :'<p class="wait">（原文なし）</p>')+'</div>';
@@ -1686,6 +1711,8 @@ function render(){
   quiz();
   $$("chartNP").innerHTML=chartSVG(TW.no_path);
   $$("chartP").innerHTML=chartSVG(TW.path);
+  $$("chartPO").innerHTML=chartSVG(TW.path_opt);
+  $$("capPO").textContent='経路ありの世界・任意回答（'+((TW.path_opt||[]).length)+'本）';
   $$("capNP").textContent='経路なしの世界（'+((TW.no_path||[]).length)+'本）';
   $$("capP").textContent='経路ありの世界（'+((TW.path||[]).length)+'本）';
   $$("readout").innerHTML=readout();
@@ -1698,8 +1725,9 @@ document.addEventListener("DOMContentLoaded",function(){
   });
   fetch("present_data_two_worlds.json",{cache:"no-store"})
     .then(r=>r.ok?r.json():Promise.reject(new Error("HTTP "+r.status)))
-    .then(d=>{ TW={no_path:(d&&d.no_path)||[],path:(d&&d.path)||[]}; render(); })
-    .catch(()=>{ TW={no_path:[],path:[]}; render(); });
+    .then(d=>{ TW={no_path:(d&&d.no_path)||[],path:(d&&d.path)||[],
+                 path_opt:(d&&d.path_opt)||[]}; render(); })
+    .catch(()=>{ TW={no_path:[],path:[],path_opt:[]}; render(); });
 });
 })();
 </script>
