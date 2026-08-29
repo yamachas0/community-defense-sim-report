@@ -1,0 +1,3 @@
+2026-08-29 12:58 DOM再編完了: 主画面4セクション新設・既存UIをdetails.deepへ退避（present.html）
+2026-08-29 13:02 主画面JS/CSS実装・Playwright検証1回目PASS(console 0件)・割は整数丸めに修正
+2026-08-29 13:04 検証完了: 1280/390スクショ・console 0件・詳しい数字内の既存UI動作OK・合成pathでも壊れず。commit へ

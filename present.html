@@ -187,18 +187,75 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
  .helix{grid-template-columns:1fr}
  h1{font-size:20px}
 }
+/* --- 主画面（2つの世界）--- */
+.stage{padding-bottom:24px}
+.scene{margin:0 0 36px}
+.quizitems .art{border:1px solid var(--line);border-left:4px solid var(--black);border-radius:8px;
+ padding:10px 14px;margin:10px 0;background:#fff}
+.quizitems .art .mo{font-size:12px;color:var(--g600);font-weight:700;margin:0 0 4px}
+.quizitems .art .tx{margin:0;font-size:14px;line-height:1.75}
+.wait{color:var(--g500);font-size:14px;margin:6px 0}
+.btnrow{margin:12px 0 0}
+.answer{font-size:30px;font-weight:900;margin:14px 0 4px;color:var(--accent);line-height:1.3}
+.qnote{font-size:14px;margin:0;color:var(--g700)}
+.lede{font-size:14px;color:var(--g600);margin:0 0 10px}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.worldcol{margin:0;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--g50);min-width:0}
+.worldcol figcaption{font-weight:700;font-size:15px;margin:0 0 6px}
+.marks{font-size:13px;color:var(--g600);margin:10px 0 0}
+.readout{margin:12px 0 0;font-size:15px}
+.readout p{margin:5px 0}
+.qt{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:12px 0;background:#fff}
+.qt .who{font-size:13px;font-weight:700;color:var(--g700);margin:0 0 6px}
+.qt blockquote{margin:0}
+.chart .ln{fill:none;stroke:var(--g700);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.chart .ln.dash{stroke-dasharray:6 4}
+.chart .mk{fill:none;stroke:var(--g900);stroke-width:2}
+.chart .mklab{font-size:9px;fill:var(--g700);stroke:none}
+.chart .lnlab{font-size:11px;font-weight:700;fill:var(--g900)}
+.chart .note{font-size:10px;fill:var(--warn);background:none;border:0;padding:0;margin:0}
+details.deep{border:1px solid var(--line);border-radius:12px;background:var(--g50);
+ padding:6px 12px;margin:24px 16px 48px}
+details.deep>summary{cursor:pointer;font-weight:700;padding:8px 4px;font-size:15px}
+@media(max-width:860px){.twocol{grid-template-columns:1fr}}
 </style></head><body>
 <header><div class="wrap">
 <h1>静かな占領 — 街の地図で見る、登記と会話のずれ</h1>
 <p class="sub">A市の48区画。誰が買ったかは登記に残る。街の人がそれに気づいて口に出すのは、ずっと後になる。</p>
 </div></header>
 
-<div class="wrap">
+<div class="wrap stage">
 
-<div id="err" class="err" hidden role="alert"></div>
+<section class="scene" id="sc1">
+<h2>① この街の新聞を3本読んでください。何社が買っていると思いますか？</h2>
+<div id="quizItems" class="quizitems"><p class="wait">（読み込み中）</p></div>
+<p class="btnrow"><button id="quizBtn" class="primary">答えを見る</button></p>
+<div id="quizAns" hidden>
+  <p class="answer" id="quizAnsLine">1社。</p>
+  <p class="qnote">名前は A社・B社・C社・D社と分かれていました。中身は同じ１社です。</p>
+</div>
+</section>
 
-<div class="colorbar" id="colorbar" aria-label="色の意味"></div>
+<section class="scene" id="sc2">
+<h2>② 2つの世界の同じ図</h2>
+<p class="lede">横軸＝月（1〜36）、縦軸＝買い手が押さえた土地の数（0〜48）。左と右は同じ図です。</p>
+<div class="twocol">
+  <figure class="worldcol"><figcaption id="capNP">経路なしの世界</figcaption>
+    <div class="chart" id="chartNP"></div></figure>
+  <figure class="worldcol"><figcaption id="capP">経路ありの世界</figcaption>
+    <div class="chart" id="chartP"></div></figure>
+</div>
+<p class="marks">○＝気づいた　△＝売らない　□＝紙　×＝買えなかった　破線＝買い手が手を引いたあと</p>
+<div class="readout" id="readout"></div>
+</section>
 
+<section class="scene" id="sc3">
+<h2>③ 行動の瞬間（原文）</h2>
+<div id="quotes"><p class="wait">（データ待ち）</p></div>
+</section>
+
+<section class="scene" id="sc4">
+<h2>④ 街の地図</h2>
 <div class="controls">
   <label class="tiny" for="runsel">ラン</label>
   <select id="runsel" aria-label="表示するランを選ぶ"></select>
@@ -208,7 +265,6 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
   <button id="reset">最初から</button>
 </div>
 
-<h2>① 街の地図</h2>
 <div class="maptabs" role="tablist" aria-label="地図の切替">
   <button role="tab" id="tmL" aria-controls="mapboxL" data-m="L" aria-selected="true">登記が動いた区画</button>
   <button role="tab" id="tmR" aria-controls="mapboxR" data-m="R" aria-selected="false" tabindex="-1">街の人が口にした区画</button>
@@ -234,6 +290,18 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 </div>
 <div class="fxlog" id="fxlog"></div>
 <p id="live" class="sr" role="status" aria-live="polite"></p>
+</section>
+
+</div>
+
+<details class="deep">
+<summary>詳しい数字（開発用）</summary>
+<div class="wrap">
+
+<div id="err" class="err" hidden role="alert"></div>
+
+<div class="colorbar" id="colorbar" aria-label="色の意味"></div>
+
 
 <h2>② 火が点いた瞬間（原文）</h2>
 <section class="panel" id="pJ" aria-label="火が点いた瞬間（原文）">
@@ -332,6 +400,8 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 </div></dialog>
 
 </div>
+</details>
+
 <script>
 // 3要素目＝そのランに layout（街の地図データ）があるか。無い旧ラン（run94/v5b系）は
 // 昔ながらの区画グリッドしか描けない＝既定選択の候補から外す（下のロード時ロジック参照）。
@@ -1421,5 +1491,216 @@ document.addEventListener("DOMContentLoaded",()=>{
   window.addEventListener("resize",()=>{ if(D) draw(); });
   load(sel.value);
 });
+</script>
+<script>
+// 主画面（2つの世界）。読むのは present_data_two_worlds.json だけ。
+// 既存の画面（詳しい数字）のロジックには一切触らない。
+(function(){
+const $$=id=>document.getElementById(id);
+const E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const WAIT='<p class="wait">（データ待ち）</p>';
+const NAMEPAT=/(A社|B社|C社|D社|X社)/;
+let TW={no_path:[],path:[]};
+
+function avg(a){ return a.length?a.reduce((x,y)=>x+y,0)/a.length:null; }
+function r1(v){ return v==null?null:Math.round(v*10)/10; }
+function lineOf(run){ return (run.line||[]).slice().sort((a,b)=>a.step-b.step); }
+function parcelsAt(run,m){
+  const ln=lineOf(run); let v=0;
+  for(const pt of ln){ if(pt.step<=m) v=pt.parcels; else break; }
+  return v;
+}
+function actCount(run){
+  const a=run.acted||{}; let n=0;
+  if(a.refusal_first!=null) n++;
+  if(a.paper_first!=null) n++;
+  if(a.measure_first!=null) n++;
+  return n;
+}
+
+// ---- 画面2：同じ図を2つ ------------------------------------------------
+function chartSVG(runs){
+  if(!runs||!runs.length) return WAIT;
+  const W=560,H=340,pl=44,pr=30,pt=18,pb=38,YMAX=48;
+  const steps=Math.max.apply(null,runs.map(r=>r.steps||36));
+  const X=m=>pl+(steps<=1?0:(m-1)/(steps-1))*(W-pl-pr);
+  const Y=v=>H-pb-(Math.max(0,Math.min(YMAX,v))/YMAX)*(H-pt-pb);
+  let g='';
+  [0,12,24,36,48].forEach(v=>{
+    g+='<line class="gl" x1="'+pl+'" y1="'+Y(v)+'" x2="'+(W-pr)+'" y2="'+Y(v)+'"/>'
+      +'<text x="'+(pl-8)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+v+'</text>';
+  });
+  [1,12,24,36].filter(m=>m<=steps).forEach(m=>{
+    g+='<text x="'+X(m)+'" y="'+(H-pb+20)+'" text-anchor="middle">'+m+'</text>';
+  });
+  g+='<line class="ax" x1="'+pl+'" y1="'+Y(0)+'" x2="'+(W-pr)+'" y2="'+Y(0)+'"/>'
+    +'<line class="ax" x1="'+pl+'" y1="'+pt+'" x2="'+pl+'" y2="'+Y(0)+'"/>'
+    +'<text x="'+(W-pr)+'" y="'+(H-pb+34)+'" text-anchor="end">月</text>';
+
+  const mk={
+    o:(x,y)=>'<circle class="mk" cx="'+x+'" cy="'+y+'" r="5.5"/>',
+    tri:(x,y)=>'<polygon class="mk" points="'+x+','+(y-6)+' '+(x+5.5)+','+(y+4)+' '+(x-5.5)+','+(y+4)+'"/>',
+    sq:(x,y)=>'<rect class="mk" x="'+(x-5)+'" y="'+(y-5)+'" width="10" height="10"/>',
+    x:(x,y)=>'<path class="mk" d="M'+(x-5)+','+(y-5)+'L'+(x+5)+','+(y+5)+'M'+(x+5)+','+(y-5)+'L'+(x-5)+','+(y+5)+'"/>'
+  };
+  const lab=(x,y,t,i)=>'<text class="mklab" x="'+(x+8)+'" y="'+(y-8-(i%3)*11)+'">'+E(t)+'</text>';
+
+  runs.forEach((run,i)=>{
+    const ln=lineOf(run); if(!ln.length) return;
+    const stop=run.buyer_stopped_month;
+    const solid=ln.filter(p=>stop==null||p.step<=stop);
+    const dashed=stop==null?[]:ln.filter(p=>p.step>=stop);
+    const pts=a=>a.map(p=>X(p.step)+','+Y(p.parcels)).join(' ');
+    if(solid.length) g+='<polyline class="ln" points="'+pts(solid)+'"/>';
+    if(dashed.length>1) g+='<polyline class="ln dash" points="'+pts(dashed)+'"/>';
+    const last=ln[ln.length-1];
+    g+='<text class="lnlab" x="'+(X(last.step)+6)+'" y="'+(Y(last.parcels)+4)+'">'+E(run.label||"")+'</text>';
+    const a=run.acted||{};
+    if(run.noticed_month!=null){
+      const x=X(run.noticed_month),y=Y(parcelsAt(run,run.noticed_month));
+      g+=mk.o(x,y)+lab(x,y,"気づいた",i);
+    }
+    if(a.refusal_first!=null){
+      const x=X(a.refusal_first),y=Y(parcelsAt(run,a.refusal_first));
+      g+=mk.tri(x,y)+lab(x,y,"売らない",i+1);
+    }
+    if(a.paper_first!=null){
+      const x=X(a.paper_first),y=Y(parcelsAt(run,a.paper_first));
+      g+=mk.sq(x,y)+lab(x,y,"紙",i);
+    }
+    Object.keys(run.blocked_by_month||{}).forEach(k=>{
+      const m=+k; if(!isFinite(m)) return;
+      g+=mk.x(X(m),Y(parcelsAt(run,m)));
+    });
+    if(stop!=null){
+      const x=X(stop),y=Y(parcelsAt(run,stop));
+      g+='<text class="mklab" x="'+(x+8)+'" y="'+(y+16)+'">ここで買い手が手を引いた</text>';
+    }
+  });
+  return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="月ごとに買い手が押さえた土地の数">'+g+'</svg>';
+}
+
+// ---- 読み方の3行 -------------------------------------------------------
+function readout(){
+  const np=TW.no_path||[], pa=TW.path||[];
+  const out=[];
+  const noticedAvg=rs=>{ const v=rs.map(r=>r.noticed_month).filter(m=>m!=null); return v.length?r1(avg(v)):null; };
+  if(np.length){
+    const na=noticedAvg(np);
+    const acts=np.reduce((s,r)=>s+actCount(r),0);
+    const parc=Math.round(avg(np.map(r=>r.parcels_final||0)));
+    const wari=Math.round(avg(np.map(r=>r.final_share||0))*10);
+    out.push('経路なし'+np.length+'本：気づいたのは'+(na==null?'最後まで無し':'平均'+na+'か月')
+             +'。行動は'+acts+'。最後は'+parc+'か所（'+wari+'割）。');
+  }else{ out.push('経路なしの世界：（データ待ち）'); }
+  if(pa.length){
+    const na=noticedAvg(pa);
+    const firsts=pa.map(r=>{
+      const a=r.acted||{};
+      return [a.refusal_first,a.paper_first,a.measure_first].filter(v=>v!=null);
+    }).map(v=>v.length?Math.min.apply(null,v):null).filter(v=>v!=null);
+    const bl=pa.reduce((s,r)=>s+(r.blocked||0),0);
+    out.push('経路あり'+pa.length+'本：気づいたのは'+(na==null?'最後まで無し':'平均'+na+'か月')
+             +'。初めて行動が出たのは'+(firsts.length?r1(avg(firsts))+'か月':'無し')
+             +'。買えなかったのは'+bl+'件。');
+  }else{ out.push('経路ありの世界：（データ待ち）'); }
+  if(np.length&&pa.length){
+    const a=r1(avg(np.map(r=>r.parcels_final||0))), b=r1(avg(pa.map(r=>r.parcels_final||0)));
+    const d=r1(a-b);
+    out.push('線が寝たかどうか＝'+(d>0?('寝た（経路ありは平均'+b+'か所で、経路なしの平均'+a+'か所より'+d+'か所少ない）')
+             :d<0?('寝ていない（経路ありは平均'+b+'か所で、経路なしの平均'+a+'か所より'+(-d)+'か所多い）')
+             :('変わらない（どちらも平均'+a+'か所）')));
+  }else{ out.push('線が寝たかどうか＝（データ待ち）'); }
+  return out.map(t=>'<p>'+E(t)+'</p>').join('');
+}
+
+// ---- 画面1：冒頭クイズ -------------------------------------------------
+function quiz(){
+  const src=(TW.no_path&&TW.no_path.length)?TW.no_path[0]
+           :((TW.path&&TW.path.length)?TW.path[0]:null);
+  if(!src){ $$("quizItems").innerHTML=WAIT; return; }
+  const hits=src.noticed_hits||[];
+  const named=hits.filter(h=>NAMEPAT.test(h.text||""));
+  let pick=named.filter(h=>h.kind==="article").slice(0,3);
+  if(pick.length<3) pick=pick.concat(named.filter(h=>h.kind!=="article").slice(0,3-pick.length));
+  if(pick.length<3) pick=hits.slice(0,3);
+  if(!pick.length){ $$("quizItems").innerHTML=WAIT; return; }
+  $$("quizItems").innerHTML=pick.map(h=>{
+    const who=h.kind==="article"?"街の新聞":(h.name||"街の人");
+    return '<div class="art"><p class="mo">第'+E(h.step)+'月　'+E(who)+'</p>'
+          +'<p class="tx">'+E(h.text||"")+'</p></div>';
+  }).join('');
+  const runs=(TW.no_path||[]).concat(TW.path||[]);
+  const best=runs.slice().sort((a,b)=>(b.parcels_final||0)-(a.parcels_final||0))[0];
+  if(best){
+    const yrs=Math.round((best.steps||36)/12);
+    const wari=Math.round((best.final_share||0)*10);
+    $$("quizAnsLine").textContent='1社。'+(best.parcels_final||0)+'か所。'+yrs+'年で街の土地の'+wari+'割。';
+  }
+}
+
+// ---- 画面3：原文（行動の瞬間）-----------------------------------------
+function textAt(run,m){
+  const hits=(run.noticed_hits||[]).filter(h=>h.step===m&&h.text);
+  return hits.length?hits[0]:null;
+}
+function quotes(){
+  const pa=TW.path||[];
+  if(!pa.length){ $$("quotes").innerHTML=WAIT; return; }
+  let html='';
+  pa.forEach(run=>{
+    const a=run.acted||{}; const items=[];
+    if(a.refusal_first!=null){
+      const who=(a.refusal_people||[]).slice(0,3).join('・')||'街の人';
+      const what=(a.refusal_parcels||[]).slice(0,3).join('・');
+      items.push({m:a.refusal_first,
+        head:who+'が、第'+a.refusal_first+'月に「当面売らない」を選んだ'+(what?'（'+what+'）':'')});
+    }
+    if(a.paper_first!=null){
+      const by=a.by_act||{};
+      const k=Object.keys(by).sort((x,y)=>((by[x]&&by[x].first)||99)-((by[y]&&by[y].first)||99))[0];
+      const nm=k?((by[k]&&by[k].label)||k):'紙';
+      items.push({m:a.paper_first,head:'第'+a.paper_first+'月に、'+nm+'が出た'});
+    }
+    if(items.length<2&&(run.blocked_rows||[]).length){
+      const b=run.blocked_rows[0];
+      items.push({m:b.step,head:'第'+b.step+'月に、'+(b.parcel||'その土地')+'は'
+        +(b.under_name||'買い手')+'に売られなかった'});
+    }
+    if(a.measure_first!=null&&items.length<2){
+      items.push({m:a.measure_first,head:'第'+a.measure_first+'月に、役場が初めて措置を出した'});
+    }
+    items.slice(0,2).forEach(it=>{
+      const h=textAt(run,it.m);
+      html+='<div class="qt"><p class="who">'+E(run.label)+'の世界　'+E(it.head)+'</p>'
+           +(h?('<blockquote>'+E(h.text)+'</blockquote>'
+                +'<p class="tiny">'+E(h.name||"")+(h.venue?('／'+E(h.venue)):'')+'</p>')
+              :'<p class="wait">（原文なし）</p>')
+           +'</div>';
+    });
+  });
+  $$("quotes").innerHTML=html||WAIT;
+}
+
+function render(){
+  quiz();
+  $$("chartNP").innerHTML=chartSVG(TW.no_path);
+  $$("chartP").innerHTML=chartSVG(TW.path);
+  $$("capNP").textContent='経路なしの世界（'+((TW.no_path||[]).length)+'本）';
+  $$("capP").textContent='経路ありの世界（'+((TW.path||[]).length)+'本）';
+  $$("readout").innerHTML=readout();
+  quotes();
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+  $$("quizBtn").addEventListener("click",function(){
+    $$("quizAns").hidden=false; this.disabled=true;
+  });
+  fetch("present_data_two_worlds.json",{cache:"no-store"})
+    .then(r=>r.ok?r.json():Promise.reject(new Error("HTTP "+r.status)))
+    .then(d=>{ TW={no_path:(d&&d.no_path)||[],path:(d&&d.path)||[]}; render(); })
+    .catch(()=>{ TW={no_path:[],path:[]}; render(); });
+});
+})();
 </script>
 </body></html>
