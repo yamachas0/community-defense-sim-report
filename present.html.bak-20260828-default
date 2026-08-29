@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>静かな占領 — 街の地図で見る、登記と会話のずれ</title>
+<style>
+:root{--black:#0A0A0A;--accent:#047857;--accent-bg:#ECFDF5;--g50:#F9FAFB;--g100:#F3F4F6;
+ --g200:#E5E7EB;--g300:#D1D5DB;--g500:#6B7280;--g600:#4B5563;--g700:#374151;--g900:#111827;
+ --warn:#B45309;--warn-bg:#FFFBEB;--blue:#1D4ED8;--purple:#6D28D9;--line:#E5E7EB;
+ --font:'Noto Sans JP','Hiragino Kaku Gothic ProN','Meiryo',system-ui,sans-serif;}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--g900);font-family:var(--font);font-size:16px;line-height:1.7;
+ overflow-x:hidden}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px 64px}
+header{background:var(--black);color:#fff;padding:20px 0 16px;margin-bottom:16px}
+header .wrap{padding-bottom:0}
+h1{font-size:26px;margin:0 0 4px;font-weight:900;letter-spacing:.02em}
+.sub{color:#E5E7EB;font-size:14px;margin:0}
+h2{font-size:20px;margin:30px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--black)}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0 6px}
+button,select{font-family:var(--font);font-size:15px;padding:8px 14px;border:1px solid var(--g300);
+ background:#fff;color:var(--g900);border-radius:8px;cursor:pointer}
+button:hover,select:hover{background:var(--g50)}
+button:focus-visible,select:focus-visible,input:focus-visible,.cell:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button.primary{background:var(--black);color:#fff;border-color:var(--black);font-weight:700;min-width:104px}
+input[type=range]{flex:1 1 240px;min-width:180px;accent-color:var(--black)}
+.month{font-size:22px;font-weight:900;font-variant-numeric:tabular-nums;min-width:118px}
+.colorbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 16px;
+ border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--g50);font-size:14px}
+.colorbar .ck{display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+.colorbar i{flex:0 0 auto;display:inline-block;width:14px;height:14px;border-radius:3px;margin-top:4px}
+.guide{border:1px solid var(--line);border-left:4px solid var(--black);border-radius:8px;
+ padding:12px 16px;background:#fff;margin:16px 0 0;font-size:14px}
+.guide h2{font-size:15px;margin:0 0 6px;padding:0;border:0}
+.guide ol{margin:0;padding-left:1.3em}
+.guide li{margin:2px 0}
+.maptabs{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 8px;align-items:center}
+.maptabs button[aria-selected=true]{background:var(--black);color:#fff;border-color:var(--black)}
+.mapbox{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--g50)}
+.mapbox[hidden]{display:none}
+.mapbox h3{margin:0 0 2px;font-size:16px}
+.mapbox .cap{margin:0 0 8px;font-size:13px;color:var(--g600)}
+.capbar{display:flex;flex-wrap:wrap;gap:6px 20px;margin:0 0 8px}
+.capbar .cap{margin:0;font-size:13px;color:var(--g600)}
+.mapscroll{max-width:100%;overflow-x:auto;overflow-y:hidden}
+.grid{display:grid;gap:3px}
+.grid .cell{aspect-ratio:1/1;border-radius:3px;background:var(--g200);border:1px solid transparent;
+ position:relative;padding:0;cursor:default;font:inherit;color:inherit}
+.grid .cell.public{background:repeating-linear-gradient(45deg,#fff,#fff 3px,var(--g200) 3px,var(--g200) 6px)}
+.grid .cell.lease::after{content:"";position:absolute;inset:0;border-radius:3px;
+ background:repeating-linear-gradient(45deg,rgba(255,255,255,.85),rgba(255,255,255,.85) 2px,transparent 2px,transparent 5px)}
+.grid .cell.silent{cursor:pointer;box-shadow:0 0 0 2px var(--warn) inset}
+.svgmap svg{display:block;width:100%;height:auto;background:#FEFEFD}
+.svgmap rect.cell{fill:var(--g200);stroke:#fff;stroke-width:1.5;
+ transform-box:fill-box;transform-origin:center;transition:fill .35s ease,opacity .35s ease}
+.svgmap rect.cell.public{fill:var(--g100);stroke:var(--g300);stroke-width:1.5;stroke-dasharray:4 3}
+.svgmap rect.cell.silent{cursor:pointer;stroke:var(--warn);stroke-width:3;stroke-dasharray:none}
+.svgmap rect.cell.hot{cursor:pointer}
+.svgmap .hatch{pointer-events:none}
+.svgmap .deco{pointer-events:none}
+.svgmap .deco .road{stroke:#DCE0E5;stroke-width:5;fill:none;stroke-linecap:round}
+.svgmap .deco .ring{stroke:#E3E7EB;stroke-width:4;fill:none;stroke-dasharray:14 10}
+.svgmap .deco .sea{fill:#EAF2FB}
+.svgmap .deco .wave{stroke:#CBDDF2;stroke-width:2;fill:none}
+.svgmap .deco .hill{fill:#EFF6EF;stroke:#DFEADF;stroke-width:1.5}
+.svgmap .deco .plaza{fill:#F1F0EA;stroke:#E2E0D6;stroke-width:2}
+.svgmap .deco text{fill:#9AA1A9;font-size:17px;font-weight:700}
+.svgmap .icon{pointer-events:none;fill:none;stroke:currentColor;
+ stroke-linejoin:round;stroke-linecap:round;color:var(--g600)}
+.svgmap .icon .solid{fill:currentColor;stroke:none}
+.svgmap .lead{stroke:#B9BFC6;stroke-width:1;fill:none}
+.svgmap text{pointer-events:none;text-anchor:middle;font-family:var(--font);fill:var(--g900);
+ paint-order:stroke fill;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.svgmap text.plabel{font-size:14px;font-weight:700}
+.svgmap text.vlabel{font-size:14px;font-weight:700;fill:var(--accent)}
+.svgmap circle.venue{fill:#fff;stroke:var(--accent);stroke-width:2.5}
+.svgmap text.badge{font-size:17px;font-weight:900;fill:var(--accent);stroke-width:2px}
+.svgmap .fx{pointer-events:none}
+.svgmap .fx circle.pulse{fill:none;stroke-width:3;opacity:.9;
+ transform-box:fill-box;transform-origin:center;animation:pulse 1.2s ease-out forwards}
+.svgmap .fx circle.glow{stroke:none;opacity:.34;
+ transform-box:fill-box;transform-origin:center;animation:glow 1.2s ease-out forwards}
+.svgmap .fx circle.glow.weak{opacity:.16;animation:glowweak 1.2s ease-out forwards}
+.svgmap .fx circle.ring2{fill:none;stroke-width:2;stroke-dasharray:5 4;opacity:.95}
+.svgmap .fx line.wave{stroke-width:2.5;opacity:.85;stroke-linecap:round;
+ animation:wave 1.2s ease-out forwards}
+.svgmap .fx rect.named{fill:none;stroke-width:3;opacity:.9}
+@keyframes pulse{from{transform:scale(1);opacity:.95}to{transform:scale(2.3);opacity:0}}
+@keyframes glow{from{transform:scale(.9);opacity:.44}to{transform:scale(1.7);opacity:0}}
+@keyframes glowweak{from{transform:scale(.9);opacity:.2}to{transform:scale(1.2);opacity:0}}
+@keyframes wave{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
+.cell.flash{animation:flash 1s ease-out}
+@keyframes flash{from{transform:scale(1.25)}to{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.cell.flash{animation:none}
+ .svgmap rect.cell{transition:none!important;transition-delay:0s!important}
+ .svgmap .fx circle.pulse,.svgmap .fx circle.glow,.svgmap .fx line.wave{animation:none!important;
+  stroke-dashoffset:0!important;transform:none!important}}
+.gap{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px}
+.gapnum{font-size:30px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
+.gaplabel{font-size:12px;color:var(--g600)}
+.gapbar{flex:1 1 160px;height:12px;background:var(--g200);border-radius:7px;position:relative;overflow:hidden}
+.gapfill{position:absolute;top:0;bottom:0;left:0;background:var(--warn);width:0}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--g600);margin-top:8px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-2px}
+.legend .full{flex:1 1 100%}
+.fxlog{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px 12px;margin-top:10px;font-size:14px}
+.fxlog .hd{font-size:13px;font-weight:700;margin:0 0 6px}
+.fxlog .ev{border-left:4px solid var(--g300);padding:4px 0 4px 10px;margin:6px 0}
+.fxlog .ev .meta{font-size:12px;color:var(--g600)}
+.fxlog .ev .party{color:var(--accent);font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff}
+.stat .k{font-size:12px;color:var(--g600);display:block}
+.stat .v{font-size:22px;font-weight:900;font-variant-numeric:tabular-nums}
+.stat .v.no{color:var(--warn)}
+.stat .v.key{color:var(--accent)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 12px}
+.tabs button[aria-selected=true]{background:var(--black);color:#fff;border-color:var(--black)}
+.panel{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff}
+.panel[hidden]{display:none}
+details.numbers{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:20px 0;background:var(--g50)}
+details.numbers>summary{cursor:pointer;font-size:15px;font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--g50)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+blockquote{margin:10px 0;padding:8px 14px;border-left:3px solid var(--line);color:var(--g700);font-size:14px}
+.note{background:var(--g50);border:1px solid var(--line);border-left:4px solid var(--black);
+ border-radius:8px;padding:12px 14px;font-size:14px;margin:14px 0}
+.note.warn{background:var(--warn-bg);border-left-color:var(--warn)}
+.helix{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px}
+.helix .hd{font-weight:700;position:sticky;top:0;background:#fff;padding:4px 0;border-bottom:1px solid var(--line)}
+.helix .row{border-bottom:1px dashed var(--g200);padding:6px 0}
+.helix .mo{font-size:11px;color:var(--g500)}
+.helix .only{background:var(--warn-bg)}
+.replay .line{border-bottom:1px solid var(--g100);padding:6px 0;font-size:14px}
+.replay .who{font-weight:700;font-size:12px;color:var(--g600)}
+.ig{border:1px solid var(--line);border-radius:10px;padding:14px;margin:14px 0}
+.ig h3{margin:0 0 4px;font-size:17px}
+.ig .lead{font-size:13px;color:var(--g600);margin:0 0 10px}
+.ig .stepname{font-size:13px;font-weight:700;margin:14px 0 4px;color:var(--g700)}
+.pidnote{background:var(--accent-bg);border:1px solid #A7F3D0;border-radius:8px;padding:6px 10px;
+ font-size:12px;color:var(--g700);margin:8px 0}
+.say{border-radius:8px;padding:8px 12px;margin:6px 0;font-size:14px}
+.say .tag{display:inline-block;font-size:11px;font-weight:700;border-radius:4px;padding:1px 6px;margin-right:6px}
+.say .who{font-size:11px;color:var(--g600)}
+.say.speech{background:#fff;border:1px solid var(--g300)}
+.say.speech .tag{background:var(--g900);color:#fff}
+.say.thought{background:var(--g100);border:1px solid var(--g200)}
+.say.thought .tag{background:var(--g600);color:#fff}
+.say.trace{background:var(--warn-bg);border:1px solid #FDE68A}
+.say.trace .tag{background:var(--warn);color:#fff}
+.say.fire{border:2px solid var(--accent);background:var(--accent-bg)}
+.say.fire .tag{background:var(--accent);color:#fff}
+#ignition>.lead{font-size:14px;font-weight:700;margin:0 0 10px}
+.igloose{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:18px 0 0;background:var(--g100)}
+.igloose>summary{cursor:pointer;font-size:14px;font-weight:700}
+.chart svg{display:block;width:100%;height:auto}
+.chart .ax{stroke:var(--g300);stroke-width:1}
+.chart .gl{stroke:var(--g200);stroke-width:1;stroke-dasharray:3 3}
+.chart text{font-size:13px;fill:var(--g600);font-family:var(--font)}
+.chart polyline{fill:none;stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+dialog{border:1px solid var(--g300);border-radius:12px;padding:0;max-width:640px;width:92vw}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+.dlg{padding:18px}
+.dlg h3{margin:0 0 8px}
+.tiny{font-size:12px;color:var(--g500)}
+.err{background:var(--warn-bg);border:1px solid var(--warn);border-radius:8px;padding:12px;margin:12px 0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:1000px){.mapscroll .svgmap svg{width:1200px}}
+@media(max-width:860px){
+ .helix{grid-template-columns:1fr}
+ h1{font-size:20px}
+}
+</style></head><body>
+<header><div class="wrap">
+<h1>静かな占領 — 街の地図で見る、登記と会話のずれ</h1>
+<p class="sub">A市の48区画。誰が買ったかは登記に残る。街の人がそれに気づいて口に出すのは、ずっと後になる。</p>
+</div></header>
+
+<div class="wrap">
+
+<div id="err" class="err" hidden role="alert"></div>
+
+<div class="colorbar" id="colorbar" aria-label="色の意味"></div>
+
+<div class="controls">
+  <label class="tiny" for="runsel">ラン</label>
+  <select id="runsel" aria-label="表示するランを選ぶ"></select>
+  <button id="play" class="primary">▶ 再生</button>
+  <span class="month" id="monthlabel">第 0 月</span>
+  <input id="slider" type="range" min="0" max="12" value="0" aria-label="月を選ぶ">
+  <button id="reset">最初から</button>
+</div>
+
+<h2>① 街の地図</h2>
+<div class="maptabs" role="tablist" aria-label="地図の切替">
+  <button role="tab" id="tmL" aria-controls="mapboxL" data-m="L" aria-selected="true">登記が動いた区画</button>
+  <button role="tab" id="tmR" aria-controls="mapboxR" data-m="R" aria-selected="false" tabindex="-1">街の人が口にした区画</button>
+</div>
+<div class="capbar">
+  <p class="cap" id="capL"></p>
+  <p class="cap" id="capR"></p>
+</div>
+<div class="mapbox" id="mapboxL" role="tabpanel" aria-labelledby="tmL">
+  <h3 id="hL">登記が動いた区画</h3>
+  <div class="mapscroll"><div class="grid" id="mapL" role="group" aria-labelledby="hL"></div></div>
+  <div class="legend" id="legendL"></div>
+</div>
+<div class="mapbox" id="mapboxR" role="tabpanel" aria-labelledby="tmR" hidden>
+  <h3 id="hR">街の人が口にした区画</h3>
+  <div class="mapscroll"><div class="grid" id="mapR" role="group" aria-labelledby="hR"></div></div>
+  <div class="legend" id="legendR"></div>
+</div>
+<div class="gap">
+  <div class="gapnum" id="gapnum">0</div>
+  <div class="gaplabel">登記は動いたのに、街がまだ口にしていない区画の数</div>
+  <div class="gapbar"><div class="gapfill" id="gapfill"></div></div>
+</div>
+<div class="fxlog" id="fxlog"></div>
+<p id="live" class="sr" role="status" aria-live="polite"></p>
+
+<h2>② 火が点いた瞬間（原文）</h2>
+<section class="panel" id="pJ" aria-label="火が点いた瞬間（原文）">
+  <p class="tiny">緑＝「複数の売買が一体で動いている」と最初に言った／思った瞬間と、
+  黄＝「名義は違うが同じ買い手だ」と最初に結んだ瞬間。原文は1文字も直していない。</p>
+  <div id="ignition"></div>
+  <p class="tiny">黄は機械の判定で、人が読み直すと緑どまりの行が混じる。
+  ここでは判定ではなく原文を出している。</p>
+</section>
+
+<h2>③ 4色の推移</h2>
+<section class="panel" id="pI" aria-label="4色の推移">
+  <div id="stagebox"></div>
+</section>
+
+<div class="guide">
+  <h2>④ この画面の見方</h2>
+  <ol>
+    <li>上の再生ボタンで月を進める。地図は「登記」と「街の話」の2枚を切り替える。</li>
+    <li>右の地図で色が付いたマスを押す。いつ登記が動き、いつ街が語ったかの差が出る。</li>
+    <li>丸は人が集まる場所。誰かが初めて「一帯が動いている」と気づいた月に、その場所が光る。</li>
+    <li>「火が点いた瞬間」で、その気づきの原文をそのまま読む。</li>
+    <li>マスの大きさは敷地面積、中央ほど市街地。通り・広場・地形は装飾で、判定には使っていない。</li>
+  </ol>
+</div>
+
+<div class="tabs" role="tablist" aria-label="補助パネル">
+  <button role="tab" id="tD" aria-controls="pD" data-p="D" aria-selected="true">頭の中で思っただけ／口に出した</button>
+  <button role="tab" id="tE" aria-controls="pE" data-p="E" aria-selected="false" tabindex="-1">市役所で登記をまとめて見た人</button>
+  <button role="tab" id="tF" aria-controls="pF" data-p="F" aria-selected="false" tabindex="-1">実際には売買されていないものが、うわさで結びついた</button>
+  <button role="tab" id="tG" aria-controls="pG" data-p="G" aria-selected="false" tabindex="-1">設計を足しても動かず、減らしたら動いた（v4→v5）</button>
+  <button role="tab" id="tH" aria-controls="pH" data-p="H" aria-selected="false" tabindex="-1">この実験で言えること・言えないこと</button>
+</div>
+
+<section class="panel" id="pD" role="tabpanel" aria-labelledby="tD">
+  <h2 style="margin-top:0">頭の中で思っただけ／口に出した</h2>
+  <p class="tiny" id="dNote"></p>
+  <div class="controls"><label class="tiny" for="agentsel">主体</label>
+    <select id="agentsel" aria-label="主体を選ぶ"></select></div>
+  <div class="helix" id="helix"></div>
+</section>
+
+<section class="panel" id="pE" role="tabpanel" aria-labelledby="tE" hidden>
+  <h2 style="margin-top:0">市役所で登記をまとめて見た人</h2>
+  <p class="tiny" id="eNote"></p>
+  <div class="replay" id="replay"></div>
+</section>
+
+<section class="panel" id="pF" role="tabpanel" aria-labelledby="tF" hidden>
+  <h2 style="margin-top:0">実際には売買されていないものが、うわさで結びついた</h2>
+  <div id="invented"></div>
+</section>
+
+<section class="panel" id="pG" role="tabpanel" aria-labelledby="tG" hidden>
+  <h2 style="margin-top:0">設計を足しても動かず、減らしたら動いた（v4→v5）</h2>
+  <div id="history"></div>
+  <p class="tiny">v4系の「動かなかった」は<strong>取得</strong>の話、v5の「動いた」は<strong>認知</strong>の話。
+  同じ土俵の比較ではない。</p>
+</section>
+
+<section class="panel" id="pH" role="tabpanel" aria-labelledby="tH" hidden>
+  <h2 style="margin-top:0">この実験で言えること・言えないこと</h2>
+  <div class="note"><strong>言える</strong>：この固定した取得列と兆候の露出条件のもとで、街の会話がどう反応したかの事例記述。
+  引用した原文はすべて保存された出力そのもの。</div>
+  <div class="note warn"><strong>言えない</strong>：気づく確率、一般的な未認知率、揺らぎに対する頑健性。
+  <strong>1本は1実現</strong>。偽陰性の人手監査は未実施＝「保存された出力の中に、事前に定義した表現は無かった」までしか言わない。
+  配線の判定（D3）は<span id="d3line"></span>のため<strong>不合格</strong>。都合の悪い数字も出す。</div>
+  <div class="note"><strong>この画面の測り方の限界</strong>：右地図は「事後LLM分類を通った発話」だけで塗っている。
+  記事・私信には分類ラベルが無いので地図には載せず、<span id="ruleonly"></span>として別に数えた。
+  地図の通り・広場・地形・会場の位置・本拠の位置は<strong>装飾</strong>で、判定にも集計にも使っていない。
+  <span id="cohortline"></span></div>
+</section>
+
+<details class="numbers">
+  <summary>詳しい数字</summary>
+  <div class="stats" id="stats"></div>
+  <p class="tiny" id="checkline"></p>
+</details>
+
+<dialog id="dlg" aria-labelledby="dlgTitle"><div class="dlg">
+  <h3 id="dlgTitle"></h3>
+  <div id="dlgBody"></div>
+  <p style="text-align:right;margin:12px 0 0"><button id="dlgClose">閉じる</button></p>
+</div></dialog>
+
+</div>
+<script>
+const RUNS=[["run94","run94 — 12か月（1件ずつの気づき）"],
+            ["v5bA","v5b runA — 24か月"],
+            ["v5bB","v5b runB — 24か月"],
+            ["v5bC","v5b runC — 24か月"],
+            ["v5cA","v5c runA — 24か月（買い手の戦略・日常の場）"],
+            ["v5cB","v5c runB — 24か月"],
+            ["v5cC","v5c runC — 24か月"]];
+const STAGE_COLORS={blue:"#1D4ED8",green:"#047857",yellow:"#CA8A04",red:"#B91C1C"};
+const STAGE_JA={blue:"青＝個別の売買の話題",green:"緑＝複数の売買・面的な話",
+                yellow:"黄＝名義違いを同じ買い手として結んだ",red:"赤＝行政が対応に動いた"};
+const STAGE_DEF={blue:"青＝個別の売買の話",
+                 green:"緑＝複数の売買を「一帯が動いている」と結びつけた",
+                 yellow:"黄＝名義が違うのに同じ買い手だと結びつけた（X社にたどり着いた）",
+                 red:"赤＝行政が規制に動いた"};
+const STAGE_SHORT={blue:"青",green:"緑",yellow:"黄",red:"赤"};
+const STAGE_ORDER=["blue","green","yellow","red"];
+const HOLDER_COLORS={"A社":"#047857","B社":"#1D4ED8","C社":"#B45309","D社":"#6D28D9"};
+const NS="http://www.w3.org/2000/svg";
+const REDUCED=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const FS=14, LPADX=5, LPADY=3;
+let D=null,HIST=null,step=0,timer=null,loadToken=0,lastFocus=null;
+let prevLit=new Set(),prevStep=-1,LABELS=null,mapSide="L";
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function showErr(msg){ const e=$("err"); e.hidden=false; e.textContent=msg; }
+
+// 同じ月に色が付く区画を同時に点けないための決定論の位相差（32bit FNV-1a）。
+function fnv1a(s){ let h=0x811c9dc5;
+  for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0; }
+  return h>>>0; }
+function delayOf(pid){ return 0.10+0.30*((fnv1a(pid)%1000)/999); }
+
+function renderColorBar(){
+  $("colorbar").innerHTML=STAGE_ORDER.map(c=>
+    `<span class="ck"><i style="background:${STAGE_COLORS[c]}"></i><span>${esc(STAGE_DEF[c])}</span></span>`
+  ).join("");
+}
+
+// --- 建物のピクト（用途ごと・絵文字は使わない） --------------------------
+const ICONS={
+  "家":{main:["M-.40 .40 V-.02 L0 -.40 L.40 -.02 V.40 Z"],
+        detail:["M-.12 .40 V.10 H.12 V.40"]},
+  "古家":{main:["M-.40 .40 V-.02 L0 -.40 L.40 -.02 V.40 Z"],
+          detail:["M-.14 .02 L.02 .16 L-.06 .30"],rot:-8},
+  "店":{main:["M-.38 .40 V-.06 H.38 V.40 Z","M-.48 -.06 L-.34 -.28 H.34 L.48 -.06 Z"],
+        detail:["M-.14 .40 V.10 H.14 V.40"]},
+  "事業所":{main:["M-.30 .40 V-.40 H.30 V.40 Z"],
+            detail:["M-.30 -.16 H.30","M-.30 .06 H.30","M-.08 -.40 V.40"]},
+  "旅館":{main:["M-.38 .40 V-.04 H.38 V.40 Z","M-.48 -.04 L0 -.26 L.48 -.04 Z"],
+          detail:["M-.20 -.34 q .10 -.10 0 -.20","M0 -.34 q .10 -.10 0 -.20",
+                  "M.20 -.34 q .10 -.10 0 -.20"]},
+  "集会所":{main:["M-.34 .40 V-.10 H.34 V.40 Z"],
+            detail:["M0 -.10 V-.46","M0 -.46 L.24 -.39 L0 -.32 Z"]},
+  "空き地":{main:["M-.38 -.22 H.38 V.36 H-.38 Z"],dash:"7 5",
+            detail:["M-.14 .36 q .02 -.16 .10 -.24","M.10 .36 q .02 -.16 .10 -.24"]},
+  "工場":{main:["M-.40 .40 V-.02 L-.10 -.20 V-.02 L.20 -.20 V.40 Z"],
+          detail:["M.28 -.20 V-.44 H.40 V.40"]}
+};
+function drawIcon(pid,cell){
+  const spec=ICONS[cell.use_word]||ICONS["家"];
+  const s=cell.side*0.58;
+  const g=document.createElementNS(NS,"g");
+  g.setAttribute("class","icon");
+  g.setAttribute("transform",
+    `translate(${cell.cx} ${cell.cy}) scale(${s.toFixed(3)})`
+    +(spec.rot?` rotate(${spec.rot})`:""));
+  g.setAttribute("stroke-width",(1.7/s).toFixed(4));
+  const paths=spec.main.concat(cell.side>=42?(spec.detail||[]):[]);
+  paths.forEach((d,i)=>{
+    const p=document.createElementNS(NS,"path");
+    p.setAttribute("d",d);
+    if(spec.dash&&i===0) p.setAttribute("stroke-dasharray",
+      spec.dash.split(" ").map(v=>(+v/s).toFixed(4)).join(" "));
+    g.appendChild(p);
+  });
+  return g;
+}
+
+// --- 街に見える下地（装飾。データではない） -------------------------------
+function decoLayer(L){
+  const g=document.createElementNS(NS,"g");
+  g.setAttribute("class","deco");
+  const W=L.view.w,H=L.view.h,cx=(L.center||[W/2,H/2])[0],cy=(L.center||[W/2,H/2])[1];
+  const sq=L.squash||0.78;
+  const mk=(tag,attrs,cls)=>{ const e=document.createElementNS(NS,tag);
+    if(cls) e.setAttribute("class",cls);
+    Object.keys(attrs).forEach(k=>e.setAttribute(k,attrs[k])); g.appendChild(e); return e; };
+  mk("path",{d:`M0 ${H*0.60} Q ${W*0.12} ${H*0.78} ${W*0.20} ${H} L0 ${H} Z`},"sea");
+  for(let i=0;i<3;i++)
+    mk("path",{d:`M${20+i*26} ${H*0.72+i*30} q 30 -18 60 0 q 30 18 60 0`},"wave");
+  mk("path",{d:`M${W*0.66} 0 Q ${W*0.80} ${H*0.10} ${W} ${H*0.03} L${W} 0 Z`},"hill");
+  mk("path",{d:`M${W*0.80} ${H} Q ${W*0.90} ${H*0.86} ${W} ${H*0.90} L${W} ${H} Z`},"hill");
+  const rings=[L.zone_radius["中間"],L.zone_radius["郊外"]];
+  rings.forEach(r=>mk("ellipse",{cx:cx,cy:cy,rx:r,ry:r*sq},"ring"));
+  for(let i=0;i<8;i++){
+    const a=Math.PI*2*i/8+0.19, r=L.zone_radius["郊外"]*1.18;
+    mk("line",{x1:cx+Math.cos(a)*34,y1:cy+Math.sin(a)*34*sq,
+               x2:cx+Math.cos(a)*r,y2:cy+Math.sin(a)*r*sq},"road");
+  }
+  mk("ellipse",{cx:cx,cy:cy,rx:34,ry:34*sq},"plaza");
+  const texts=[[cx,cy+6,"広場"],[W*0.055,H*0.90,"海"],[W*0.90,H*0.055,"丘"]];
+  texts.forEach(([x,y,t])=>{ const e=mk("text",{x:x,y:y}); e.textContent=t; });
+  return {g:g,boxes:texts.map(([x,y,t])=>({x0:x-t.length*10,y0:y-16,
+                                           x1:x+t.length*10,y1:y+6}))};
+}
+
+// --- ラベル配置（重なり0・決定論。Math.random は使わない） ---------------
+function estW(str){ let w=0; for(const ch of str) w+=(ch.charCodeAt(0)<128?0.56:1.0)*FS; return w; }
+function measure(t,str){ let w=0; try{ w=t.getComputedTextLength(); }catch(e){ w=0; }
+  return Math.max(w,estW(str)); }
+const hit=(a,b)=>!(a.x1<=b.x0||b.x1<=a.x0||a.y1<=b.y0||b.y1<=a.y0);
+
+function placeLabels(L,gText,measurer){
+  const W=L.view.w,H=L.view.h;
+  const deco=measurer.decoBoxes||[];
+  const placed=deco.slice();
+  const cellBoxes=Object.keys(L.cells).map(pid=>{ const c=L.cells[pid];
+    return {x0:c.cx-c.side/2,y0:c.cy-c.side/2,x1:c.cx+c.side/2,y1:c.cy+c.side/2}; });
+  const venueBoxes=(L.venues||[]).map(v=>({x0:v.cx-v.r,y0:v.cy-v.r,x1:v.cx+v.r,y1:v.cy+v.r}));
+  venueBoxes.forEach(b=>placed.push(b));
+  const items=(L.venues||[]).map(v=>({key:"venue:"+v.id,text:v.label,cls:"vlabel",
+                                      ax:v.cx,ay:v.cy,hw:v.r,hh:v.r}))
+    .concat(Object.keys(L.cells).sort((a,b)=>(L.cells[b].side-L.cells[a].side)||(a<b?-1:1))
+      .map(pid=>({key:"cell:"+pid,text:L.cells[pid].name,cls:"plabel",
+                  ax:L.cells[pid].cx,ay:L.cells[pid].cy,
+                  hw:L.cells[pid].side/2,hh:L.cells[pid].side/2})));
+  const dirs=[[0,1],[0,-1],[1,0],[-1,0],[1,1],[-1,1],[1,-1],[-1,-1]];
+  const out={};
+  items.forEach(it=>{
+    const t=document.createElementNS(NS,"text");
+    t.setAttribute("class",it.cls); t.textContent=it.text;
+    gText.appendChild(t);
+    const w=measure(t,it.text)+LPADX*2, h=FS+LPADY*2;
+    let best=null;
+    for(let pass=0;pass<2&&!best;pass++){
+      for(let d=0;d<=170&&!best;d+=7){
+        for(const [dx,dy] of dirs){
+          const x=it.ax+dx*(it.hw+w/2+4+d);
+          const y=it.ay+dy*(it.hh+h/2+3+d);
+          const box={x0:x-w/2,y0:y-h/2,x1:x+w/2,y1:y+h/2};
+          if(box.x0<2||box.y0<2||box.x1>W-2||box.y1>H-2) continue;
+          if(placed.some(p=>hit(box,p))) continue;
+          if(pass===0&&cellBoxes.some(p=>hit(box,p))) continue;
+          best={x:x,y:y,box:box,d:d}; break;
+        }
+      }
+    }
+    if(!best){                       // どうしても空きが無ければ真下に置く（重なりは残さない）
+      let y=it.ay+it.hh+h/2+3, x=it.ax, box=null;
+      for(let k=0;k<400;k++){
+        box={x0:x-w/2,y0:y-h/2,x1:x+w/2,y1:y+h/2};
+        if(box.x0>=2&&box.y0>=2&&box.x1<=W-2&&box.y1<=H-2&&!placed.some(p=>hit(box,p))) break;
+        y+=6; if(y>H-2){ y=h/2+2; x+=40; }
+      }
+      best={x:x,y:y,box:box,d:99};
+    }
+    placed.push(best.box);
+    out[it.key]={x:best.x,y:best.y,ax:it.ax,ay:it.ay,hw:it.hw,hh:it.hh,
+                 w:w,h:h,lead:best.d>0};
+    gText.removeChild(t);
+  });
+  return out;
+}
+
+function labelLayer(L,pos,gText,gLead){
+  Object.keys(pos).sort().forEach(key=>{
+    const p=pos[key], isV=key.indexOf("venue:")===0;
+    const text=isV?(L.venues.find(v=>v.id===key.slice(6))||{}).label
+                  :(L.cells[key.slice(5)]||{}).name;
+    if(p.lead){
+      const dx=p.x-p.ax, dy=p.y-p.ay, m=Math.hypot(dx,dy)||1;
+      const sx=p.ax+dx/m*Math.min(p.hw*1.3,20), sy=p.ay+dy/m*Math.min(p.hh*1.3,20);
+      const ex=p.x-dx/m*(p.w/2), ey=p.y-dy/m*(p.h/2);
+      const ln=document.createElementNS(NS,"line");
+      ln.setAttribute("class","lead");
+      ln.setAttribute("x1",sx.toFixed(2)); ln.setAttribute("y1",sy.toFixed(2));
+      ln.setAttribute("x2",ex.toFixed(2)); ln.setAttribute("y2",ey.toFixed(2));
+      gLead.appendChild(ln);
+    }
+    const t=document.createElementNS(NS,"text");
+    t.setAttribute("class",isV?"vlabel":"plabel");
+    t.setAttribute("x",p.x.toFixed(2)); t.setAttribute("y",(p.y+FS*0.36).toFixed(2));
+    t.dataset.key=key;
+    t.textContent=text;
+    gText.appendChild(t);
+  });
+}
+
+function buildMap(el){
+  el.innerHTML=""; el._hatch={}; el._icon={}; el._fx=null;
+  const L=D.layout;
+  if(!L){
+    el.className="grid";
+    el.style.gridTemplateColumns=`repeat(${D.grid.cols},1fr)`;
+    D.grid.parcels.forEach(p=>{
+      const c=document.createElement("button");
+      c.type="button"; c.className="cell"+(p.use==="public"?" public":"");
+      c.dataset.pid=p.pid; c.tabIndex=-1; c.setAttribute("aria-hidden","true");
+      el.appendChild(c);
+    });
+    return;
+  }
+  el.className="svgmap"; el.style.gridTemplateColumns="";
+  const svg=document.createElementNS(NS,"svg");
+  svg.setAttribute("viewBox",`0 0 ${L.view.w} ${L.view.h}`);
+  svg.setAttribute("preserveAspectRatio","xMidYMid meet");
+  const defs=document.createElementNS(NS,"defs");
+  const pat=document.createElementNS(NS,"pattern");
+  pat.setAttribute("id","hatch_"+el.id);
+  pat.setAttribute("width","8"); pat.setAttribute("height","8");
+  pat.setAttribute("patternUnits","userSpaceOnUse");
+  pat.setAttribute("patternTransform","rotate(45)");
+  const ln=document.createElementNS(NS,"line");
+  ln.setAttribute("x1","0"); ln.setAttribute("y1","0");
+  ln.setAttribute("x2","0"); ln.setAttribute("y2","8");
+  ln.setAttribute("stroke","#fff"); ln.setAttribute("stroke-width","3.4");
+  pat.appendChild(ln); defs.appendChild(pat); svg.appendChild(defs);
+  const deco=decoLayer(L);
+  svg.appendChild(deco.g);
+  const gCell=document.createElementNS(NS,"g");
+  const gHatch=document.createElementNS(NS,"g");
+  const gIcon=document.createElementNS(NS,"g");
+  const gVenue=document.createElementNS(NS,"g");
+  const gFx=document.createElementNS(NS,"g"); gFx.setAttribute("class","fx");
+  const gLead=document.createElementNS(NS,"g");
+  const gText=document.createElementNS(NS,"g");
+  const useOf={}; D.grid.parcels.forEach(p=>useOf[p.pid]=p.use);
+  Object.keys(L.cells).sort().forEach(pid=>{
+    const c=L.cells[pid], h=c.side/2;
+    const r=document.createElementNS(NS,"rect");
+    r.setAttribute("class","cell"+(useOf[pid]==="public"?" public":""));
+    r.setAttribute("x",c.cx-h); r.setAttribute("y",c.cy-h);
+    r.setAttribute("width",c.side); r.setAttribute("height",c.side);
+    r.setAttribute("rx","3");
+    r.dataset.pid=pid; r.setAttribute("tabindex","-1"); r.setAttribute("aria-hidden","true");
+    const t=document.createElementNS(NS,"title"); t.textContent=`${c.name}（${pid}）`;
+    r.appendChild(t); r._title=t;
+    gCell.appendChild(r);
+    const hz=document.createElementNS(NS,"rect");
+    hz.setAttribute("class","hatch");
+    hz.setAttribute("x",c.cx-h); hz.setAttribute("y",c.cy-h);
+    hz.setAttribute("width",c.side); hz.setAttribute("height",c.side);
+    hz.setAttribute("rx","3"); hz.setAttribute("fill",`url(#hatch_${el.id})`);
+    hz.style.display="none"; gHatch.appendChild(hz); el._hatch[pid]=hz;
+    const ic=drawIcon(pid,c); gIcon.appendChild(ic); el._icon[pid]=ic;
+  });
+  (L.venues||[]).forEach(v=>{
+    const c=document.createElementNS(NS,"circle");
+    c.setAttribute("class","venue"); c.setAttribute("cx",v.cx);
+    c.setAttribute("cy",v.cy); c.setAttribute("r",v.r);
+    c.dataset.venue=v.id;
+    const t=document.createElementNS(NS,"title"); t.textContent=v.label+"（会場・表示位置は装飾）";
+    c.appendChild(t); gVenue.appendChild(c);
+    const b=document.createElementNS(NS,"text");
+    b.setAttribute("class","badge"); b.setAttribute("x",v.cx);
+    b.setAttribute("y",v.cy+6); b.textContent=v.badge;
+    gVenue.appendChild(b);
+  });
+  svg.appendChild(gCell); svg.appendChild(gHatch); svg.appendChild(gIcon);
+  svg.appendChild(gVenue); svg.appendChild(gFx);
+  svg.appendChild(gLead); svg.appendChild(gText);
+  el.appendChild(svg);
+  el._fx=gFx;
+  if(!LABELS) LABELS=placeLabels(L,gText,{decoBoxes:deco.boxes});
+  labelLayer(L,LABELS,gText,gLead);
+}
+const cells=el=>Array.from(el.querySelectorAll(".cell"));
+function paint(c,bg){ c.style.background=bg; c.style.fill=bg; }
+function markButton(c){ if(c.tagName!=="BUTTON"){ c.setAttribute("role","button");
+  c.setAttribute("aria-haspopup","dialog"); } }
+function setTitle(c,txt){ c.title=txt; if(c._title) c._title.textContent=txt; }
+function setLease(el,pid,on){ const h=el._hatch&&el._hatch[pid]; if(h) h.style.display=on?"":"none"; }
+function setIcon(el,pid,lit){ const g=el._icon&&el._icon[pid];
+  if(g) g.style.color=lit?"#ffffff":"var(--g600)"; }
+const nameOf=pid=>(((D.layout||{}).cells||{})[pid]||{}).name||pid;
+
+// --- 火が点いた月の発光（会場のパルス→残光・同席者の本拠への波紋） -------
+function clearFx(el){ if(el._fx) while(el._fx.firstChild) el._fx.removeChild(el._fx.firstChild); }
+function fxEl(el,tag,cls,attrs){
+  const e=document.createElementNS(NS,tag); e.setAttribute("class",cls);
+  Object.keys(attrs).forEach(k=>e.setAttribute(k,attrs[k]));
+  el._fx.appendChild(e); return e;
+}
+function drawFx(el,evs){
+  const L=D.layout; if(!L||!el._fx) return;
+  clearFx(el);
+  if(el._fxTimer){ clearTimeout(el._fxTimer); el._fxTimer=null; }
+  if(!evs.length) return;
+  const vmap={}; (L.venues||[]).forEach(v=>vmap[v.id]=v);
+  evs.forEach(ev=>{
+    const col=STAGE_COLORS[ev.color]||"#047857";
+    (ev.parcels||[]).forEach(pid=>{ const c=L.cells[pid]; if(!c) return;
+      fxEl(el,"rect","named",{x:c.cx-c.side/2-3,y:c.cy-c.side/2-3,
+        width:c.side+6,height:c.side+6,rx:5,stroke:col}); });
+    const v=vmap[ev.venue]; if(!v) return;
+    if(ev.kind==="speech"){
+      fxEl(el,"circle","glow",{cx:v.cx,cy:v.cy,r:v.r*1.5,fill:col});
+      fxEl(el,"circle","pulse",{cx:v.cx,cy:v.cy,r:v.r,stroke:col});
+      (ev.heard_by||[]).forEach(a=>{
+        const home=(ev.homes||{})[a], c=home?L.cells[home]:null; if(!c) return;
+        const len=Math.hypot(c.cx-v.cx,c.cy-v.cy).toFixed(1);
+        const w=fxEl(el,"line","wave",{x1:v.cx,y1:v.cy,x2:c.cx,y2:c.cy,stroke:col});
+        w.style.setProperty("--len",len);
+        w.style.strokeDasharray=len; w.style.strokeDashoffset=REDUCED?0:len;
+      });
+    }else{
+      fxEl(el,"circle","glow weak",{cx:v.cx,cy:v.cy,r:v.r*1.25,fill:col});
+    }
+    if(ev.party_present&&ev.party_present.present)
+      fxEl(el,"circle","ring2",{cx:v.cx,cy:v.cy,r:v.r+7,stroke:col});
+  });
+  if(!REDUCED) el._fxTimer=setTimeout(()=>clearFx(el),1500);
+}
+function renderFxLog(month,evs){
+  const box=$("fxlog");
+  if(!D.ignition_timeline){ box.innerHTML=`<p class="hd">この本には色の判定が無い（v5c から）。</p>`; return; }
+  let h=`<p class="hd">第${month}月に、初めて火が点いた人</p>`;
+  if(!evs.length){ h+=`<p class="tiny">この月に、新しく緑・黄へ達した人はいない。</p>`; }
+  evs.forEach(ev=>{
+    const pp=ev.party_present||{present:false,labels:[]};
+    h+=`<div class="ev" style="border-left-color:${STAGE_COLORS[ev.color]}">`
+      +`<span class="meta">${esc(STAGE_SHORT[ev.color])}／${esc(ev.agent_label)}（${esc(ev.agent)}）`
+      +`／${esc(ev.venue_label||ev.venue||"自宅・計画")}／`
+      +(ev.kind==="speech"?`口に出した（同席者に届いた・${(ev.heard_by||[]).length}人）`
+                          :`頭の中（誰にも伝わっていない）`)+`</span><br>${esc(ev.text)}`;
+    if(pp.present) h+=`<br><span class="party">この場に、取引した本人が居合わせていた`
+      +`（${esc(pp.labels.join("・"))}）</span>`;
+    h+=`</div>`;
+  });
+  box.innerHTML=h;
+}
+
+function draw(){
+  const L=$("mapL"),R=$("mapR");
+  const done=D.events.filter(e=>e.month<=step);
+  const byPid={}; done.forEach(e=>byPid[e.parcel_id]=e);
+  cells(L).forEach(c=>{
+    const pid=c.dataset.pid, e=byPid[pid];
+    c.classList.remove("lease"); setLease(L,pid,false);
+    if(e){ paint(c,HOLDER_COLORS[e.holder]||"#374151"); setIcon(L,pid,true);
+           if(e.kind==="lease"){ c.classList.add("lease"); setLease(L,pid,true); }
+           setTitle(c,`${nameOf(pid)}（${pid}）／第${e.month}月／${e.holder}／${e.kind==="lease"?"賃借（登記は動かない）":"売買"}`);}
+    else { paint(c,""); setIcon(L,pid,false); setTitle(c,`${nameOf(pid)}（${pid}）`); }
+  });
+  const o1=D.o1_month||{};
+  const SBP=D.stage_by_parcel||{}, useStage=Object.keys(SBP).length>0;
+  const lit=new Set(), advancing=(step>prevStep);
+  let spokenN=0,linkedN=0;
+  cells(R).forEach(c=>{
+    const pid=c.dataset.pid, a=D.awareness[pid], lm=o1[pid];
+    c.classList.remove("silent","linked","hot");
+    c.tabIndex=-1; c.setAttribute("aria-hidden","true"); c.removeAttribute("aria-label");
+    c.removeAttribute("role"); c.removeAttribute("aria-haspopup");
+    const acquired=byPid[pid];
+    const st=useStage?SBP[pid]:null;
+    if(useStage){
+      if(st && st.month<=step){
+        spokenN++; lit.add(pid);
+        if(st.color!=="blue") linkedN++;
+        const n=(a&&a.cumulative_speakers[String(step)])||1;
+        c.style.transitionDelay=(!REDUCED&&advancing&&!prevLit.has(pid))?delayOf(pid)+"s":"0s";
+        paint(c,STAGE_COLORS[st.color]); setIcon(R,pid,true);
+        c.style.opacity=String(0.45+0.55*Math.min(1,n/8));
+        c.classList.add("hot"); c.tabIndex=0; c.removeAttribute("aria-hidden");
+        markButton(c);
+        c.setAttribute("aria-label",
+          `${nameOf(pid)}（${pid}）：第${st.month}月に街が話題にした（${STAGE_SHORT[st.color]}）。詳細を開く`);
+        setTitle(c,`${nameOf(pid)}（${pid}）／第${st.month}月に ${STAGE_JA[st.color]}`);
+      } else {
+        c.style.transitionDelay="0s";
+        paint(c,""); c.style.opacity=""; setIcon(R,pid,false);
+        const sil=(D.stage_stats&&D.stage_stats.silent)||[];
+        if(acquired && step>=D.stats.steps && sil.indexOf(pid)>=0){
+          c.classList.add("silent"); c.tabIndex=0; c.removeAttribute("aria-hidden");
+          markButton(c);
+          c.setAttribute("aria-label",`${nameOf(pid)}（${pid}）：第${acquired.month}月に動いたが最後まで色が付かなかった。詳細を開く`);
+          setTitle(c,`${nameOf(pid)}（${pid}）／第${acquired.month}月に動いたが、最後まで誰も名指ししなかった`);
+        } else if(acquired){ setTitle(c,`${nameOf(pid)}（${pid}）／第${acquired.month}月に動いた（まだ語られていない）`); }
+        else { setTitle(c,`${nameOf(pid)}（${pid}）`); }
+      }
+      return;
+    }
+    if(a && a.first_month<=step){
+      spokenN++; lit.add(pid);
+      const n=a.cumulative_speakers[String(step)]||1;
+      const t=Math.min(1,n/8);
+      c.style.transitionDelay=(!REDUCED&&advancing&&!prevLit.has(pid))?delayOf(pid)+"s":"0s";
+      setIcon(R,pid,true);
+      if(lm!=null && lm<=step){ linkedN++;
+        paint(c,`rgba(109,40,217,${0.4+0.55*t})`); c.classList.add("linked");
+        setTitle(c,`${pid}／第${a.first_month}月から語られ、第${lm}月に公の場で「同じ動き」として結ばれた／のべ${n}人`); }
+      else { paint(c,`rgba(29,78,216,${0.28+0.62*t})`);
+        setTitle(c,`${pid}／第${a.first_month}月から語られた／のべ${n}人`); }
+    } else {
+      c.style.transitionDelay="0s";
+      c.style.opacity=""; paint(c,""); setIcon(R,pid,false);
+      if(acquired && step>=D.stats.steps && D.silent.indexOf(pid)>=0){
+        c.classList.add("silent"); c.tabIndex=0; c.removeAttribute("aria-hidden");
+        markButton(c);
+        c.setAttribute("aria-label",`${pid}：第${acquired.month}月に動いたが最後まで誰も名指ししなかった。詳細を開く`);
+        setTitle(c,`${pid}／第${acquired.month}月に動いたが、最後まで誰も名指ししなかった`);
+      } else if(acquired){ setTitle(c,`${pid}／第${acquired.month}月に動いた（まだ語られていない）`); }
+      else { setTitle(c,pid); }
+    }
+  });
+  const stepChanged=(step!==prevStep);
+  prevLit=lit; prevStep=step;
+  const leftN=done.length, diff=leftN-spokenN;
+  $("gapnum").textContent=diff;
+  const pct=Math.min(100,diff*100/Math.max(1,D.events.length));
+  $("gapfill").style.width=pct+"%";
+  $("monthlabel").textContent=`第 ${step} 月`;
+  $("capL").textContent=`${leftN} 区画が動いた（売買と賃借の合計・全${D.events.length}件）`;
+  $("capR").textContent=`${spokenN} 区画が、当事者以外の口から名指しされた`
+    +(linkedN?(useStage?`／うち ${linkedN} 区画は緑以上（面・同じ買い手・行政）まで進んだ`
+                       :`／うち ${linkedN} 区画は「同じ動き」として結ばれた`):"");
+  renderLegends(useStage);
+  $("slider").value=step;
+  $("live").textContent=`第${step}月：動いた区画 ${leftN}、語られた区画 ${spokenN}、差 ${diff}`;
+  if(stepChanged){
+    const evs=((D.ignition_timeline||{})[String(step)])||[];
+    renderFxLog(step,evs);
+    drawFx($("mapL"),evs); drawFx($("mapR"),evs);
+  }
+  if(step>=D.stats.steps) markSilent();
+}
+
+function mapNote(){
+  if(!D.layout) return "";
+  const vn=(D.layout.venues_note||"");
+  return `<span class="full">マスの大きさ＝敷地面積（辺は面積の平方根に比例）／中央＝市街地・外側＝郊外／`
+    +`マスの絵は用途（旅館・店・事業所・家・古家・空き地・集会所）。名前は48区画すべてに出している。</span>`
+    +`<span class="full">四角＝区画、丸＝人が集まる場所（会場）。`
+    +`通り・広場・地形は装飾です（判定には使っていません）。会場と本拠の位置も装飾です（${esc(vn)}）。</span>`;
+}
+function renderLegends(useStage){
+  const used=[...new Set(D.events.map(e=>e.holder))];
+  $("legendL").innerHTML=used.map(h=>`<span><i style="background:${HOLDER_COLORS[h]||"#374151"}"></i>${esc(h)}</span>`).join("")
+    +`<span><i style="background:#fff;border:1px solid #D1D5DB"></i>斜線＝賃借（登記は動かない）</span>`
+    +mapNote();
+  $("legendR").innerHTML=(useStage
+    ? STAGE_ORDER.map(c=>`<span><i style="background:${STAGE_COLORS[c]}"></i>${esc(STAGE_JA[c])}</span>`).join("")
+    : `<span><i style="background:#1D4ED8"></i>語られた（濃いほど語った人数が多い）</span>`
+      +`<span><i style="background:#6D28D9"></i>○印＝公の場で「同じ動き」として結ばれた</span>`)
+    +`<span><i style="background:#E5E7EB;box-shadow:0 0 0 2px #B45309 inset"></i>最後まで語られなかった（押すと詳細）</span>`
+    +(D.layout?`<span class="full">光る丸＝その月に誰かが初めて「一帯が動いている」と気づいた場所。`
+      +`線＝その発話が届いた同席者の本拠へ（本拠の位置は装飾）。`
+      +`二重リング＝この場に、取引した本人が居合わせていた。`
+      +`弱い光だけ＝頭の中（誰にも伝わっていない）。</span>`:"")
+    +mapNote();
+}
+
+function markSilent(){
+  cells($("mapR")).forEach(c=>{ if(c.classList.contains("silent")) c.classList.add("flash"); });
+  setTimeout(()=>cells($("mapR")).forEach(c=>c.classList.remove("flash")),1000);
+}
+
+function renderStats(){
+  const s=D.stats, pc=v=>v==null?"—":(v*100).toFixed(1)+"%";
+  const items=[
+    ["取引（売買／賃借）",`${s.deals}（${s.sales}／${s.leases}）`,""],
+    ["X社の所有｜所有＋賃借",`${pc(s.ownership_share)}｜${pc(s.control_share)}`,"no"],
+    ["発話",s.utterances,""],
+    ["語られた区画",s.noticed,"key"],
+    ["最後まで語られない",s.silent,"no"],
+    ["発話しなかったターンの割合",pc(s.silence_rate),""],
+    ["平均同席",s.mean_group_size,""],
+    ["記事｜私信",`${s.articles}｜${s.directs}`,""],
+  ];
+  if(s.C_state_public){
+    items.push(["会場（日常の場）",s.venues,""]);
+    items.push(["到達した最高段階（公言・青/緑/黄/赤）",
+      STAGE_ORDER.map(c=>s.C_state_public[c]).join(" / "),"key"]);
+    items.push(["一度でもその色に達した主体（青→緑→黄→赤）",
+      STAGE_ORDER.map(c=>s.C_ever_public_agents[c]).join(" → "),""]);
+  }
+  const pl=D.party_lens;
+  if(pl&&pl.green){
+    items.push(["緑に初めて達した人｜うち取引の当事者が同席",
+      `${pl.green.first_n}｜${pl.green.with_party}`,"key"]);
+    items.push(["黄に初めて達した人｜うち取引の当事者が同席",
+      `${pl.yellow.first_n}｜${pl.yellow.with_party}`,""]);
+  }
+  if(s.O1_count!=null){
+    items.push(["O1 連結 全件（うち公の場）",`${s.O1_count}（${s.O1_public}）`,"key"]);
+    items.push(["O2 街ぐるみの意図",s.O2_count,"no"]);
+    items.push(["公に口にした主体",`${s.O3_public_agents} / ${s.agents}`,"key"]);
+    items.push(["内心だけの主体",s.O3_private_only,""]);
+  }
+  items.push(["LLMコール｜推計費用",`${s.calls}｜$${s.cost_usd}`,""]);
+  $("stats").innerHTML=items.map(([k,v,c])=>
+    `<div class="stat"><span class="k">${esc(k)}</span><span class="v ${c}">${esc(v)}</span></div>`).join("");
+  const ck=D.checks||{};
+  const ok=ck.loose_basis_matches_metrics && ck.deals_matches_metrics;
+  $("checkline").textContent=`出所：${s.run}（${s.version}・${s.model}・${(D.meta||{}).generated_at||""}）。`
+    +`画面の数値と塗りは tools/build_present_data.py が焼いた JSON だけから描いている。`
+    +`地図の基準＝${ck.map_basis||"—"}。`
+    +`集計（metrics_v5）との突き合わせ：${ok?"一致（区画IDと初出月まで照合）":"不一致あり"}`
+    +`／metrics と同じ基準に直すと ${ck.noticed_metrics_basis_sale} 区画（売買のみ）。`
+    +(D.layout?`地図の配置は ${D.layout.source}（seed ${D.layout.seed}）から機械的に計算した`
+       +`（マスの重なりの最大 ${D.layout.checks.max_overlap}・辺の比 ${D.layout.checks.side_ratio} 倍`
+       +`＝描画面積で ${D.layout.checks.draw_area_ratio} 倍）。`
+       +`呼び名は ${D.layout.naming.source}（${D.layout.naming.n}区画）、`
+       +`会場の位置は装飾（${esc(D.layout.venues_note||"")}）。`:"");
+  $("d3line").textContent=`打切り ${s.max_token_finishes} 本・解釈できなかった応答 ${s.parse_fail} 本`
+    +`（配送誤り ${s.misdelivered}・API失敗 ${s.api_errors}）`;
+  $("ruleonly").textContent=`記事・私信だけで名指しされた区画 ${s.rule_only_parcels} 件`;
+  $("cohortline").textContent=s.cohort_unnoticed_ratio!=null
+    ? `追跡3か月以上に絞った未認知の割合は ${(s.cohort_unnoticed_ratio*100).toFixed(1)}%（集計側の値・売買のみ）。` : "";
+}
+
+function renderHelix(){
+  const ids=Object.keys(D.agent_timeline||{});
+  $("agentsel").innerHTML=ids.map(a=>{
+    const d=((D.agent_deals||{})[a]||[])[0];
+    return `<option value="${a}">${a}${d?`（第${d.month}月に${d.parcel_id}を${d.kind==="lease"?"賃貸":"売却"}）`:""}</option>`;
+  }).join("");
+  $("dNote").textContent=D.stats.version==="field_v5b"
+    ? "この主体は自分が売った／貸したことを当事者として知っている。左＝誰にも伝わっていない頭の中、右＝その月に実際に口に出したこと。黄色い行＝頭の中では考えていたのに、何も言わなかった月。"
+    : "左＝誰にも伝わっていない頭の中、右＝その月に実際に口に出したこと。黄色い行＝頭の中では考えていたのに、何も言わなかった月。"
+      +"run94 の売主に渡るのは「名義が移った」という事実までで、「自分が売った」という当事者の文言は v5b からになる。";
+  drawHelix();
+}
+function drawHelix(){
+  const a=$("agentsel").value, rows=(D.agent_timeline||{})[a]||[];
+  const dealMonths={}; ((D.agent_deals||{})[a]||[]).forEach(d=>dealMonths[d.month]=d);
+  let h=`<div class="hd">頭の中（誰にも伝わっていない）</div><div class="hd">口に出した（同席者に届いた）</div>`;
+  rows.forEach(r=>{
+    const d=dealMonths[r.month], said=(r.texts||[]).join(" ／ ");
+    const silent=r.thought && !said;
+    h+=`<div class="row ${silent?"only":""}"><span class="mo">第${r.month}月`
+      +`${d?`・自分が${d.parcel_id}を${d.kind==="lease"?"賃貸":"売却"}`:""}</span><br>${esc(r.thought)||"<span class='tiny'>—</span>"}</div>`;
+    h+=`<div class="row ${silent?"only":""}"><span class="mo">第${r.month}月</span><br>${esc(said)||"<span class='tiny'>この月は何も言わなかった</span>"}</div>`;
+  });
+  $("helix").innerHTML=h;
+}
+
+function renderReplay(){
+  const s=D.scene_replay;
+  if(!s||!s.month){ $("replay").innerHTML="<p class='tiny'>この本には窓口の場面がない。</p>"; $("eNote").textContent=""; return; }
+  $("eNote").textContent=`第${s.month}月・${s.venue_label||s.venue}（${s.scene}）。`
+    +`そこへ行くと決めた主体 ${(s.attendees||[]).length} 人（うち発言した人 ${(s.speakers||[]).length} 人）。`
+    +`この月までに窓口で見られた名義変更の記録 ${s.registry_records} 件。`
+    +`太字の発話が、1つの中に取得区画を ${s.widest_query} 件まとめて並べたもの。`
+    +`登記を見に行った者は誰でも同じ履歴を見る（記者に特権はない）。`;
+  let h=(s.rows||[]).map(r=>`<div class="line"${r.trigger?' style="background:#FFFBEB"':''}>`
+    +`<span class="who">${esc(r.name||r.from)}（${esc(r.from)}）／${r.round}巡目${r.trigger?"／まとめて照会":""}</span>`
+    +`<br>${r.trigger?"<strong>":""}${esc(r.text)}${r.trigger?"</strong>":""}</div>`).join("");
+  if(s.article) h+=`<div class="note"><strong>同じ月に書かれ、翌月に全員へ届いた記事</strong><br>${esc(s.article.text)}</div>`;
+  $("replay").innerHTML=h;
+}
+
+function renderInvented(){
+  const v=D.invented_link;
+  if(!v){ $("invented").innerHTML="<p class='tiny'>この本には、売買されていない対象と登記を結びつけた言い方が見つからなかった。</p>"; return; }
+  $("invented").innerHTML=
+    `<div class="note"><strong>${esc(v.term)}</strong>は<strong>会場であって区画ではない</strong>`
+    +`（区画IDとして存在しない：${v.is_parcel?"—":"確認済み"}）。台本の取得対象は非公共区画だけで、`
+    +`公共区画の名義は一度も動いていない（このランの実測 ${D.stats.public_transfers} 件）。`
+    +`それでも街の会話には「${esc(v.term)}」と「登記」を結ぶ言い方が`
+    +`<strong>発話${v.utterances}件・内心${v.thoughts}件</strong>現れ、`
+    +`<strong>第${v.first_month}月に初めて出てから第${v.last_month}月まで続き、${v.speakers}人</strong>が口にした。</div>`
+    +`<blockquote>${esc(v.quote.text)}<br><span class="tiny">（${esc(D.stats.run)} 第${v.quote.month}月・${esc(v.quote.from)}・${esc(v.quote.utt_id)}／原文のまま）</span></blockquote>`
+    +`<p class="tiny">出所：<code>docs/present_verification.md</code>（b）。参照の一致・不一致は共起判定であり意味判定ではないため「誤り率」とは呼ばない。</p>`;
+}
+
+function sayRow(kind,label,who,text,cls){
+  return `<div class="say ${cls}"><span class="tag">${esc(label)}</span>`
+    +`<span class="who">${esc(who)}</span><br>${esc(text)}</div>`;
+}
+function whoOf(r){
+  const VL=D.venue_labels||{};
+  return `${r.name||r.from}（${r.from}${r.role?"・"+r.role:""}）`
+    +`／第${r.step ?? r.month}月・${VL[r.venue]||r.venue||(r.scene==="plan"?"自宅・計画":r.scene)}`
+    +(r.utt_id?`・${r.utt_id}`:"");
+}
+// 原文は1文字も直さない。代わりに P番号と土地の呼び名の対応を脇に出す。
+function pidNote(text){
+  const L=D.layout; if(!L) return "";
+  const pids=[...new Set(String(text).match(/P\d{2}/g)||[])].sort().filter(p=>L.cells[p]);
+  if(!pids.length) return "";
+  return `<div class="pidnote">`
+    +pids.map(p=>`原文の ${esc(p)} は「${esc(L.cells[p].name)}」のこと`).join("／")
+    +`</div>`;
+}
+function ignitionBlock(color,o){
+  const VL=D.venue_labels||{};
+  const place=VL[o.venue]||o.venue||(o.scene==="plan"?"自宅・計画":o.scene);
+  let h=`<p class="lead">${esc(o.name||o.from)}（${esc(o.from)}）が第${o.month}月・${esc(place)}で、`
+    +`${o.kind==="thought"?"<strong>頭の中で思っただけ</strong>":(o.kind==="article"?"<strong>記事に書いた</strong>":"<strong>口に出した</strong>")}。</p>`;
+  if(o.matched){
+    const items=(o.matched.parcels||[]).concat(o.matched.holders||[]);
+    if(items.length) h+=`<p class="tiny">並んだもの：${items.map(esc).join("・")}</p>`;
+  }
+  if(o.party_present){
+    h+=`<p class="tiny">${o.party_present.present
+      ?`この場には、取引した本人が居合わせていた（${esc(o.party_present.labels.join("・"))}）。`
+       +`同席は主体が毎月選んだ行き先の結果で、こちらで仕組んだものではない。`
+      :`この場に、取引した本人は居合わせていない。`}</p>`;
+  }
+  if(o.heard_before.length){
+    h+=`<div class="stepname">① その直前に、この人が聞いていた発言</div>`;
+    o.heard_before.forEach(r=>{ h+=sayRow("u","口に出した（同席者に届いた）",whoOf(r),r.text,"speech"); });
+  }
+  if(o.traces_that_month.length){
+    h+=`<div class="stepname">② その月に、この人の目に入った記録</div>`;
+    o.traces_that_month.forEach(t=>{
+      h+=sayRow("t","目に入った記録"+(t.kind==="registry_lookup"?"（登記の照会）":""),
+                `${t.kind}${t.parcel_id?"／"+t.parcel_id:""}${t.acq_id?"／"+t.acq_id:""}`,t.text,"trace"); });
+  }
+  if(o.own_thoughts_that_month.length){
+    h+=`<div class="stepname">③ その月の、この人の頭の中</div>`;
+    o.own_thoughts_that_month.forEach(t=>{
+      h+=sayRow("th","頭の中（誰にも伝わっていない）",`第${o.month}月・${t.scene}`,t.text,"thought"); });
+  }
+  h+=`<div class="stepname">④ 火が点いた行</div>`;
+  h+=sayRow("f",o.kind==="thought"?"頭の中（誰にも伝わっていない）"
+              :(o.kind==="article"?"記事に書いた（翌月に全員へ届く）":"口に出した（同席者に届いた）"),
+            whoOf(o),o.text,"fire");
+  h+=pidNote(o.text);
+  if(o.context_after.length){
+    h+=`<div class="stepname">⑤ 直後の反応</div>`;
+    o.context_after.forEach(r=>{ h+=sayRow("u","口に出した（同席者に届いた）",whoOf(r),r.text,"speech"); });
+  }
+  return h;
+}
+function ignitionSlot(color,slot,empty){
+  const ig=D.ignition||{};
+  const o=((ig[color]||{})[slot])||null;
+  let h=`<div class="ig" style="border-left:6px solid ${STAGE_COLORS[color]}">`;
+  h+=`<h3>${esc(STAGE_DEF[color])}</h3>`;
+  const crit=slot==="strict"?((ig.criteria||{})["strict_"+color]||""):"";
+  if(crit) h+=`<p class="tiny">選び方：${esc(crit)}</p>`;
+  h+=o?ignitionBlock(color,o):`<p class="tiny">${esc(empty)}</p>`;
+  return h+`</div>`;
+}
+function renderIgnition(){
+  const box=$("ignition"), ig=D.ignition;
+  if(!ig){ box.innerHTML="<p class='tiny'>この本には色の判定が無い（v5c から）。</p>"; return; }
+  let h=`<p class="lead">区画や名義が実際に2つ以上並んだ、最初の発言・内心。</p>`;
+  ["green","yellow"].forEach(c=>{
+    h+=ignitionSlot(c,"strict","この本ではこの色に、区画や名義が2つ以上並んだ行は無かった。");
+  });
+  const pl=D.party_lens;
+  if(pl&&pl.green){
+    h+=`<div class="note"><strong>取引した本人が居合わせた場</strong>：`
+      +`緑に初めて達した ${pl.green.first_n} 人のうち ${pl.green.with_party} 人`
+      +`（${pl.green.share==null?"—":(pl.green.share*100).toFixed(1)+"%"}）、`
+      +`黄は ${pl.yellow.first_n} 人のうち ${pl.yellow.with_party} 人`
+      +`（${pl.yellow.share==null?"—":(pl.yellow.share*100).toFixed(1)+"%"}）が、`
+      +`その場に売主・貸主本人が居合わせていた。<br>`
+      +`<span class="tiny">${esc(pl.basis)}。${esc(pl.caveat)}。</span></div>`;
+  }
+  h+=`<details class="igloose"><summary>判定の定義どおりの初出（畳んである）</summary>`
+    +`<p class="tiny">色の定義は「この辺り」のような面的な言い方だけでも成立する。`
+    +`そのため定義どおりの初出には、まだ何も起きていない月の世間話が入る。`
+    +`両方を出しているのは、判定の甘さも見えるようにするため。</p>`;
+  ["green","yellow"].forEach(c=>{
+    h+=ignitionSlot(c,"loose","この本ではこの色は出なかった。");
+  });
+  h+=`</details>`;
+  box.innerHTML=h;
+}
+
+function stageChart(se,steps,agents){
+  const W=980,H=290,ml=54,mr=18,mt=16,mb=40;
+  const x=m=>ml+(W-ml-mr)*(steps<=1?0:(m-1)/(steps-1));
+  const maxv=Math.max(agents||1,1);
+  const y=v=>H-mb-(H-mt-mb)*(v/maxv);
+  let h=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="月ごとに各色へ達した人数の推移">`;
+  [0,0.25,0.5,0.75,1].forEach(f=>{
+    const v=Math.round(maxv*f);
+    h+=`<line class="gl" x1="${ml}" y1="${y(v)}" x2="${W-mr}" y2="${y(v)}"></line>`
+      +`<text x="${ml-8}" y="${y(v)+5}" text-anchor="end">${v}</text>`;
+  });
+  h+=`<line class="ax" x1="${ml}" y1="${H-mb}" x2="${W-mr}" y2="${H-mb}"></line>`;
+  for(let m=1;m<=steps;m++){
+    if(steps>12&&m%2===0) continue;
+    h+=`<text x="${x(m)}" y="${H-mb+22}" text-anchor="middle">${m}</text>`;
+  }
+  h+=`<text x="${ml-8}" y="${mt}" text-anchor="end">人</text>`
+    +`<text x="${W-mr}" y="${H-6}" text-anchor="end">月</text>`;
+  STAGE_ORDER.forEach(c=>{
+    const pts=[];
+    for(let m=1;m<=steps;m++) pts.push(`${x(m).toFixed(1)},${y((se[c]||{})[String(m)]||0).toFixed(1)}`);
+    h+=`<polyline points="${pts.join(" ")}" stroke="${STAGE_COLORS[c]}"></polyline>`;
+  });
+  return h+`</svg>`;
+}
+
+function renderStage(){
+  const box=$("stagebox"), st=D.stage_stats, se=D.stage_series, pe=D.prime_event;
+  if(!st||!Object.keys(st).length){
+    box.innerHTML="<p class='tiny'>この本には4段階の色の判定が無い（v5c から）。</p>"; return; }
+  const VL=D.venue_labels||{};
+  let h="";
+  if(se&&se.public){
+    h+=`<p class="tiny">縦軸＝その色を公の場で口にした主体の人数（累計・全${D.stats.agents}人）、横軸＝月。</p>`
+      +`<div class="chart">${stageChart(se.public,D.stats.steps,D.stats.agents)}</div>`
+      +`<div class="legend">`+STAGE_ORDER.map(c=>
+        `<span><i style="background:${STAGE_COLORS[c]}"></i>${esc(STAGE_JA[c])}</span>`).join("")
+      +`</div>`;
+  }
+  h+=`<h3>その色に最初に達した場所</h3><table><caption class="sr">場所ごとの初到達</caption>`
+    +`<tr><th>色</th><th>場所（人数）</th></tr>`;
+  STAGE_ORDER.forEach(c=>{
+    const vf=(st.venue_first||{})[c]||{};
+    const cs=Object.keys(vf).sort((a,b)=>vf[b]-vf[a])
+      .map(k=>`${esc(VL[k]||k)} ${vf[k]}`).join("／")||"—";
+    h+=`<tr><td>${esc(STAGE_JA[c])}</td><td>${cs}</td></tr>`;
+  });
+  h+=`</table>`;
+  h+=`<details class="numbers"><summary>詳しい数字</summary>`;
+  h+=`<p class="tiny">色は走行前に固定した定義で、保存された発話・内心・記事を事後に分類したもの`
+    +`（ルール1次抽出 ∧ LLM ラベル。分類できなかった行 ${st.unknown} 行は数に入れていない）。</p>`;
+  h+=`<table><caption class="sr">色ごとの到達</caption><tr><th>色</th><th class="num">該当した行</th>`
+    +`<th class="num">公に口にした主体</th><th class="num">頭の中だけの主体</th><th>初出（月・主体・場）</th></tr>`;
+  STAGE_ORDER.forEach(c=>{
+    const f=(st.first||{})[c];
+    h+=`<tr><td><i style="display:inline-block;width:12px;height:12px;border-radius:3px;`
+      +`background:${STAGE_COLORS[c]};margin-right:6px;vertical-align:-2px"></i>${esc(STAGE_JA[c])}</td>`
+      +`<td class="num">${st.rows_by_color[c]}</td>`
+      +`<td class="num">${(st.public_agents_final||{})[c]}</td>`
+      +`<td class="num">${(st.private_only_final||{})[c]}</td>`
+      +`<td>${f?`第${f.month}月・${esc(f.from)}・${esc(VL[f.venue]||f.venue||(f.kind==="article"?"記事":"自宅・計画"))}`:"—（出なかった）"}</td></tr>`;
+  });
+  h+=`</table>`;
+  if(se&&se.public){
+    h+=`<h3>公に口にした主体の推移（累計）</h3><table><caption class="sr">月ごとの人数</caption>`
+      +`<tr><th>月</th>${STAGE_ORDER.map(c=>`<th class="num">${c}</th>`).join("")}</tr>`;
+    for(let m=1;m<=D.stats.steps;m++){
+      h+=`<tr><td class="num">${m}</td>`
+        +STAGE_ORDER.map(c=>`<td class="num">${(se.public[c]||{})[String(m)]||0}</td>`).join("")+`</tr>`;
+    }
+    h+=`</table>`;
+  }
+  if(pe){
+    const b=pe.before_window,a=pe.after_window;
+    h+=`<h3>一等地の売買（第${pe.month}月・${esc(pe.parcel_id)}）の前後</h3>`
+      +`<p class="tiny">${esc(pe.zone)}・${esc(pe.frontage)}・${pe.area_sqm}㎡・${esc(pe.use_detail)}`
+      +`（この街で最も目立つ店舗）。兆候の規則は他の取得と同じで、増やしていない。</p>`
+      +`<table><tr><th>期間</th><th class="num">記事</th>`
+      +STAGE_ORDER.map(c=>`<th class="num">${c}の行</th>`).join("")
+      +STAGE_ORDER.map(c=>`<th class="num">${c}の人</th>`).join("")+`</tr>`;
+    [["前（第"+b.months[0]+"〜"+b.months[1]+"月）",b],["後（第"+a.months[0]+"〜"+a.months[1]+"月）",a]]
+      .forEach(([label,w])=>{
+        h+=`<tr><td>${esc(label)}</td><td class="num">${w.articles}</td>`
+          +STAGE_ORDER.map(c=>`<td class="num">${w.rows_by_color[c]}</td>`).join("")
+          +STAGE_ORDER.map(c=>`<td class="num">${w.agents_by_color[c]}</td>`).join("")+`</tr>`;
+      });
+    h+=`</table>`;
+  }
+  h+=`</details>`;
+  box.innerHTML=h;
+}
+
+function renderHistory(){
+  if(!HIST){ $("history").innerHTML="<p class='tiny'>過去ランの実測（present_data_history.json）を読み込めなかった。</p>"; return; }
+  let h=`<table><caption class="sr">版ごとの成約数と所有率</caption>`
+    +`<tr><th>版</th><th>世界に足したもの</th><th class="num">成約（登記移転）</th><th class="num">X社の所有率</th></tr>`;
+  HIST.phases.forEach(p=>{
+    h+=`<tr><td><strong>${esc(p.label)}</strong></td><td>${esc(p.note)}</td>`
+      +`<td class="num">${esc(p.runs.map(r=>r.transfers).join(" / "))}</td>`
+      +`<td class="num">${esc(p.runs.map(r=>((r.ownership_share||0)*100).toFixed(1)+"%").join(" / "))}</td></tr>`;
+  });
+  h+=`<tr><td><strong>v5</strong></td><td>機構を全部消し、取得を台本に固定した（残したのは登記簿・兆候・シーン）</td>`
+    +`<td class="num">${D.stats.deals}（台本）</td><td class="num">${((D.stats.ownership_share||0)*100).toFixed(1)}%</td></tr></table>`
+    +`<p class="tiny">v4系は3本ぶんを並べた実測（各ランの ledger.jsonl・summary.json）。`
+    +`打診・応答・条例・届出・相談の経路を足しても成約はほとんど起きなかった。</p>`;
+  $("history").innerHTML=h;
+}
+
+function setStep(v){ step=Math.max(0,Math.min(D.stats.steps,v|0)); draw(); }
+function play(){
+  if(timer){ stop(); return; }
+  if(step>=D.stats.steps) step=0;
+  const iv=Math.max(220,Math.round(20000/D.stats.steps));
+  $("play").textContent="⏸ 停止";
+  timer=setInterval(()=>{ if(step>=D.stats.steps){ stop(); return; } setStep(step+1); },iv);
+}
+function stop(){ if(timer) clearInterval(timer); timer=null; $("play").textContent="▶ 再生"; }
+
+function openSilent(pid,src){
+  const d=(D.silent_detail||[]).find(x=>x.parcel_id===pid); if(!d) return;
+  lastFocus=src||null;
+  $("dlgTitle").textContent=`${nameOf(pid)}（${pid}） — 第${d.acquired_month}月に動いたが、最後まで誰も名指ししなかった`;
+  let h=`<p class="tiny">この取得のあと追跡できた月数 ${d.followup_months}／この区画について配られた兆候 ${d.traces_seen} 件</p>`;
+  if(!d.rows.length) h+=`<p>この区画には、誰の目にも入る兆候が配られていない（登記を見に行った者だけが知りうる）。</p>`;
+  d.rows.forEach(r=>{
+    h+=`<div class="note"><strong>第${r.month}月・${esc(r.agent_id)} が見たもの</strong><br>${esc(r.trace_text)}`
+      +`<br><span class="tiny">同じ月にこの人が実際に話したこと：</span><br>${esc(r.said_instead)||"<span class='tiny'>この月は何も話していない</span>"}</div>`;
+  });
+  $("dlgBody").innerHTML=h;
+  $("dlg").showModal();
+}
+
+function openParcel(pid,src){
+  const st=(D.stage_by_parcel||{})[pid]; if(!st) return;
+  lastFocus=src||null;
+  const cell=((D.layout||{}).cells||{})[pid]||{};
+  const ev=D.events.find(e=>e.parcel_id===pid);
+  const VL=D.venue_labels||{};
+  $("dlgTitle").textContent=`${nameOf(pid)}（${pid}） — 第${st.month}月に街が話題にした（${STAGE_SHORT[st.color]}）`;
+  let h="";
+  const facts=[];
+  if(cell.area_sqm!=null) facts.push(`面積 ${cell.area_sqm}㎡（${cell.size_class}）`);
+  if(cell.use_detail) facts.push(`用途 ${cell.use_detail}`);
+  if(cell.zone) facts.push(`地区 ${cell.zone}・${cell.frontage}`);
+  if(cell.owner_label) facts.push(`もとの持ち主 ${cell.owner_label}`);
+  if(facts.length) h+=`<p class="tiny">${esc(facts.join(" ／ "))}</p>`;
+  if(ev){
+    h+=`<div class="note">登記が動いた月：第${ev.month}月`
+      +`（${ev.kind==="lease"?"賃借＝登記は動かない":"売買"}・${esc(ev.holder)}）<br>`
+      +`街が語り始めた月：第${st.month}月<br>`
+      +`<strong>その差：${st.month-ev.month} か月</strong></div>`;
+  }else{
+    h+=`<div class="note">この区画の登記は動いていない。</div>`;
+  }
+  h+=sayRow("f",st.kind==="article"?"記事に書いた（翌月に全員へ届く）":"口に出した（同席者に届いた）",
+            `${st.name||st.from}（${st.from}）／第${st.month}月・`
+            +`${VL[st.venue]||st.venue||(st.kind==="article"?"記事":st.scene||"—")}`
+            +(st.utt_id?`・${st.utt_id}`:""),st.text,"fire");
+  h+=pidNote(st.text);
+  $("dlgBody").innerHTML=h;
+  $("dlg").showModal();
+}
+
+function selectMap(b){
+  const tabs=Array.from(document.querySelectorAll('.maptabs [role=tab]'));
+  tabs.forEach(x=>{ const on=x===b; x.setAttribute("aria-selected",String(on));
+                    x.tabIndex=on?0:-1; $("mapbox"+x.dataset.m).hidden=!on; });
+  mapSide=b.dataset.m;
+}
+
+async function load(label){
+  stop();
+  const token=++loadToken;
+  let data;
+  try{
+    const r=await fetch(`present_data_${label}.json`,{cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    data=await r.json();
+  }catch(e){ showErr(`データ present_data_${label}.json を読み込めなかった（${e.message}）。`); return; }
+  if(token!==loadToken) return;                 // 切替が追い越したら捨てる
+  D=data; $("err").hidden=true; LABELS=null;
+  if(!HIST){ try{ const h=await fetch("present_data_history.json",{cache:"no-store"});
+                  HIST=h.ok?await h.json():null; }catch(e){ HIST=null; } }
+  if(token!==loadToken) return;
+  // ラベルの実測には描画が要る＝両方の地図を見える状態で組んでから切り替える。
+  const wasHidden={L:$("mapboxL").hidden,R:$("mapboxR").hidden};
+  $("mapboxL").hidden=false; $("mapboxR").hidden=false;
+  buildMap($("mapL")); buildMap($("mapR"));
+  $("mapboxL").hidden=(mapSide!=="L"); $("mapboxR").hidden=(mapSide!=="R");
+  // 狭い画面では地図が横にはみ出す＝街の真ん中から見せる。
+  requestAnimationFrame(()=>{ document.querySelectorAll(".mapscroll").forEach(sc=>{
+    sc.scrollLeft=Math.max(0,(sc.scrollWidth-sc.clientWidth)/2); }); });
+  cells($("mapR")).forEach(c=>{
+    const open=()=>{ if(c.classList.contains("silent")) openSilent(c.dataset.pid,c);
+                     else if(c.classList.contains("hot")) openParcel(c.dataset.pid,c); };
+    c.addEventListener("click",open);
+    c.addEventListener("keydown",e=>{
+      if((e.key==="Enter"||e.key===" ")&&
+         (c.classList.contains("silent")||c.classList.contains("hot"))){
+        e.preventDefault(); e.stopPropagation(); open();
+      }
+    });
+  });
+  $("slider").max=D.stats.steps; step=0; prevLit=new Set(); prevStep=-1;
+  renderStats(); renderHelix(); renderReplay(); renderInvented(); renderHistory();
+  renderStage(); renderIgnition(); draw();
+}
+
+function selectTab(b){
+  const tabs=Array.from(document.querySelectorAll('.tabs [role=tab]'));
+  tabs.forEach(x=>{ const on=x===b; x.setAttribute("aria-selected",String(on));
+                    x.tabIndex=on?0:-1; $("p"+x.dataset.p).hidden=!on; });
+  b.focus();
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  renderColorBar();
+  const sel=$("runsel");
+  sel.innerHTML=RUNS.map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+  const q=new URLSearchParams(location.search).get("run");
+  if(q&&RUNS.some(r=>r[0]===q)) sel.value=q;
+  sel.addEventListener("change",()=>load(sel.value));
+  $("slider").addEventListener("input",e=>{stop();setStep(+e.target.value);});
+  $("play").addEventListener("click",play);
+  $("reset").addEventListener("click",()=>{stop();setStep(0);});
+  $("agentsel").addEventListener("change",drawHelix);
+  $("dlgClose").addEventListener("click",()=>$("dlg").close());
+  $("dlg").addEventListener("close",()=>{ if(lastFocus) lastFocus.focus(); });
+  const mtabs=Array.from(document.querySelectorAll('.maptabs [role=tab]'));
+  mtabs.forEach((b,i)=>{
+    b.addEventListener("click",()=>selectMap(b));
+    b.addEventListener("keydown",e=>{
+      if(e.key==="ArrowRight"||e.key==="ArrowLeft"){
+        e.preventDefault();
+        selectMap(mtabs[(i+(e.key==="ArrowRight"?1:mtabs.length-1))%mtabs.length]);
+      }
+    });
+  });
+  const tabs=Array.from(document.querySelectorAll('.tabs [role=tab]'));
+  tabs.forEach((b,i)=>{
+    b.addEventListener("click",()=>selectTab(b));
+    b.addEventListener("keydown",e=>{
+      if(e.key==="ArrowRight"||e.key==="ArrowLeft"){
+        e.preventDefault();
+        selectTab(tabs[(i+(e.key==="ArrowRight"?1:tabs.length-1))%tabs.length]);
+      }
+      if(e.key==="Home"){ e.preventDefault(); selectTab(tabs[0]); }
+      if(e.key==="End"){ e.preventDefault(); selectTab(tabs[tabs.length-1]); }
+    });
+  });
+  document.addEventListener("keydown",e=>{
+    const t=e.target.tagName;
+    if(t==="SELECT"||t==="INPUT"||t==="BUTTON"||t==="TEXTAREA") return;
+    if($("dlg").open) return;
+    if(e.code==="Space"){ e.preventDefault(); play(); }
+    if(e.key==="ArrowRight"){ stop(); setStep(step+1); }
+    if(e.key==="ArrowLeft"){ stop(); setStep(step-1); }
+  });
+  window.addEventListener("resize",()=>{ if(D) draw(); });
+  load(sel.value);
+});
+</script>
+</body></html>
