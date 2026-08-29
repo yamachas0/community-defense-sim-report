@@ -1584,24 +1584,30 @@ function chartSVG(runs){
 function readout(){
   const np=TW.no_path||[], pa=TW.path||[];
   const out=[];
-  const noticedAvg=rs=>{ const v=rs.map(r=>r.noticed_month).filter(m=>m!=null); return v.length?r1(avg(v)):null; };
+  const noticedTxt=rs=>{
+    const v=rs.map(r=>r.noticed_month).filter(m=>m!=null).sort((a,b)=>a-b);
+    if(!v.length) return '気づいたのは0本（'+rs.length+'本とも最後まで気づかず）';
+    const ms=v.map(m=>'第'+m+'月').join('・');
+    const miss=rs.length-v.length;
+    return '気づいたのは'+rs.length+'本中'+v.length+'本（'+ms+'）'
+           +(miss?'・'+miss+'本は最後まで気づかず':'');
+  };
   if(np.length){
-    const na=noticedAvg(np);
+    const na=noticedTxt(np);
     const acts=np.reduce((s,r)=>s+actCount(r),0);
     const parc=Math.round(avg(np.map(r=>r.parcels_final||0)));
     const wari=Math.round(avg(np.map(r=>r.final_share||0))*10);
-    out.push('経路なし'+np.length+'本：気づいたのは'+(na==null?'最後まで無し':'平均'+na+'か月')
-             +'。行動は'+acts+'。最後は'+parc+'か所（'+wari+'割）。');
+    out.push('経路なし'+np.length+'本：'+na+'。行動は'+acts+'。最後は平均'+parc+'か所（'+wari+'割）。');
   }else{ out.push('経路なしの世界：（データ待ち）'); }
   if(pa.length){
-    const na=noticedAvg(pa);
+    const na=noticedTxt(pa);
     const firsts=pa.map(r=>{
       const a=r.acted||{};
       return [a.refusal_first,a.paper_first,a.measure_first].filter(v=>v!=null);
     }).map(v=>v.length?Math.min.apply(null,v):null).filter(v=>v!=null);
     const bl=pa.reduce((s,r)=>s+(r.blocked||0),0);
-    out.push('経路あり'+pa.length+'本：気づいたのは'+(na==null?'最後まで無し':'平均'+na+'か月')
-             +'。初めて行動が出たのは'+(firsts.length?r1(avg(firsts))+'か月':'無し')
+    out.push('経路あり'+pa.length+'本：'+na+'。初めて行動が出たのは'
+             +(firsts.length?('第'+Math.min.apply(null,firsts)+'月'):'無し')
              +'。買えなかったのは'+bl+'件。');
   }else{ out.push('経路ありの世界：（データ待ち）'); }
   if(np.length&&pa.length){
@@ -1649,34 +1655,28 @@ function quotes(){
   if(!pa.length){ $$("quotes").innerHTML=WAIT; return; }
   let html='';
   pa.forEach(run=>{
-    const a=run.acted||{}; const items=[];
+    const a=run.acted||{};
+    const sm=(a.samples||[]).filter(x=>x&&x.text);
+    if(sm.length){
+      sm.slice(0,3).forEach(x=>{
+        html+='<div class="qt"><p class="who">'+E(run.label)+'の世界　'+E(x.head||'')+'</p>'
+             +'<blockquote>'+E(x.text)+'</blockquote>'
+             +'<p class="tiny">'+E(x.who||'')+(x.kind?('／'+E(x.kind)):'')+'</p></div>';
+      });
+      return;
+    }
+    const items=[];
     if(a.refusal_first!=null){
       const who=(a.refusal_people||[]).slice(0,3).join('・')||'街の人';
-      const what=(a.refusal_parcels||[]).slice(0,3).join('・');
-      items.push({m:a.refusal_first,
-        head:who+'が、第'+a.refusal_first+'月に「当面売らない」を選んだ'+(what?'（'+what+'）':'')});
+      items.push({m:a.refusal_first,head:who+'が、第'+a.refusal_first+'月に「当面売らない」を選んだ'});
     }
-    if(a.paper_first!=null){
-      const by=a.by_act||{};
-      const k=Object.keys(by).sort((x,y)=>((by[x]&&by[x].first)||99)-((by[y]&&by[y].first)||99))[0];
-      const nm=k?((by[k]&&by[k].label)||k):'紙';
-      items.push({m:a.paper_first,head:'第'+a.paper_first+'月に、'+nm+'が出た'});
-    }
-    if(items.length<2&&(run.blocked_rows||[]).length){
-      const b=run.blocked_rows[0];
-      items.push({m:b.step,head:'第'+b.step+'月に、'+(b.parcel||'その土地')+'は'
-        +(b.under_name||'買い手')+'に売られなかった'});
-    }
-    if(a.measure_first!=null&&items.length<2){
-      items.push({m:a.measure_first,head:'第'+a.measure_first+'月に、役場が初めて措置を出した'});
-    }
+    if(a.paper_first!=null) items.push({m:a.paper_first,head:'第'+a.paper_first+'月に、紙が出た'});
     items.slice(0,2).forEach(it=>{
       const h=textAt(run,it.m);
       html+='<div class="qt"><p class="who">'+E(run.label)+'の世界　'+E(it.head)+'</p>'
            +(h?('<blockquote>'+E(h.text)+'</blockquote>'
-                +'<p class="tiny">'+E(h.name||"")+(h.venue?('／'+E(h.venue)):'')+'</p>')
-              :'<p class="wait">（原文なし）</p>')
-           +'</div>';
+                +'<p class="tiny">'+E(h.name||"")+'</p>')
+              :'<p class="wait">（原文なし）</p>')+'</div>';
     });
   });
   $$("quotes").innerHTML=html||WAIT;
