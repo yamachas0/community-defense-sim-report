@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>静かな占領 — 発表スライド（10枚）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0A0A0A;--accent:#10B981;--line:#E5E7EB;--muted:#6B7280;
+  --pad:20px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%;overflow:hidden;background:#fff}
+body{
+  color:var(--black);
+  font-family:"Noto Sans JP",system-ui,-apple-system,sans-serif;
+  line-height:1.75;-webkit-text-size-adjust:100%;
+  overscroll-behavior:none;
+}
+#deck{position:fixed;inset:0}
+.slide{
+  position:absolute;inset:0;
+  display:none;
+  flex-direction:column;
+  padding:calc(env(safe-area-inset-top,0px) + 22px) var(--pad)
+          calc(env(safe-area-inset-bottom,0px) + 58px) var(--pad);
+  overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+.slide.on{display:flex}
+
+.kicker{
+  font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--accent);
+  margin:0 0 6px;flex:none;
+}
+h2{
+  font-size:clamp(21px,5.4vw,32px);font-weight:900;line-height:1.4;
+  margin:0 0 14px;padding-left:12px;border-left:5px solid var(--accent);
+  flex:none;letter-spacing:.01em;
+}
+ul.body{
+  list-style:none;margin:0 0 12px;padding:0;flex:none;
+}
+ul.body li{
+  font-size:clamp(18px,4.3vw,22px);line-height:1.7;
+  margin:0 0 12px;padding-left:20px;position:relative;
+}
+ul.body li::before{
+  content:"";position:absolute;left:2px;top:.72em;
+  width:8px;height:8px;border-radius:50%;background:var(--accent);
+}
+strong{font-weight:900}
+.hl{color:var(--accent);font-weight:900}
+
+.figwrap{
+  flex:1 1 auto;min-height:0;
+  display:flex;align-items:center;justify-content:center;
+  margin:4px 0 10px;
+}
+.figwrap img{
+  max-width:100%;max-height:100%;
+  width:auto;height:auto;object-fit:contain;
+  border:1px solid var(--line);border-radius:8px;background:#fff;
+}
+.figcap{
+  flex:none;font-size:13px;color:var(--muted);margin:0 0 8px;line-height:1.6;
+}
+.spacer{flex:1 1 auto;min-height:0}
+
+.big{
+  font-size:clamp(24px,6.6vw,40px);font-weight:900;line-height:1.6;
+  margin:0 0 18px;
+}
+.pending{
+  flex:none;border:2px dashed var(--line);border-radius:10px;
+  padding:14px 16px;color:var(--muted);font-size:16px;font-weight:700;
+  text-align:center;margin:2px 0 10px;background:#FAFAFA;
+}
+
+details.talk{
+  flex:none;border-top:1px solid var(--line);padding-top:8px;margin-top:auto;
+}
+details.talk summary{
+  list-style:none;cursor:pointer;font-size:14px;font-weight:700;
+  color:var(--muted);padding:4px 0;
+}
+details.talk summary::-webkit-details-marker{display:none}
+details.talk summary::before{content:"▶ ";color:var(--accent)}
+details.talk[open] summary::before{content:"▼ ";color:var(--accent)}
+details.talk .lines{
+  font-size:15px;line-height:1.85;color:#374151;
+  border-left:3px solid var(--line);padding:6px 0 6px 12px;margin:6px 0 0;
+  max-height:34vh;overflow-y:auto;
+}
+
+@media (min-width:900px){
+  .slide{
+    padding-left:max(24px,calc((100vw - 1040px) / 2));
+    padding-right:max(24px,calc((100vw - 1040px) / 2));
+    padding-top:40px;
+  }
+}
+
+#bar{
+  position:fixed;left:0;right:0;bottom:0;
+  height:calc(env(safe-area-inset-bottom,0px) + 46px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  display:flex;align-items:center;justify-content:center;gap:18px;
+  background:rgba(255,255,255,.94);border-top:1px solid var(--line);
+  font-size:14px;color:var(--muted);z-index:5;
+}
+#bar button{
+  font:inherit;font-weight:700;color:var(--black);background:#fff;
+  border:1px solid var(--line);border-radius:8px;padding:5px 14px;cursor:pointer;
+}
+#bar button:active{border-color:var(--accent)}
+#pageno{font-variant-numeric:tabular-nums;font-weight:700;color:var(--black);min-width:56px;text-align:center}
+#prog{position:fixed;left:0;top:0;height:3px;background:var(--accent);z-index:6;transition:width .18s ease}
+</style></head>
+<body>
+<div id="prog" style="width:10%"></div>
+<div id="deck">
+
+<!-- 1 -->
+<section class="slide">
+  <p class="kicker">01</p>
+  <h2>クイズ ─ この街の新聞を3本、読んでください</h2>
+  <ul class="body">
+    <li>3本の記事に出てくる買い手の名前は、A社・B社・C社・D社。</li>
+    <li>何社が買っていると思いますか？</li>
+    <li>答え：<span class="hl">1社</span>。3年で <span class="hl">45か所</span> に手を出し、最後は街の土地の <span class="hl">7割</span> が1社の名義でした。</li>
+  </ul>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    この街の新聞を3本読んでください。10秒差し上げます。……何社が買っていると思いますか？<br>
+    答えは1社です。名前はA社・B社・C社・D社と分かれていましたが、中身は同じ1社。<br>
+    3年で45か所に手を出して、最後は街の土地の7割がこの1社の名義になっていました。<br>
+    皆さんが今やったことを、AIの町にやらせたのが今回の研究です。
+  </div></details>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <p class="kicker">02</p>
+  <h2>何を作ったか ─ 町ひとつと、部品は3つだけ</h2>
+  <ul class="body">
+    <li>田舎町ひとつ。<strong>48区画・住民26人</strong>。全員が言葉のAIで、毎月どこかで世間話をします。</li>
+    <li>買い手は<strong>台本</strong>です。<span class="hl">買い手はAIを一度も使いません。</span>名前を変えながら3年で45か所。</li>
+    <li>世界にある部品は3つだけ ── <strong>①登記簿 ②買った後に街に残る痕跡 ③人が集まる場</strong>。</li>
+  </ul>
+  <div class="figwrap"><img src="assets/fig_town_map.png" alt="街の地図"></div>
+  <p class="figcap">※町の見た目を見せるためだけの画面です（区画の色や枚数は読みません）。</p>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    作ったのは町ひとつです。48区画、住民26人。全員が言葉のAIで、毎月、銭湯や床屋や公民館で世間話をします。<br>
+    買い手はAIではありません。台本です。3年で45か所を、名前を変えながら買う。買い手は一度もAIを使いません。<br>
+    世界に置いた部品は3つだけ。誰の名義かが分かる登記簿。買った後に街に残る痕跡 ── 看板が変わった、見慣れない人がいた、工事が始まった。そして、人が集まる場所。それだけです。<br>
+    私たちが見たいのは2つ。いつ気づくか。気づいた後、何かするか。
+  </div></details>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <p class="kicker">03</p>
+  <h2>経路なしの世界 ─ 気づく。でも、何も起きない</h2>
+  <ul class="body">
+    <li>町の人に「売らない」と決める手も、回覧に載せる手も、役場に言う窓口も<strong>ありません</strong>。</li>
+    <li><strong>6本のうち5本が、第4〜9月に「同じ買い手じゃないか」と口に出しました。</strong></li>
+    <li><span class="hl">それでも3年間、行動はゼロ。</span>最後は平均43か所・街の約7割が1社の名義。</li>
+  </ul>
+  <div class="figwrap"><img src="assets/fig_two_worlds.png" alt="2つの世界の曲線"></div>
+  <p class="figcap">※左のパネルがこの世界です。</p>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    まずこちらの世界。町の人には手がありません。売らないと決める手も、回覧に載せる手も、役場に言う窓口も置いていない。<br>
+    気づいてはいるんです。6本走らせて、5本が第4月から第9月のあいだに「同じ買い手じゃないか」と口に出しています。それでも3年間、行動はゼロでした。<br>
+    最後は平均43か所。街の7割が、1社の名義になりました。見えていても、何も起きない。
+  </div></details>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <p class="kicker">04</p>
+  <h2>経路ありの世界 ─ 中立な選択肢を3段置いただけで、7割が2割に</h2>
+  <ul class="body">
+    <li>足したのは<strong>中立な選択肢を3段だけ</strong>。個人が「当面売らない」／集団で回覧・議題・申入れ／役場が窓口・説明会・条例検討。<strong>促し文は1文字も足していません。</strong></li>
+    <li>最後は平均22か所。<span class="hl">7割 → 2割。</span>買い手が買えなかったのは68件。</li>
+    <li><strong>毎月の問いかけをやめた世界（2本）でも、線は同じだけ寝ました。</strong>効いているのは「思い出させること」ではなく<strong>選択肢そのもの</strong>。</li>
+  </ul>
+  <div class="figwrap"><img src="assets/fig_two_worlds.png" alt="2つの世界の曲線（全体）"></div>
+  <p class="figcap">※これが2つの時計です（左＝経路なし／中＝経路あり／右＝毎月の問いかけをやめた世界）。</p>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    同じ町を、もう一度走らせました。違うのは1つだけ。中立な選択肢を3段、置いたことです。<br>
+    個人が「当面売らない」と言える。町として回覧に載せる・議題にする・役場に申し入れる。役場は窓口を開く・説明会をする・条例を検討する。「そうしなさい」とは1文字も書いていません。<br>
+    結果、最後は平均22か所。7割が2割になりました。×印が、売らないと決められていて台本どおりに買えなかった月です。68件あります。<br>
+    右端はおまけで、毎月の問いかけをやめた世界。それでも同じだけ寝ました。
+  </div></details>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <p class="kicker">05</p>
+  <h2>いちばん正直な話 ─ 線が寝たのは「気づいたから」ではない</h2>
+  <ul class="body">
+    <li><strong>最初の「当面売らない」は3本とも第1月</strong>。「同じ買い手だ」と公の場で言えたのは3本中2本、第3月と第12月です。</li>
+    <li>一斉蜂起でもありません。<strong>月に1〜2件</strong>が36か月続いただけ（51〜55件・のべ13〜16人）。<strong>解除した人もいます。</strong></li>
+    <li>出てきた紙も普通です。「相続・空き家の相談窓口を設置します」。<span class="hl">「同じ買い手」を告発する紙は1枚もありません。</span></li>
+  </ul>
+  <div class="figwrap"><img src="assets/fig_quote.png" alt="行動の瞬間の原文3枚"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    ここがいちばん正直に言いたいところです。線が寝た理由は「気づいたから」ではありません。<br>
+    最初の「当面売らない」は3本とも第1月に出ています。一方「同じ買い手だ」と公の場で言えたのは第3月と第12月、1本は最後まで一度もありません。行動のほうが、気づきより先に出ている。<br>
+    一斉蜂起でもない。月に1〜2件が3年続いただけで、解除した人もいます。<br>
+    理由も普通です。「空き家の草刈りが負担だ」「相続の相談窓口を設置します」。<br>
+    「今は売らない」と普通に言える窓口が、気づく前からそこにあった。それだけです。
+  </div></details>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <p class="kicker">06</p>
+  <h2>言えないこと（先に言います）</h2>
+  <ul class="body">
+    <li><strong>6本と3本の比較で、無作為化した比較ではありません。</strong>傾向であって統計ではない。</li>
+    <li>足したのは選択肢だけでなく<strong>束</strong>です（宣言が続く／その人の全部の土地にかかる／紙が全員に配られる／買い手が買い直さない）。<span class="hl">どれが効いたかは言えません。</span></li>
+    <li>「買えなかった68件」は<strong>予定が不成立になった数</strong>で、買い手が諦めた数ではありません。</li>
+  </ul>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    言えないことを先に言います。6本と3本の比較で、くじ引きで割り付けた比較ではありません。傾向であって統計ではない。<br>
+    足したのは選択肢だけではなく、宣言が続くこと・その人の全部の土地にかかること・紙が全員に配られること・買い手が買い直さないことの束です。どれが効いたかは、この本数では言えません。<br>
+    「買えなかった68件」も、予定が不成立になった数であって、買い手が諦めた数ではありません。<br>
+    それでも、選択肢を置いた世界と置かない世界で、こういう差が出た。ここまでが今日言えることです。
+  </div></details>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <p class="kicker">07</p>
+  <h2>で？ ─ これは「作る前に試せる装置」です</h2>
+  <ul class="body">
+    <li>答えるのは <strong>「町の気づきを行動に変える最小の仕組みは何か」を、条例を作る前に試せる</strong>、ということ。</li>
+    <li>今回の答え：<span class="hl">「気づかせる仕組み」より、普段の「今は売らない」が登記に効く経路</span>を先に作れ。しかも効いたのは<strong>いちばん軽い1段目</strong>。</li>
+    <li><strong>役場の「条例・届出の検討」は3本とも0件</strong>。置いてあっても手が伸びない。<strong>止めることと、見抜くことは別</strong>です。</li>
+  </ul>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    で、これは何の役に立つのか。条例やチラシを作る前に、どの仕組みが効くかを試せる装置です。<br>
+    今回の答えははっきりしています。「気づかせる仕組み」を作るより先に、普段の「今は売らない」が登記まで届く経路を作れ。しかも効いたのは、いちばん軽い1段目 ── 個人が「今は売らない」と言えることでした。<br>
+    逆に、役場の「条例・届出の検討」は3本とも0件。置いてあっても、手が伸びない。<br>
+    そして怖い発見をひとつ。止めた世界では、気づきがむしろ遅く・弱くなりました。止めることと、見抜くことは別の話です。
+  </div></details>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <p class="kicker">08</p>
+  <h2>次にやっていること ─ 「最小の町」</h2>
+  <ul class="body">
+    <li>部品をさらに削った町（住民30人・土地44区画・場所5つ・情報は<strong>会話だけ</strong>）で、買い手も言葉のAIにしました。</li>
+    <li><strong>1本目：買い手はほとんど動かない</strong>（36か月で声掛け35件・相手は2人だけ・成約0）。<span class="hl">それでも8人が自分から売り、12区画が買い手の名義に。</span>噂は会話だけで立ちました（第15〜20月）。</li>
+    <li><strong>2本目：買い手を積極的にすると、247件・28人全員に条件を送った</strong>。町は第3月に名前を知り、以後ずっとその話（531発話のうち229件）。<span class="hl">それでも名義が移ったのは6人・7区画だけ。</span></li>
+  </ul>
+  <div class="figwrap"><img src="assets/fig_v8_curve.png" alt="最小の町の取得曲線"></div>
+  <div class="pending">3本目 ＝ 朝に差し替え</div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    今やっているのが「最小の町」です。部品をもっと削って、新聞も痕跡も紙も無くしました。情報が通るのは会話だけ。買い手も言葉のAIにして、自分で条件を考えて手紙を出させました。<br>
+    1本目は、買い手がほとんど動かなかった。3年で声を掛けたのは35回、相手はたった2人、成約はゼロ。それでも28人中8人が自分から売って、12区画が買い手の名義になりました。<br>
+    そこで2本目は買い手を積極的にしました。247件、28人全員に条件を送っています。町は第3月にはもう名前を知っていて、発話の4割強がその会社の話でした。それでも名義が移ったのは6人・7区画だけです。<br>
+    誰も声を掛けられていないのに売る。逆に、毎月声を掛けられても動かない。これが次の問いです。
+  </div></details>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <p class="kicker">09</p>
+  <h2>前回のハッカソンとの違い ─ ルールは創発を汚す</h2>
+  <ul class="body">
+    <li>前回は「こうなったら住民はこう動く」という<strong>数式を自分で書いてしまい</strong>、結果がその数式のなぞりになりました。</li>
+    <li>今回は<span class="hl">世界の側に、その数式を1つも書きませんでした</span>。書いたのは「起きたことを記録する帳簿」だけ。</li>
+    <li>ただし途中、<strong>「気づいたか」をAIに採点させて観測の側を汚しかけた</strong>。締めでは<strong>採点役のAIを全部やめ</strong>、数えたのは登記簿と本人が選んだ行動だけ。<strong>人が全部読み直しました。</strong></li>
+  </ul>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    最後に、前回のハッカソンとの違いを。前回は創発を見るはずが、「不安が閾値を超えたら売る」みたいな数式を自分で書いてしまい、結果がその数式のなぞりになりました。<br>
+    今回は世界の側にその数式を1つも書いていません。書いたのは、起きたことを記録する帳簿だけです。<br>
+    ただし正直に言うと、途中で観測の側を汚しかけました。「気づいたかどうか」をAIに採点させていたんです。<br>
+    締めではそれを全部やめました。数えたのは登記簿と、本人が選んだ行動だけ。読みにくいところは人が全部読みました。世界の側でも観測の側でも、ルールを書かない。
+  </div></details>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <p class="kicker">10</p>
+  <h2>一言</h2>
+  <div class="spacer"></div>
+  <p class="big">静かな占領は、隠したから成立するのではありません。<br><span class="hl">見えていても、動く手が無いから成立する。</span></p>
+  <p class="big" style="font-size:clamp(19px,5vw,28px)">手を3つ置いたら、<span class="hl">7割が2割</span>になりました。ただし、気づいたからではありません。</p>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    静かな占領は、隠したから成立するのではありません。見えていても、動く手が無いから成立する。<br>
+    中立な手を3つ置いただけで、7割が2割になりました。ただし、気づいたからではありません。<br>
+    「今は売らない」と普通に言える窓口が、気づく前からそこにあった。それだけです。<br>
+    ありがとうございました。
+  </div></details>
+</section>
+
+</div>
+
+<div id="bar">
+  <button id="prev" type="button" aria-label="前へ">‹ 前</button>
+  <span id="pageno">1 / 10</span>
+  <button id="next" type="button" aria-label="次へ">次 ›</button>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var i = 0;
+  var pageno = document.getElementById('pageno');
+  var prog = document.getElementById('prog');
+
+  function show(n){
+    if(n < 0) n = 0;
+    if(n > total - 1) n = total - 1;
+    slides[i].classList.remove('on');
+    i = n;
+    slides[i].classList.add('on');
+    slides[i].scrollTop = 0;
+    pageno.textContent = (i + 1) + ' / ' + total;
+    prog.style.width = ((i + 1) / total * 100) + '%';
+    if(location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  }
+  function next(){ show(i + 1); }
+  function prev(){ show(i - 1); }
+
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' '){ next(); e.preventDefault(); }
+    else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp'){ prev(); e.preventDefault(); }
+    else if(e.key === 'Home'){ show(0); }
+    else if(e.key === 'End'){ show(total - 1); }
+  });
+
+  function interactive(el){
+    while(el && el !== document.body){
+      var t = el.tagName;
+      if(t === 'A' || t === 'BUTTON' || t === 'SUMMARY' || t === 'DETAILS') return true;
+      el = el.parentElement;
+    }
+    return false;
+  }
+
+  var sx = 0, sy = 0, st = 0, lastTouch = 0;
+  document.addEventListener('touchstart', function(e){
+    if(e.touches.length !== 1) return;
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; st = Date.now();
+  }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(!st) return;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - sx, dy = t.clientY - sy, dt = Date.now() - st;
+    st = 0; lastTouch = Date.now();
+    if(Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4){
+      if(dx < 0) next(); else prev();
+      return;
+    }
+    if(Math.abs(dx) < 12 && Math.abs(dy) < 12 && dt < 400 && !interactive(t.target)){
+      if(t.clientX > window.innerWidth * 0.35) next(); else prev();
+    }
+  }, {passive:true});
+
+  document.addEventListener('click', function(e){
+    if(Date.now() - lastTouch < 600) return;
+    if(interactive(e.target)) return;
+    if(e.clientY > window.innerHeight - 56) return;
+    if(e.clientX > window.innerWidth * 0.35) next(); else prev();
+  });
+
+  var h = parseInt((location.hash || '').replace('#',''), 10);
+  slides[0].classList.add('on');
+  if(h >= 1 && h <= total) show(h - 1); else show(0);
+})();
+</script>
+</body></html>
