@@ -74,6 +74,7 @@ h1.big,.big{font-size:clamp(24px,6.2vw,40px);font-weight:900;line-height:1.55;ma
 .figwrap{flex:1 1 auto;min-height:100px;display:flex;align-items:center;justify-content:center;margin:2px 0 8px}
 .figwrap img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:#fff}
 .figcap{flex:none;font-size:14px;color:var(--dim);margin:0 0 10px;line-height:1.6}
+.figwrap.fixed{flex:none;height:230px}
 
 .duo{flex:none;display:flex;align-items:stretch;gap:10px;margin:6px 0 14px}
 .duo .box{
@@ -350,12 +351,18 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
     <span class="chip">条件文 <b>98通り</b></span>
     <span class="chip">書き換え <b>78回</b></span>
   </div>
-  <div class="figwrap"><img src="assets/fig_v8c_curve.png" alt="36か月の取得曲線と提示件数"></div>
+  <div class="figwrap fixed"><img src="assets/fig_v8d_curve.png" alt="36か月の取得曲線（元の版と3点だけ変えた版）と提示件数"></div>
+  <p class="figcap">上＝買い手の名義になった不動産の割合。<strong>実線＝3点だけ変えた版（6区画・4人）／点線＝元の版（0件のまま）</strong>。下の棒＝その月の提示件数。</p>
   <ul class="body">
     <li>36か月・提示187回・相手は実人数24人。<span class="hl">名義は1件も動かなかった（0 / 41区画）。</span></li>
     <li>断られた187件<strong>すべてに理由が書かれた</strong>（記入率100%）。X社は毎月それを読んで、条件文を98通り試した。</li>
     <li>町のやり取りは減った — 発言<strong>203件</strong>、「今月はどこにも行かない」が1,080回中<strong>779回（72%）</strong>。同じ町の前の版では発言531件だった。</li>
-    <li>v8d（同じ町で3点だけ変えた版）：<span class="hl">走行中・朝に差し替え</span></li>
+    <li><strong>同じ町で3点だけ変えた版</strong>（「戻らない」の一文を消す／X社に自分の手札を教える／理由欄を売買の判断だけに）では、<span class="hl">名義が動いた — 6区画・4人（第7・15・24・36月）</span>。提示<strong>472件</strong>・相手<strong>26人</strong>。
+      <ul>
+        <li>X社の書き方が変わった — 「交換」155件→<strong>0件</strong>、「住み続ける・営み続けることを条件に」0件→<strong>360件</strong>。売った4人は全員この一点を理由に挙げた。</li>
+        <li>町も動いた — 出品33件（3人）→<strong>86件（13人）</strong>、発言203→<strong>391件</strong>、「どこにも行かない」72%→<strong>55%</strong>。</li>
+      </ul>
+    </li>
   </ul>
   <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
@@ -363,7 +370,11 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
     図の横軸が月、上の折れ線がX社の持つ割合で、ずっと底を這っています。下の棒がその月の提示件数です。<br>
     断られた187件には全部、理由が一言書かれています。X社はそれを毎月読んで、条件の書き方を98通り試しました。<br>
     もうひとつ起きたのが、町のやり取りが減ったことです。3年で発言は203件、毎月の行き先の選択1,080回のうち779回、7割強が「どこにも行かない」でした。同じ町の前の版では発言が531件だったので、半分以下です。<br>
-    いま同じ町で3点だけ変えた版を走らせています。その欄は朝に差し替えます。
+    その同じ町で、3点だけ変えた版も走り終わりました。変えたのは、売るときの説明から「戻らない」という一文を消したこと、X社に自分の手札——第1月の時点で町に不動産を持っていない・お金の額はこの世界では扱わない・約束できるのは自分が実行できることだけ——を教えたこと、そして理由欄を売る・出すの判断だけに絞ったことの3つです。<br>
+    今度は名義が動きました。6区画・4人。第7月、第15月、第24月、第36月です。提示は472件、相手は26人。<br>
+    いちばん変わったのはX社の書き方でした。前の版で8割を占めていた「交換します」が1件も出ず、代わりに472件のうち360件で「あなたがそこに住み続ける、店を営み続けることを条件に譲り受けます」と書いています。売った4人は全員、その一点を理由に挙げました。<br>
+    町の側も動いています。売りに出したのが33件・3人から86件・13人へ、発言が203件から391件へ、「今月はどこにも行かない」が72%から55%へ。<br>
+    図の点線が元の版で、ずっと底を這っています。実線が3点だけ変えた版です。ただし3つを同時に変えているので、どれが効いたのかはこの1本では分けられません。
   </div></details>
 </section>
 
@@ -434,6 +445,7 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
     <li>断り・出品の理由で「海外／外資」等に触れたのは<strong>697件中1件</strong>。<span class="hl">公式な断り文句としては選ばれなかった。</span></li>
     <li>一方、その場の雑談には出てくる（203件中12件）。<strong>使い分けられている。</strong></li>
     <li>X社に触れた発言51件の傾き＝<strong>様子見 33件（64.7%）／取引の返答 10件（19.6%）／警戒 5件（9.8%）／歓迎 3件（5.9%）</strong>。<span class="hl">拒む空気も、迎える空気も、ほぼ無い。</span></li>
+    <li>3点だけ変えた版でも同じ — 断りの一言468件のうち「海外／外資」等に触れたのは<strong>20件（4.3%）</strong>。断る理由の主因は言葉で見るかぎり<strong>条件164件・不明106件・詳細84件</strong>で、<span class="hl">相手が海外であることではない</span>。</li>
   </ul>
   <div class="read">
     <p class="rt">原文（その場の会話）</p>
@@ -479,6 +491,7 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
     <li><strong>4つの変更を同時に入れた結果である。</strong>どれが効いて0件になったのかは、この1本では分離できない。</li>
     <li><strong>理由を書かせること自体が介入である。</strong>判断を正当化させたり、前の月の理由をなぞらせたりしうる。除ける雑音ではない。</li>
     <li><strong>売った人が0人</strong>なので、伝染・取得曲線・「売る理由」については何も測れていない。</li>
+    <li><strong>「住み続けてよい」は、もともと保証されている。</strong>3点だけ変えた版で売った4人は全員この条件を挙げたが、この世界では<span class="hl">名義に関係なく、住み続けること・店を営み続けることが最初から保証されている</span>。X社が新たに与えた対価ではない可能性がある（世界は提示文の中身を検証しない）。</li>
   </ul>
   <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
@@ -486,7 +499,8 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
     誰も会わない町との比較も今回は走らせていません。だから、ここまでの数字は会話がある世界の中の相関であって、会話があったから止まった、という因果ではありません。<br>
     しかも今回は4つの変更を同時に入れています。売る／売らないという語、全判断の理由欄、X社の目的文、そして海外の名乗り。どれが効いたかは分けられません。<br>
     理由を書かせること自体も介入です。人は書くと正当化しますし、前の月に書いた理由をなぞりもします。これは取り除ける雑音ではなく、観測した以上ついてくるものとして結果に残っています。<br>
-    そして売った人が0人なので、伝染も、売る理由も、今回は測れていません。
+    そして売った人が0人なので、伝染も、売る理由も、今回は測れていません。<br>
+    もう一点。3点だけ変えた版で売った4人は、全員「住み続けられるから」を理由に挙げています。ただしこの世界では、名義が誰に移っても住み続けること・店を営み続けることは最初から保証されています。つまりX社は、すでに保証されているものを条件として差し出した可能性があります。世界は提示文の中身を検証しないので、これは止まりません。
   </div></details>
 </section>
 
