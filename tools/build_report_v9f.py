@@ -26,12 +26,32 @@ from matplotlib import font_manager  # noqa: E402
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SIM_REPO = r"C:\Users\user\projects\quiet-acquisition"
-RUN = os.path.join(
-    SIM_REPO, "simulations",
-    "2026-08-30_1711_132_field_v9f_pay_more_if_needed_chat")
+SIMS = os.path.join(SIM_REPO, "simulations")
 ASSETS = os.path.join(HERE, "assets", "report")
-OUT_HTML = os.path.join(HERE, "report.html")
 MAP_MONTHS = [1, 6, 12, 18, 24, 30, 36]
+
+# 4本の走行＝世界の設定が2点だけ違う（買い手が過半の取得を目指すと明言するか／
+# 場の会話と隣近所があるか）。key はファイル名と画像置き場に使う。
+RUNS = [
+    {"key": "main", "label": "明言なし・会話あり",
+     "dir": "2026-08-30_1711_132_field_v9f_pay_more_if_needed_chat",
+     "map": "v9f_map.py", "declared": False, "chat": True, "classified": True},
+    {"key": "nochat", "label": "明言なし・会話なし",
+     "dir": "2026-08-30_1846_134_field_v9f_pay_more_if_needed_nochat",
+     "map": "v9f_map.py", "declared": False, "chat": False, "classified": False},
+    {"key": "declared", "label": "明言あり・会話あり",
+     "dir": "2026-08-30_2017_138_field_v9h_declared_majority_chat",
+     "map": "v9h_map.py", "declared": True, "chat": True, "classified": False},
+    {"key": "declared_nochat", "label": "明言あり・会話なし",
+     "dir": "2026-08-30_2043_140_field_v9h_declared_majority_nochat",
+     "map": "v9h_map.py", "declared": True, "chat": False, "classified": False},
+]
+OUT_NAME = {"main": "report.html", "nochat": "report_nochat.html",
+            "declared": "report_declared.html",
+            "declared_nochat": "report_declared_nochat.html"}
+DECLARED_LINE = "私どもは、この街の不動産の過半の取得を目指しています。"
+# 走行前に凍結した語（docs/world_design_v9h.md §2）で数える。
+SUSPECT_WORDS = ["買い占め", "警戒", "意図", "危機", "支配", "乗っ取"]
 
 # 断りの理由を人の手で全件読んで分けた結果。出典＝
 # quiet-acquisition/docs/submission/reasons_v9f_classified.md （(a)節・(c)節・(d)節・(e)節）。
@@ -71,8 +91,8 @@ CLASSIFIED = {
 }
 
 
-def jload(name):
-    with open(os.path.join(RUN, name), encoding="utf-8") as f:
+def jload(run, name):
+    with open(os.path.join(run, name), encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -100,12 +120,15 @@ def oku(n):
 # 地図（本体リポの道具を呼ぶ。出力名から版の記号を外して置き直す）
 # ---------------------------------------------------------------------------
 
-def build_maps():
-    tmp = os.path.join(ASSETS, "_maps_tmp")
+def build_maps(run, key, maptool):
+    outdir = os.path.join(ASSETS, key)
+    os.makedirs(outdir, exist_ok=True)
+    tmp = os.path.join(outdir, "_maps_tmp")
     os.makedirs(tmp, exist_ok=True)
-    cmd = [sys.executable, os.path.join(SIM_REPO, "tools", "v9f_map.py"),
+    tag = "v9h" if "v9h" in maptool else "v9f"
+    cmd = [sys.executable, os.path.join(SIM_REPO, "tools", maptool),
            "--personas", os.path.join(SIM_REPO, "configs", "personas_v9c.yaml"),
-           "--run", RUN,
+           "--run", run,
            "--months", ",".join(str(m) for m in MAP_MONTHS),
            "--out-dir", tmp]
     kw = {}
@@ -114,9 +137,9 @@ def build_maps():
     subprocess.run(cmd, cwd=SIM_REPO, check=True,
                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw)
     for m in MAP_MONTHS:
-        for a, b in (("plan", "plan"), ("section", "section")):
-            src = os.path.join(tmp, f"fig_v9f_map_{a}_m{m:02d}.png")
-            dst = os.path.join(ASSETS, f"map_{b}_m{m:02d}.png")
+        for a in ("plan", "section"):
+            src = os.path.join(tmp, f"fig_{tag}_map_{a}_m{m:02d}.png")
+            dst = os.path.join(outdir, f"map_{a}_m{m:02d}.png")
             shutil.copyfile(src, dst)
     for f in os.listdir(tmp):
         os.remove(os.path.join(tmp, f))
@@ -195,36 +218,37 @@ def fig_budget(monthly, budget_total, path):
 # 本体
 # ---------------------------------------------------------------------------
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--skip-maps", action="store_true")
-    args = ap.parse_args()
+def build_one(cfg, quad, skip_maps=False):
+    """1本の走行から1枚のページを組み立てる。"""
+    key = cfg["key"]
+    RUN = os.path.join(SIMS, cfg["dir"])
+    ADIR = os.path.join(ASSETS, key)
+    OUT_HTML = os.path.join(HERE, OUT_NAME[key])
+    os.makedirs(ADIR, exist_ok=True)
+    if not skip_maps:
+        build_maps(RUN, key, cfg["map"])
 
-    os.makedirs(ASSETS, exist_ok=True)
-    if not args.skip_maps:
-        build_maps()
+    S = jload(RUN, "summary.json")
+    monthly = jload(RUN, "monthly.json")
+    offers = jload(RUN, "offers.json")
+    transfers = jload(RUN, "transfers.json")
+    payments = jload(RUN, "payments.json")
+    left_agents = jload(RUN, "left_agents.json")
+    left_tenants = jload(RUN, "left_tenants.json")
+    listings = jload(RUN, "listings.json")
+    decisions = jload(RUN, "decisions.json")
+    utterances = jload(RUN, "utterances.json")
+    notices = jload(RUN, "notices.json")
+    valuation = jload(RUN, "valuation.json")
+    messages = jload(RUN, "messages.json")
+    undelivered = jload(RUN, "undelivered.json")
+    reoffers = jload(RUN, "reoffers.json")
+    tenants = jload(RUN, "tenant_decisions.json")
+    ledger = jload(RUN, "ledger_by_step.json")
+    wallets = jload(RUN, "wallets.json")
 
-    S = jload("summary.json")
-    monthly = jload("monthly.json")
-    offers = jload("offers.json")
-    transfers = jload("transfers.json")
-    payments = jload("payments.json")
-    left_agents = jload("left_agents.json")
-    left_tenants = jload("left_tenants.json")
-    listings = jload("listings.json")
-    decisions = jload("decisions.json")
-    utterances = jload("utterances.json")
-    notices = jload("notices.json")
-    valuation = jload("valuation.json")
-    messages = jload("messages.json")
-    undelivered = jload("undelivered.json")
-    reoffers = jload("reoffers.json")
-    tenants = jload("tenant_decisions.json")
-    ledger = jload("ledger_by_step.json")
-    wallets = jload("wallets.json")
-
-    price = fig_price(offers, os.path.join(ASSETS, "fig_price.png"))
-    fig_budget(monthly, S["budget_total"], os.path.join(ASSETS, "fig_budget.png"))
+    price = fig_price(offers, os.path.join(ADIR, "fig_price.png"))
+    fig_budget(monthly, S["budget_total"], os.path.join(ADIR, "fig_budget.png"))
 
     # ---- 索引になる箱 ----
     dec_by = {(d["step"], d["name"]): d for d in decisions}
@@ -455,18 +479,24 @@ hr{border:0;border-top:1px solid var(--line);margin:36px 0}
 .gal{display:grid;grid-template-columns:1fr;gap:16px}
 @media(min-width:860px){.gal{grid-template-columns:1fr 1fr}}
 code{background:#1b212a;border-radius:4px;padding:1px 5px;font-size:.92em}
+.quad{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+padding:14px 16px;margin:18px 0}
+.quad .qh{margin:0 0 10px;font-size:15px;line-height:1.8}
 pre{background:#1b212a;border:1px solid var(--line);border-radius:8px;padding:12px 14px;
 overflow-x:auto;font-size:14px;line-height:1.7;margin:8px 0 14px}
 </style></head><body><div class="wrap">
 """)
 
     w('<p class="kicker">外的不動産投資へのコミュニティ自衛</p>')
-    w("<h1>A市で起きたことの全記録</h1>")
+    w(f'<h1>A市で起きたことの全記録<br><span style="font-size:.62em">'
+      f'（{e(cfg["label"])}の世界）</span></h1>')
     w('<p class="lead">架空の温泉のまち「A市」に、海外の不動産投資会社（X社）が入ってくる。'
       '住んでいる人・持っているだけの人あわせて49人が、毎月それぞれ考えて動き、'
-      '話し、売るか売らないかを決める。そこで36か月のあいだに何が起きたのかを、'
+      + ('話し、' if cfg["chat"] else '')
+      + '売るか売らないかを決める。そこで36か月のあいだに何が起きたのかを、'
       '地図・年表・本人たちの言葉のかたちで、省略せずに並べたページ。'
       '数字はすべて走行の記録から数え直したもので、書き手の解釈は入れていない。</p>')
+    w(quad_html(quad, key))
 
     w('<nav class="toc"><b>目次</b><ol>'
       '<li><a href="#c1">この町のこと</a></li>'
@@ -513,6 +543,13 @@ overflow-x:auto;font-size:14px;line-height:1.7;margin:8px 0 14px}
     w("<h3>買い手（X社）に与えた指示（全文）</h3>")
     mand = S["mandate"].replace("。", "。\n").strip()
     w(f"<pre>{e(mand)}</pre>")
+    if cfg["declared"]:
+        w('<p>そのうえでこの世界では、'
+          '<b>X社が出す手紙すべての冒頭に、世界が必ず次の1行を添えて相手に届ける</b>。'
+          'X社が書く文ではなく、出すか出さないかも選べない。</p>')
+        w(f'<pre>{e(DECLARED_LINE)}</pre>')
+        w('<p class="note">つまりこの世界のX社は、'
+          '「町の過半を取りにきている」ことを町のみんなに公言している。</p>')
     w('<p>X社は<b>海外の不動産投資会社</b>という設定で、'
       '「不動産管理等は行わない」と自分で名乗る。毎月、帳簿と「売りに出ているという公の申し出」を見て、'
       '誰に・どの区画の・どの権利を・いくらで、という手紙を書く。'
@@ -585,9 +622,9 @@ overflow-x:auto;font-size:14px;line-height:1.7;margin:8px 0 14px}
         w(f'<p class="note">この時点＝X社の区画 累計{mm["parcels_cum"]}／44・'
           f'町にいる人 {mm["in_town"]}人・町を出た人 累計{mm["left_cum"]}人・'
           f'X社が使ったお金 {oku(mm["spent_cum"])}（面積では{mm["area_share"]*100:.1f}%）</p>')
-        w(f'<img loading="lazy" src="assets/report/map_plan_m{m:02d}.png" '
+        w(f'<img loading="lazy" src="assets/report/{key}/map_plan_m{m:02d}.png" '
           f'alt="第{m}月の平面図">')
-        w(f'<img loading="lazy" src="assets/report/map_section_m{m:02d}.png" '
+        w(f'<img loading="lazy" src="assets/report/{key}/map_section_m{m:02d}.png" '
           f'alt="第{m}月の断面図" style="margin-top:10px">')
         w(f'<figcaption>第{m}月の平面図（上）と断面図（下）。</figcaption>')
         w("</figure>")
@@ -662,9 +699,10 @@ overflow-x:auto;font-size:14px;line-height:1.7;margin:8px 0 14px}
     w("</div>")
 
     w("<h3>値付けの推移</h3>")
-    w('<figure><img loading="lazy" src="assets/report/fig_price.png" alt="値付けの推移">'
-      '<figcaption>横軸＝月、縦軸＝提示額が評価額の何倍か。'
-      '第1月は中央値1.1倍あたりから始まり、終盤は1.5倍を超えて上がり続けた。</figcaption></figure>')
+    w(f'<figure><img loading="lazy" src="assets/report/{key}/fig_price.png" alt="値付けの推移">'
+      f'<figcaption>横軸＝月、縦軸＝提示額が評価額の何倍か。'
+      f'第1月の中央値は{price["median"][0]:.2f}倍、第36月は{price["median"][-1]:.2f}倍。'
+      f'</figcaption></figure>')
     w('<div class="scroll"><table><tr><th>月</th><th class="num">手紙</th>'
       '<th class="num">中央値</th><th class="num">平均</th><th class="num">最大</th></tr>')
     for i, m in enumerate(price["months"]):
@@ -682,7 +720,7 @@ overflow-x:auto;font-size:14px;line-height:1.7;margin:8px 0 14px}
       f'そのうち売れたのは {S["piled_offers_accepted"]}件（{S["piled_accept_rate"]*100:.2f}%）。</p>')
 
     w("<h3>お金の残高</h3>")
-    w('<figure><img loading="lazy" src="assets/report/fig_budget.png" alt="資金の残高推移">'
+    w(f'<figure><img loading="lazy" src="assets/report/{key}/fig_budget.png" alt="資金の残高推移">'
       f'<figcaption>預かった {oku(S["budget_total"])} のうち、36か月で使ったのは '
       f'{oku(S["spent_total"])}（{S["budget_used_share"]*100:.1f}%）。'
       f'{oku(S["budget_left"])} が余った。</figcaption></figure>')
@@ -705,8 +743,10 @@ overflow-x:auto;font-size:14px;line-height:1.7;margin:8px 0 14px}
     w("<h3>狙った区画の偏り</h3>")
     w(f'<p>手紙の内訳は「土地だけ」{S["offers_by_kind"]["土地"]}通・'
       f'「両方（土地と建物）」{S["offers_by_kind"]["両方"]}通・'
-      f'「建物だけ」{S["offers_by_kind"]["建物"]}通。建物だけを買おうとしたことは一度も無い。'
-      f'売れたのは「両方」{S["sold_by_kind"]["両方"]}件・「土地だけ」{S["sold_by_kind"]["土地"]}件。</p>')
+      f'「建物だけ」{S["offers_by_kind"]["建物"]}通。'
+      + ('建物だけを買おうとしたことは一度も無い。' if not S["offers_by_kind"]["建物"] else '')
+      + f'売れたのは「両方」{S["sold_by_kind"]["両方"]}件・'
+        f'「土地だけ」{S["sold_by_kind"]["土地"]}件。</p>')
     w('<div class="scroll"><table><tr><th>よく狙われた区画（上位15）</th>'
       '<th class="num">手紙</th><th>よく狙われた相手（上位15）</th>'
       '<th class="num">手紙</th></tr>')
@@ -751,79 +791,80 @@ overflow-x:auto;font-size:14px;line-height:1.7;margin:8px 0 14px}
 
     # ===== 5 =====
     w('<h2 id="c5">5. 町の答え</h2>')
-    w('<p class="lead">断られた手紙は826通。'
+    w(f'<p class="lead">断られた手紙は{S["offers_declined"]}通。'
       'そのほとんどに、その人が書いた「なぜ売らないか」の一言が付いている。</p>')
-    C = CLASSIFIED
-    w("<h3>断りの理由を全件読んで分けた（判定AI不使用）</h3>")
-    w(f'<p>824件の一言を人の目で1件ずつ読み、'
-      '「自分の事情」「X社の条件」「その両方」「人から聞いた話」に分けた。'
-      '分けたのは人で、機械がやったのは数えることだけ'
-      f'（出典＝<code>{e(C["source"])}</code>）。</p>')
-    w('<div class="scroll"><table><tr><th>断った理由の中身</th>'
-      '<th class="num">件数</th><th class="num">割合</th></tr>')
-    for label, n, p in C["overall"]:
-        w(f'<tr><td>{e(label)}</td><td class="num">{n}</td>'
-          f'<td class="num">{p}%</td></tr>')
-    w("</table></div>")
-    w('<p>4件に3件は<span class="hl">「自分の事情」</span>だった。'
-      '「金額が安い」「条件が不明だ」という相手への文句ではなく、'
-      '愛着・家族・商売・共有者への配慮といった、自分の側の話で断っている。</p>')
+    if cfg["classified"]:
+        C = CLASSIFIED
+        w("<h3>断りの理由を全件読んで分けた（判定AI不使用）</h3>")
+        w(f'<p>824件の一言を人の目で1件ずつ読み、'
+          '「自分の事情」「X社の条件」「その両方」「人から聞いた話」に分けた。'
+          '分けたのは人で、機械がやったのは数えることだけ'
+          f'（出典＝<code>{e(C["source"])}</code>）。</p>')
+        w('<div class="scroll"><table><tr><th>断った理由の中身</th>'
+          '<th class="num">件数</th><th class="num">割合</th></tr>')
+        for label, n, p in C["overall"]:
+            w(f'<tr><td>{e(label)}</td><td class="num">{n}</td>'
+              f'<td class="num">{p}%</td></tr>')
+        w("</table></div>")
+        w('<p>4件に3件は<span class="hl">「自分の事情」</span>だった。'
+          '「金額が安い」「条件が不明だ」という相手への文句ではなく、'
+          '愛着・家族・商売・共有者への配慮といった、自分の側の話で断っている。</p>')
 
-    w("<h4>いくら積まれても、理由の内訳はほとんど変わらない</h4>")
-    w('<div class="scroll"><table><tr><th>提示額（評価額の何倍か）</th>'
-      '<th class="num">理由が書かれた断り</th><th class="num">自分の事情</th>'
-      '<th class="num">X社の条件</th><th class="num">両方</th>'
-      '<th class="num">聞いた話</th></tr>')
-    for label, n, a, b, c2, d2 in C["bands"]:
-        w(f'<tr><td>{e(label)}</td><td class="num">{n}</td><td class="num">{a}%</td>'
-          f'<td class="num">{b}%</td><td class="num">{c2}%</td>'
-          f'<td class="num">{d2}%</td></tr>')
-    w("</table></div>")
-    w('<p>どの帯でも「自分の事情」が <span class="hl">69〜79%</span> で一貫している。'
-      '安い提示の帯だけ「X社の条件」（＝安すぎる・条件が不明）が27.7%とやや多く、'
-      '高く積まれるほどその言い分は使えなくなって12.6%まで下がる。</p>')
+        w("<h4>いくら積まれても、理由の内訳はほとんど変わらない</h4>")
+        w('<div class="scroll"><table><tr><th>提示額（評価額の何倍か）</th>'
+          '<th class="num">理由が書かれた断り</th><th class="num">自分の事情</th>'
+          '<th class="num">X社の条件</th><th class="num">両方</th>'
+          '<th class="num">聞いた話</th></tr>')
+        for label, n, a, b, c2, d2 in C["bands"]:
+            w(f'<tr><td>{e(label)}</td><td class="num">{n}</td><td class="num">{a}%</td>'
+              f'<td class="num">{b}%</td><td class="num">{c2}%</td>'
+              f'<td class="num">{d2}%</td></tr>')
+        w("</table></div>")
+        w('<p>どの帯でも「自分の事情」が <span class="hl">69〜79%</span> で一貫している。'
+          '安い提示の帯だけ「X社の条件」（＝安すぎる・条件が不明）が27.7%とやや多く、'
+          '高く積まれるほどその言い分は使えなくなって12.6%まで下がる。</p>')
 
-    w("<h4>金額に触れた断り</h4>")
-    w(f'<p>断りの一言のうち、金額（提示額・評価額・相場・納得など）に触れているのは'
-      f' <b>{C["money_n"]}件（{C["money_pct"]}%）</b>。'
-      'いちばん多い帯は「評価額より安い」（29.8%）で、'
-      'その次が「1.5倍以上」（17.1%）——'
-      f'高く積まれたほうでも金額の話が増える。'
-      f'<span class="hl">「提示額は魅力的だが、まだ手放したくない」</span>という'
-      f'型の一言が {C["attractive_type"]}件あり、'
-      '値段が上がったことを認めたうえで断る言い方が出てきている。</p>')
-    w('<div class="scroll"><table><tr><th>提示額の帯</th>'
-      '<th class="num">金額に触れた断り</th><th class="num">その帯の断り</th>'
-      '<th class="num">割合</th></tr>')
-    for label, n, tot, p in C["money_bands"]:
-        w(f'<tr><td>{e(label)}</td><td class="num">{n}</td><td class="num">{tot}</td>'
-          f'<td class="num">{p}%</td></tr>')
-    w("</table></div>")
+        w("<h4>金額に触れた断り</h4>")
+        w(f'<p>断りの一言のうち、金額（提示額・評価額・相場・納得など）に触れているのは'
+          f' <b>{C["money_n"]}件（{C["money_pct"]}%）</b>。'
+          'いちばん多い帯は「評価額より安い」（29.8%）で、'
+          'その次が「1.5倍以上」（17.1%）——'
+          f'高く積まれたほうでも金額の話が増える。'
+          f'<span class="hl">「提示額は魅力的だが、まだ手放したくない」</span>という'
+          f'型の一言が {C["attractive_type"]}件あり、'
+          '値段が上がったことを認めたうえで断る言い方が出てきている。</p>')
+        w('<div class="scroll"><table><tr><th>提示額の帯</th>'
+          '<th class="num">金額に触れた断り</th><th class="num">その帯の断り</th>'
+          '<th class="num">割合</th></tr>')
+        for label, n, tot, p in C["money_bands"]:
+            w(f'<tr><td>{e(label)}</td><td class="num">{n}</td><td class="num">{tot}</td>'
+              f'<td class="num">{p}%</td></tr>')
+        w("</table></div>")
 
-    w("<h4>一人では決められない、という断り</h4>")
-    w(f'<p>「自分の事情」631件のうち <b>{C["proc_n"]}件（{C["proc_pct"]}%）</b>は、'
-      '自治会・共有者・組合・家族・氏子といった'
-      '<span class="hl">関係者との手続き</span>に触れている。'
-      + "、".join(f'「{e(t)}」{n}件' for t, n in C["proc_examples"])
-      + 'が代表例で、共有名義や自治会のように'
-      '一人では決められない仕組みが、断りの4分の1近くを占めている。</p>')
+        w("<h4>一人では決められない、という断り</h4>")
+        w(f'<p>「自分の事情」631件のうち <b>{C["proc_n"]}件（{C["proc_pct"]}%）</b>は、'
+          '自治会・共有者・組合・家族・氏子といった'
+          '<span class="hl">関係者との手続き</span>に触れている。'
+          + "、".join(f'「{e(t)}」{n}件' for t, n in C["proc_examples"])
+          + 'が代表例で、共有名義や自治会のように'
+          '一人では決められない仕組みが、断りの4分の1近くを占めている。</p>')
 
-    w("<h4>売った人・出ていった人の側から見ると</h4>")
-    w(f'<ul class="plain">'
-      f'<li>評価額以上を出された手紙 {C["over_valuation"]}通のうち、'
-      f'<b>{C["over_valuation_declined"]}通が断られている</b>。'
-      f'評価額より安い {C["under_valuation"]}通からは成約が'
-      f'{C["under_valuation_sold"]}件（損な条件で売った人はいない）。</li>'
-      f'<li>売った9人・{C["sold_total"]}件の理由を同じように読むと、'
-      f'<b>{C["sold_money"]}件（{C["sold_money_pct"]}%）が金額そのもの</b>を理由にしていて、'
-      f'自分の事情を理由にしたのは{C["sold_own"]}件だけ。'
-      '<span class="hl">断る人は自分の事情を語り、売る人は金額を語る</span>という'
-      'ちょうど裏返しの形になっている。</li>'
-      f'<li>町を出た{C["left_total"]}人のうち{C["left_sellers"]}人は売った本人。'
-      f'残り{C["left_tenants"]}人は不動産の取引を一度もしていない借り手自身の退場で、'
-      '所有権の移動と人が出ていくことは1対1で対応していない。</li></ul>')
-    w('<p class="note">この分け方は人の主観である。'
-      '「まだ決められない」のような短い一言をどちらに寄せるかは、読み手が変われば変わりうる。</p>')
+        w("<h4>売った人・出ていった人の側から見ると</h4>")
+        w(f'<ul class="plain">'
+          f'<li>評価額以上を出された手紙 {C["over_valuation"]}通のうち、'
+          f'<b>{C["over_valuation_declined"]}通が断られている</b>。'
+          f'評価額より安い {C["under_valuation"]}通からは成約が'
+          f'{C["under_valuation_sold"]}件（損な条件で売った人はいない）。</li>'
+          f'<li>売った9人・{C["sold_total"]}件の理由を同じように読むと、'
+          f'<b>{C["sold_money"]}件（{C["sold_money_pct"]}%）が金額そのもの</b>を理由にしていて、'
+          f'自分の事情を理由にしたのは{C["sold_own"]}件だけ。'
+          '<span class="hl">断る人は自分の事情を語り、売る人は金額を語る</span>という'
+          'ちょうど裏返しの形になっている。</li>'
+          f'<li>町を出た{C["left_total"]}人のうち{C["left_sellers"]}人は売った本人。'
+          f'残り{C["left_tenants"]}人は不動産の取引を一度もしていない借り手自身の退場で、'
+          '所有権の移動と人が出ていくことは1対1で対応していない。</li></ul>')
+        w('<p class="note">この分け方は人の主観である。'
+          '「まだ決められない」のような短い一言をどちらに寄せるかは、読み手が変われば変わりうる。</p>')
 
     w("<h3>数で見た町の答え</h3>")
     w('<div class="cards">')
@@ -856,10 +897,10 @@ overflow-x:auto;font-size:14px;line-height:1.7;margin:8px 0 14px}
       'ただし相手も区画もX社が選んでいるので、この表から「高く出せば売れる／売れない」は言えない。</p>')
 
     lo = min(o["ratio"] for o in sold_offers)
-    w(f'<p>売れた11件のうち、いちばん安かったものでも評価額の <b>{lo:.2f}倍</b>。'
+    w(f'<p>売れた{len(sold_offers)}件のうち、いちばん安かったものでも評価額の <b>{lo:.2f}倍</b>。'
       '<span class="hl">評価額を下回る金額で売った人は1人もいない。</span></p>')
 
-    w("<h3>売った9人の全記録</h3>")
+    w(f"<h3>売った{len(sold_names)}人の全記録</h3>")
     for nm in sold_names:
         mine = [o for o in offers if o["to"] == nm]
         got = [o for o in mine if o["accepted"]]
@@ -903,7 +944,7 @@ overflow-x:auto;font-size:14px;line-height:1.7;margin:8px 0 14px}
     w('<p class="lead">売り買いの記録の裏側で、'
       '住んでいた人・借りて商売していた人がどう動いたか。</p>')
 
-    w("<h3>町を出た8人</h3>")
+    w(f"<h3>町を出た{len(left_agents)}人</h3>")
     w('<div class="scroll"><table><tr><th>月</th><th>誰</th><th>その場所</th>'
       '<th>どうして出たか</th><th>本人の一言（原文）</th></tr>')
     for a in left_agents:
@@ -976,48 +1017,56 @@ overflow-x:auto;font-size:14px;line-height:1.7;margin:8px 0 14px}
 
     # ===== 7 =====
     w('<h2 id="c7">7. 会話の記録</h2>')
-    w('<p class="lead">この町の人は毎月、行き先を自分で選ぶ。'
-      '同じ場所に居合わせた人だけが、その場の話を聞く。</p>')
-    w(f'<p>36か月で発言は <b>{len(utterances)}件</b>。'
-      'そのうち買い手（X社）に触れた発言は '
-      f'<b>{len(utt_x)}件</b>。</p>')
-    w('<div class="scroll"><table><tr><th>月</th>'
-      + "".join(f"<th class='num'>{v}</th>" for v in venue_labels)
-      + '<th class="num">出かけなかった人</th><th class="num">発言</th>'
-        '<th class="num">1人の話が届いた人数（平均）</th></tr>')
-    for r in monthly:
-        c = utt_venue_month[r["step"]]
-        w(f'<tr><td>第{r["step"]}月</td>'
-          + "".join(f'<td class="num">{c.get(v,0)}</td>' for v in venue_labels)
-          + f'<td class="num">{r["by_venue"].get("今月はどこにも行かない",0)}</td>'
-            f'<td class="num">{r["utterances"]}</td>'
-            f'<td class="num">{r["heard_mean"]}</td></tr>')
-    w("</table></div>")
-    w('<p class="note">月が進むほど「今月はどこにも行かない」が増え、'
-      '場に出る人と発言が減っていく。'
-      f'第1月は{monthly[0]["attended"]}人が出かけて{monthly[0]["utterances"]}件の発言、'
-      f'第36月は{monthly[-1]["attended"]}人・{monthly[-1]["utterances"]}件。'
-      f'一言が届いた人数の平均も {monthly[0]["heard_mean"]}人から '
-      f'{monthly[-1]["heard_mean"]}人まで落ちた。</p>')
+    if not cfg["chat"]:
+        w('<p class="lead">この世界には<b>場の会話も隣近所への伝わりも無い</b>。'
+          '人は毎月ひとりで考えて決めるだけで、誰の声も届かない。</p>')
+        w('<p>36か月で発言は <b>0件</b>（会話なしの世界＝0件）。'
+          '出かける先の選択も、聞いた話も、隣近所への伝播も発生しない。'
+          '家主と借り手のあいだの一言だけは残っており、'
+          'それは「6. 人の出入り」に全件ある。</p>')
+    else:
+        w('<p class="lead">この町の人は毎月、行き先を自分で選ぶ。'
+          '同じ場所に居合わせた人だけが、その場の話を聞く。</p>')
+        w(f'<p>36か月で発言は <b>{len(utterances)}件</b>。'
+          'そのうち買い手（X社）に触れた発言は '
+          f'<b>{len(utt_x)}件</b>。</p>')
+        w('<div class="scroll"><table><tr><th>月</th>'
+          + "".join(f"<th class='num'>{v}</th>" for v in venue_labels)
+          + '<th class="num">出かけなかった人</th><th class="num">発言</th>'
+            '<th class="num">1人の話が届いた人数（平均）</th></tr>')
+        for r in monthly:
+            c = utt_venue_month[r["step"]]
+            w(f'<tr><td>第{r["step"]}月</td>'
+              + "".join(f'<td class="num">{c.get(v,0)}</td>' for v in venue_labels)
+              + f'<td class="num">{r["by_venue"].get("今月はどこにも行かない",0)}</td>'
+                f'<td class="num">{r["utterances"]}</td>'
+                f'<td class="num">{r["heard_mean"]}</td></tr>')
+        w("</table></div>")
+        w('<p class="note">月が進むほど「今月はどこにも行かない」が増え、'
+          '場に出る人と発言が減っていく。'
+          f'第1月は{monthly[0]["attended"]}人が出かけて{monthly[0]["utterances"]}件の発言、'
+          f'第36月は{monthly[-1]["attended"]}人・{monthly[-1]["utterances"]}件。'
+          f'一言が届いた人数の平均も {monthly[0]["heard_mean"]}人から '
+          f'{monthly[-1]["heard_mean"]}人まで落ちた。</p>')
 
-    w("<h3>買い手に触れた発言 全件</h3>")
-    w(f'<details><summary>{len(utt_x)}件を全部見る（原文）</summary>')
-    for u in utt_x:
-        w(f'<blockquote>{e(u["text"])}<span class="who">第{u["step"]}月／'
-          f'{e(u["from"])}／{e(u["venue_label"])}（{len(u["heard_by"])}人が聞いた）'
-          '</span></blockquote>')
-    w("</details>")
+        w("<h3>買い手に触れた発言 全件</h3>")
+        w(f'<details><summary>{len(utt_x)}件を全部見る（原文）</summary>')
+        for u in utt_x:
+            w(f'<blockquote>{e(u["text"])}<span class="who">第{u["step"]}月／'
+              f'{e(u["from"])}／{e(u["venue_label"])}（{len(u["heard_by"])}人が聞いた）'
+              '</span></blockquote>')
+        w("</details>")
 
-    w("<h3>すべての発言</h3>")
-    w(f'<details><summary>{len(utterances)}件を全部見る（原文）</summary>'
-      '<div class="scroll"><table><tr><th>月</th><th>場所</th><th>誰</th>'
-      '<th class="num">聞いた人</th><th>発言（原文）</th></tr>')
-    for u in utterances:
-        w(f'<tr><td>第{u["step"]}月</td><td>{e(u["venue_label"])}</td><td>{e(u["from"])}</td>'
-          f'<td class="num">{len(u["heard_by"])}</td><td>{e(u["text"])}</td></tr>')
-    w("</table></div></details>")
+        w("<h3>すべての発言</h3>")
+        w(f'<details><summary>{len(utterances)}件を全部見る（原文）</summary>'
+          '<div class="scroll"><table><tr><th>月</th><th>場所</th><th>誰</th>'
+          '<th class="num">聞いた人</th><th>発言（原文）</th></tr>')
+        for u in utterances:
+            w(f'<tr><td>第{u["step"]}月</td><td>{e(u["venue_label"])}</td><td>{e(u["from"])}</td>'
+              f'<td class="num">{len(u["heard_by"])}</td><td>{e(u["text"])}</td></tr>')
+        w("</table></div></details>")
 
-    # ===== 8 =====
+        # ===== 8 =====
     w('<h2 id="c8">8. 健全性と費用</h2>')
     w('<p class="lead">この走行そのものが壊れていないかの確認。</p>')
     w('<div class="scroll"><table><tr><th>項目</th><th class="num">件数</th></tr>')
@@ -1073,13 +1122,194 @@ overflow-x:auto;font-size:14px;line-height:1.7;margin:8px 0 14px}
     with open(OUT_HTML, "w", encoding="utf-8") as f:
         f.write("\n".join(P))
 
-    print("wrote", OUT_HTML, os.path.getsize(OUT_HTML), "bytes")
-    print("maps", len(MAP_MONTHS) * 2)
-    print("timeline rows", len(monthly))
-    print("declines", len(declines))
-    print("utterances", len(utterances), "x-mentions", len(utt_x))
-    print("messages", len(messages), "tenant answers", len(tenants))
-    print("undelivered(right)", len(und_right))
+    print(f"[{key}] wrote {OUT_HTML} {os.path.getsize(OUT_HTML)} bytes"
+          f" / maps {len(MAP_MONTHS)*2} / timeline {len(monthly)}"
+          f" / declines {len(declines)} / utterances {len(utterances)}"
+          f" (X {len(utt_x)}) / messages {len(messages)}"
+          f" / tenant {len(tenants)} / undelivered-right {len(und_right)}")
+    return {"maps": len(MAP_MONTHS) * 2, "timeline": len(monthly),
+            "declines": len(declines), "utterances": len(utterances),
+            "utt_x": len(utt_x), "messages": len(messages),
+            "tenants": len(tenants), "und_right": len(und_right),
+            "bytes": os.path.getsize(OUT_HTML)}
+
+
+# ---------------------------------------------------------------------------
+# 4象限（4本の走行の並べ方）
+# ---------------------------------------------------------------------------
+
+def quad_stats(cfg):
+    """1本の走行から4象限の表に出す数字だけを取る。未完成なら None。"""
+    run = os.path.join(SIMS, cfg["dir"])
+    if not os.path.exists(os.path.join(run, "summary.json")):
+        return None
+    S = jload(run, "summary.json")
+    offers = jload(run, "offers.json")
+    suspect = sum(1 for o in offers
+                  if any(x in (o.get("decline_reason") or "") for x in SUSPECT_WORDS))
+    d = dict(cfg)
+    d.update({
+        "ready": True,
+        "deals": S["offers_accepted"],
+        "parcels": S["acquired_parcels"],
+        "area_share": S["area_share_end"],
+        "left": S["left_agents"],
+        "offers": S["offers_total"],
+        "suspect": suspect,
+        "utterances": S.get("utterances_total", 0),
+        "cost": S["cost_usd"],
+    })
+    return d
+
+
+def quad_html(quad, current=None, links=False):
+    """4象限の説明と表。current＝いま見ているページの key。"""
+    o = []
+    o.append('<div class="quad">')
+    o.append('<p class="qh"><b>'
+             + ('4本の走行を並べる' if links else 'この記録は4本のうちの1本')
+             + '</b>'
+             '　—　世界の設定が<b>2点</b>だけ違う4つの走り方を、同じ形で全部残している。'
+             '違いは①買い手が「この街の不動産の過半の取得を目指しています」と'
+             '<b>町に明言するかどうか</b>、②町に'
+             '<b>場の会話と隣近所への伝わりがあるかどうか</b>、この2つだけ。'
+             '町の人・44区画・評価額・買い手のお金（町の評価額の51%）・36か月は'
+             'すべて同じ。</p>')
+    o.append('<div class="scroll"><table><tr><th>世界</th>'
+             '<th class="num">成約</th><th class="num">X社の区画</th>'
+             '<th class="num">面積の割合</th><th class="num">町を出た人</th>'
+             '<th class="num">意図を疑う断り</th>'
+             '<th class="num">場の発言</th></tr>')
+    for q in quad:
+        name = html.escape(q["label"])
+        if links and q.get("ready"):
+            name = '<a href="%s">%s</a>' % (OUT_NAME[q["key"]], name)
+        mark = ' style="background:#1b2a24"' if q["key"] == current else ""
+        if not q.get("ready"):
+            o.append('<tr%s><td>%s</td>'
+                     '<td colspan="6" class="note">準備中（走行が終わり次第ここに入る）'
+                     '</td></tr>' % (mark, name))
+            continue
+        o.append('<tr%s><td>%s</td>'
+                 '<td class="num">%d件</td><td class="num">%d／44</td>'
+                 '<td class="num">%.1f%%</td><td class="num">%d人</td>'
+                 '<td class="num">%d件</td><td class="num">%d件</td></tr>'
+                 % (mark, name, q["deals"], q["parcels"], q["area_share"] * 100,
+                    q["left"], q["suspect"], q["utterances"]))
+    o.append("</table></div>")
+    o.append('<p class="note">「意図を疑う断り」＝断りの一言に'
+             '「買い占め」「警戒」「意図」「危機」「支配」「乗っ取」のどれかが'
+             '入っていた件数（走らせる前に決めた語で機械的に数えたもの・読んで分けた分類ではない）。'
+             '</p>')
+    o.append("</div>")
+    return "\n".join(o)
+
+
+INDEX_CSS = """
+:root{--bg:#0f1115;--panel:#161a21;--fg:#e9ecf1;--dim:#98a1ad;--accent:#34d399;--line:#262c36;}
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg)}
+body{color:var(--fg);font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",
+Meiryo,system-ui,sans-serif;line-height:1.85}
+.wrap{max-width:940px;margin:0 auto;padding:28px 18px 80px}
+h1{font-size:clamp(26px,6vw,40px);font-weight:900;margin:0 0 10px}
+h2{font-size:clamp(19px,4.4vw,26px);font-weight:900;margin:40px 0 10px;
+padding-left:12px;border-left:5px solid var(--accent)}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.09em;color:var(--accent);margin:0 0 6px}
+.lead{color:var(--dim);font-size:clamp(15px,3.6vw,17px);margin:0 0 18px}
+a{color:var(--accent)}
+.quad{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+padding:14px 16px;margin:18px 0}
+.quad .qh{margin:0 0 10px;font-size:15px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+th{background:#1b212a;color:var(--dim);white-space:nowrap}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.scroll{overflow-x:auto}.scroll table{min-width:620px}
+.note{font-size:13px;color:var(--dim)}
+.cards{display:flex;flex-wrap:wrap;gap:12px}
+.card{flex:1 1 260px;background:var(--panel);border:1px solid var(--line);
+border-radius:12px;padding:14px 16px;text-decoration:none;color:var(--fg);display:block}
+.card.off{opacity:.55}
+.card .n{font-size:19px;font-weight:900;margin-bottom:4px}
+.card .l{font-size:13px;color:var(--dim);line-height:1.6}
+"""
+
+
+def build_index(quad):
+    out = os.path.join(HERE, "reports.html")
+    P = ['<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8">',
+         '<meta name="viewport" content="width=device-width, initial-scale=1">',
+         '<title>A市で起きたことの全記録 — 4つの世界</title>',
+         '<style>' + INDEX_CSS + '</style></head><body><div class="wrap">',
+         '<p class="kicker">外的不動産投資へのコミュニティ自衛</p>',
+         '<h1>A市で起きたことの全記録</h1>',
+         '<p class="lead">同じ町・同じ人・同じ買い手のお金で、'
+         '世界の設定を2点だけ変えた4本の走行。'
+         'それぞれの36か月を、地図・年表・本人たちの言葉まで省略せずに残したページ。</p>',
+         quad_html(quad, links=True),
+         '<h2>4本の記録</h2>', '<div class="cards">']
+    for q in quad:
+        if q.get("ready"):
+            P.append('<a class="card" href="%s"><div class="n">%s</div>'
+                     '<div class="l">成約%d件・町を出た人%d人・手紙%d通・場の発言%d件</div></a>'
+                     % (OUT_NAME[q["key"]], html.escape(q["label"]), q["deals"],
+                        q["left"], q["offers"], q["utterances"]))
+        else:
+            P.append('<div class="card off"><div class="n">%s</div>'
+                     '<div class="l">準備中</div></div>' % html.escape(q["label"]))
+    P.append("</div>")
+    P.append('<h2>提出スライド</h2>')
+    P.append('<p><a href="slides10.html">発表用スライド（10枚）</a>'
+             '／<a href="slides10.pdf">PDF版</a></p>')
+    P.append('<p class="note">数字・図はすべて走行の記録から機械的に組み立てている。'
+             '採点する人工知能は使っていない。</p>')
+    P.append("</div></body></html>")
+    with open(out, "w", encoding="utf-8") as f:
+        f.write("\n".join(P))
+    print("wrote", out, os.path.getsize(out), "bytes")
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--run", default=None, help="走行の run_dir（単発で作るとき）")
+    ap.add_argument("--out", default=None, help="出力の html 名（単発で作るとき）")
+    ap.add_argument("--label", default=None, help="見出しに出す呼び名（単発で作るとき）")
+    ap.add_argument("--key", default=None, help="画像置き場の名前（単発で作るとき）")
+    ap.add_argument("--only", default=None, help="key をカンマ区切りで指定")
+    ap.add_argument("--skip-maps", action="store_true")
+    ap.add_argument("--no-index", action="store_true")
+    args = ap.parse_args()
+
+    os.makedirs(ASSETS, exist_ok=True)
+    runs = list(RUNS)
+    if args.run:
+        key = args.key or "custom"
+        cfg = {"key": key, "label": args.label or key,
+               "dir": os.path.basename(os.path.normpath(args.run)),
+               "map": "v9h_map.py" if "v9h" in args.run else "v9f_map.py",
+               "declared": "declared" in args.run,
+               "chat": "nochat" not in args.run,
+               "classified": False}
+        OUT_NAME[key] = args.out or ("report_%s.html" % key)
+        runs = [cfg]
+    elif args.only:
+        want = [x.strip() for x in args.only.split(",")]
+        runs = [r for r in RUNS if r["key"] in want]
+
+    quad = []
+    for cfg in RUNS:
+        q = quad_stats(cfg)
+        quad.append(q if q else dict(cfg, ready=False))
+    for cfg in runs:
+        if not os.path.exists(os.path.join(SIMS, cfg["dir"], "summary.json")):
+            print("[%s] 走行がまだ終わっていないので飛ばす" % cfg["key"])
+            continue
+        build_one(cfg, quad, skip_maps=args.skip_maps)
+    main_html = os.path.join(HERE, OUT_NAME["main"])
+    if os.path.exists(main_html):
+        shutil.copyfile(main_html, os.path.join(HERE, "report_main.html"))
+    if not args.no_index and not args.run:
+        build_index(quad)
     return 0
 
 
