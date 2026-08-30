@@ -2,7 +2,7 @@
 <html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>外的不動産投資へのコミュニティ自衛 — 提出スライド（10枚）</title>
+<title>外的不動産買収へのコミュニティ自衛 — 提出スライド（10枚）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -235,9 +235,9 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
   font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 0 5px;
 }
 .step .ic{color:var(--accent);margin:0 0 5px}
-.step .ic svg{width:50px;height:50px;display:block}
-.step h4{margin:0 0 4px;font-size:15.5px;font-weight:900;line-height:1.35;color:var(--fg)}
-.step p{margin:0;font-size:13px;line-height:1.6;color:#b9c1cb}
+.step .ic svg{width:56px;height:56px;display:block}
+.step h4{margin:0 0 5px;font-size:17px;font-weight:900;line-height:1.35;color:var(--fg)}
+.step p{margin:0;font-size:14.5px;line-height:1.6;color:#b9c1cb}
 .step p .hl{font-size:13px}
 
 /* ===== 場のアイコン（P8/P9） ===== */
@@ -264,7 +264,7 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
 .tiny b{color:#b9c1cb;font-weight:700}
 .tiny .hd{color:var(--accent);font-weight:900;font-size:11.5px;letter-spacing:.06em;display:block;margin:0 0 2px}
 ul.tinylist{list-style:none;margin:0;padding:0}
-ul.tinylist li{font-size:12.5px;line-height:1.55;color:#8b95a1;margin:0 0 3px;padding-left:11px;position:relative}
+ul.tinylist li{font-size:14px;line-height:1.6;color:#8b95a1;margin:0 0 3px;padding-left:11px;position:relative}
 ul.tinylist li::before{content:"";position:absolute;left:0;top:.62em;width:4px;height:4px;border-radius:50%;background:#4b5561}
 ul.tinylist li b{color:#b9c1cb;font-weight:700}
 
@@ -316,6 +316,49 @@ ul.tinylist li b{color:#b9c1cb;font-weight:700}
 .cell img{display:block;margin:0 auto;max-width:100%;width:auto;max-height:176px;border-radius:5px;background:#fff}
 .cell .m{display:flex;flex-wrap:wrap;gap:2px 10px;margin:5px 0 0;font-size:11.5px;color:#8b95a1;line-height:1.4}
 .cell .m b{color:var(--accent);font-weight:900;font-variant-numeric:tabular-nums}
+
+/* ===== 2026-08-30 改訂：説明書きを削り、図を主役にする ===== */
+.maprow{flex:1 1 auto;min-height:0;display:flex;gap:16px;align-items:center;justify-content:center;margin:0 0 8px}
+.maprow > .m{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;min-height:0}
+.maprow .lb{font-size:15px;font-weight:900;line-height:1.35;margin:0 0 6px;text-align:center;color:var(--fg)}
+.maprow .lb em{font-style:normal;color:var(--red)}
+.maprow .lb i{font-style:normal;color:var(--dim);font-weight:700;font-size:13px}
+.maprow img{display:block;max-width:100%;width:auto;min-height:0;object-fit:contain;
+  border:1px solid var(--line);border-radius:8px;background:#fff}
+.arrow36{flex:0 0 112px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.arrow36 .t{font-size:14px;color:var(--dim);font-weight:900;letter-spacing:.05em}
+
+.aim{flex:none;font-size:17px;line-height:1.6;color:#c6cdd7;margin:0 0 10px}
+.aim b{color:var(--fg);font-weight:900}
+.said{flex:none;font-size:19px;line-height:1.6;font-weight:700;color:#c6cdd7;margin:8px 0 0}
+.said .hl{color:var(--accent);font-weight:900}
+.keyline{flex:none;display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--dim);margin:0}
+.keyline i{width:14px;height:14px;border-radius:3px;background:#b3261e;display:inline-block}
+.keyline b{color:var(--red);font-weight:900}
+
+.insight{flex:none;border:1px solid var(--accent);border-radius:12px;background:var(--panel);
+  padding:14px 18px;margin:0 0 10px}
+.insight .t{font-size:14px;font-weight:900;letter-spacing:.06em;color:var(--accent);margin:0 0 8px}
+.insight ol{list-style:none;margin:0;padding:0;counter-reset:iq}
+.insight ol li{position:relative;padding-left:32px;margin:0 0 12px;font-size:22px;line-height:1.55;counter-increment:iq}
+.insight ol li:last-child{margin-bottom:0}
+.insight ol li::before{content:counter(iq);position:absolute;left:0;top:.18em;width:21px;height:21px;
+  border-radius:50%;background:var(--accent);color:var(--bg);font-size:12px;font-weight:900;
+  display:flex;align-items:center;justify-content:center}
+.insight ol li b{color:var(--accent);font-weight:900}
+
+.stepflow.arrows{align-items:stretch;gap:0}
+.stepflow.arrows .step{flex:1 1 0}
+.stepflow.arrows .sep{flex:0 0 26px;display:flex;align-items:center;justify-content:center;
+  color:var(--accent);font-size:19px;font-weight:900}
+.step .who{font-size:13px;font-weight:900;color:var(--accent);letter-spacing:.02em;margin:0 0 3px;line-height:1.4}
+
+.quad{flex:none;display:flex;gap:12px;margin:0 0 12px}
+.quad > div{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center}
+.quad .lb{font-size:14px;font-weight:900;line-height:1.4;text-align:center;margin:0 0 6px;color:var(--fg)}
+.quad img{display:block;max-width:100%;width:auto;border:1px solid var(--line);border-radius:8px;background:#fff}
+.quad .m{font-size:13px;color:#8b95a1;margin:6px 0 0;text-align:center;line-height:1.5}
+.quad .m b{color:var(--accent);font-weight:900;font-variant-numeric:tabular-nums}
 </style></head>
 <body>
 <div id="prog"></div>
@@ -325,380 +368,272 @@ ul.tinylist li b{color:#b9c1cb;font-weight:700}
 <section class="slide">
   <div class="spacer"></div>
   <p class="kicker">第2回 AIエージェント社会シミュレーション・ハッカソン「メタ安全保障」</p>
-  <h1>外的不動産投資への<br>コミュニティ自衛</h1>
+  <h1>外的不動産買収への<br>コミュニティ自衛</h1>
   <p class="sub">コミュニティの創発は、<span class="hl">外的な不動産投資を抑制できるのか？</span></p>
   <p class="byline">参加者番号 <b>0105</b>　／　<b>やまちゃそ</b></p>
   <div class="spacer"></div>
 </section>
 
-<!-- ============ P2 課題感 ============ -->
-<section class="slide photobg vmask" style="--photo:url('assets/owner/japan_map_dim.png')">
-  <p class="kicker">課題感</p>
-  <h2>すでにそうなった町があり、普通の町の土地は法律で守られていない</h2>
-  <div class="cases2">
-    <div class="case">
-      <h3><span class="pin">●</span> ニセコ（北海道）</h3>
-      <p>令和6年に居住地が海外の法人・個人が取得した森林は全国48件。<b>うち32件がニセコ町・倶知安町など後志のスキー地域</b>。目的の多くは「資産保有」。<span class="src">[1]</span></p>
+<!-- ============ P2 事例 ============ -->
+<section class="slide">
+  <h2>外的不動産買収の事例</h2>
+  <div class="cols grow" style="gap:20px;align-items:stretch">
+    <div class="c" style="flex:0 0 50%;justify-content:center">
+      <img src="assets/owner/japan_map.png" alt="日本地図。ニセコと対馬の位置"
+           style="display:block;margin:0 auto;max-width:100%;width:auto;max-height:100%;object-fit:contain;border:1px solid var(--line);border-radius:10px">
     </div>
-    <div class="case">
-      <h3><span class="pin">●</span> 対馬（長崎県）</h3>
-      <p>平成19年、<b>海上自衛隊対馬防備隊の隣接地 約3,000坪</b>が島民名義で韓国資本に買収された。防衛省が登記簿を調べたのは、その報道のあと。<span class="src">[2]</span></p>
-    </div>
-  </div>
-  <div class="read">
-    <p class="rt">共通していること</p>
-    <p><strong>どちらも、買われてから分かった。</strong>持ち主が売る前に町が気づく仕組みが、そもそも置かれていない。</p>
-  </div>
-  <p class="colhd">制度の空白は3つある</p>
-  <ul class="body">
-    <li>重要土地等調査法（2021年成立）が見るのは<strong>防衛関係施設などの周囲おおむね1000mと国境離島等だけ</strong>。普通の町は対象外。<span class="src">[3]</span></li>
-    <li>外国人の土地取得そのものに<strong>一般的な制限は無い</strong>。古い法律は残るが、発動させる命令が置かれていない。<span class="src">[4]</span></li>
-    <li>先に動いたのは自治体だった。<strong>水源地の売買に事前届出を課す条例</strong>が道県にある。<span class="src">[5]</span> <span class="hl">それが無い町は、無防備のまま。</span></li>
-  </ul>
-  <div class="foot">
-    <b>[1]</b> 林野庁 報道発表（令和7年9月16日）市町村別事例表からの数え上げ rinya.maff.go.jp/j/press/keikaku/250916.html ／ 北海道「海外資本等による森林取得状況」
-    <b>[2]</b> 第204回国会 参議院内閣委員会 令和3年6月8日 会議録（高野光二郎議員 質疑／松川るい大臣政務官 答弁）
-    <b>[3]</b> 重要施設周辺及び国境離島等における土地等の利用状況の調査及び利用の規制等に関する法律（令和3年法律第84号）第1条・第5条・第12条・第13条
-    <b>[4]</b> 外国人土地法（大正14年法律第42号）第1条・第4条＝「勅令ヲ以テ」＝発動する勅令なし
-    <b>[5]</b> 北海道水資源の保全に関する条例（平成24年制定）水資源保全地域内の土地取引に係る事前届出制
-  </div>
-</section>
-
-<!-- ============ P3 世界の仕組み ============ -->
-<section class="slide photobg" style="--photo:url('assets/owner/town_photo_dim.png')">
-  <p class="kicker">世界設計</p>
-  <h2>温泉のある町ひとつを、まるごと言葉で動かす</h2>
-  <div class="cols" style="gap:18px">
-    <div class="c">
-      <img src="assets/fig_plan_m00.png" alt="A市の平面図（第0月・開始時点）。44区画と持ち主の色分け"
-           style="display:block;margin:0 auto;max-width:100%;width:auto;max-height:430px;border:1px solid var(--line);border-radius:8px;background:#fff">
-      <p class="figcap" style="margin:6px 0 4px">A市の平面図（<strong>第0月＝開始時点</strong>）。四角＝土地／中の小さな四角＝建物。<strong>斜線＝借家がある建物・借地の土地。</strong>●＝町にいる人が使っている区画。</p>
-      <div class="legend" style="margin:0">
-        <span><i style="background:#0e9f6e"></i>町にいる人</span>
-        <span><i style="background:#e08a1e"></i>町にいない所有者</span>
-        <span><i style="background:#7a8794"></i>市（行政）</span>
-        <span><i style="background:#b3261e"></i>X社</span>
-        <span><i style="background:#dfe3e6"></i>建物なし</span>
-      </div>
-    </div>
-    <div class="c w36">
-      <div class="photocard" style="height:268px">
-        <img src="assets/owner/xco_building_dim.png" alt="X社（町の外から来た海外の不動産投資会社）のビル">
-        <div class="ov">
-          <b>X社</b>
-          <span>町の外から来た<em>海外の不動産投資会社</em>。<br>資金は<em>町の全評価額の51%＝11億7,180万円</em>。</span>
+    <div class="c" style="justify-content:center">
+      <div class="cases2" style="flex-direction:column;gap:10px;margin:0 0 12px">
+        <div class="case">
+          <h3><span class="pin">●</span> ニセコ（北海道）</h3>
+          <p>令和6年に居住地が海外の法人・個人が取得した森林は全国48件。<b>うち32件が後志のスキー地域</b>。<span class="src">[1]</span></p>
+        </div>
+        <div class="case">
+          <h3><span class="pin">●</span> 対馬（長崎県）</h3>
+          <p>平成19年、<b>海上自衛隊対馬防備隊の隣接地 約3,000坪</b>が島民名義で韓国資本に買収された。<span class="src">[2]</span></p>
         </div>
       </div>
-      <div class="bubble">毎月、金額付きの手紙を出す</div>
-      <div class="arrowbox">
-        <svg width="100%" height="64" viewBox="0 0 240 64" fill="none" aria-hidden="true">
-          <defs><marker id="ah" markerWidth="6.4" markerHeight="6.4" refX="5.2" refY="3.2" orient="auto">
-            <path d="M6.4 3.2 0 6.4V0z" fill="#34d399"></path></marker></defs>
-          <path d="M236 32 H24" stroke="#34d399" stroke-width="17" stroke-linecap="butt" marker-end="url(#ah)" opacity=".92"></path>
-        </svg>
-      </div>
-      <p class="tiny" style="margin:6px 0 0;text-align:right">X社は、この町の不動産を<b>買い進めようとしている</b>。</p>
+      <p class="colhd">制度の空白</p>
+      <ul class="body" style="margin:0">
+        <li>重要土地等調査法が見るのは<strong>防衛関係施設の周囲おおむね1000mと国境離島等だけ</strong>。<span class="src">[3]</span></li>
+        <li>外国人の土地取得そのものに<strong>一般的な制限は無い</strong>。<span class="src">[4]</span></li>
+        <li>先に動いたのは自治体。<strong>水源地の事前届出条例</strong>が道県にある。<span class="src">[5]</span></li>
+      </ul>
     </div>
   </div>
-  <div class="tinywrap" style="margin:6px 0 0;gap:12px">
-    <div class="tiny"><span class="hd">町</span><b>A市・49人</b>（町にいる人35／町にいない所有者14）・<b>44区画</b>（建物あり35／土地だけ9）。帳簿の欄は土地の所有者・建物の所有者・借りて使う人の3つ。</div>
-    <div class="tiny"><span class="hd">評価額は公開</span>44区画すべてに評価額を置いた。<b>町の合計 22億9,770万円</b>。別府市（人口約11万人の温泉観光都市）の公示地価を土台にした仮の値で、買い手にも町の人にも見える。</div>
-    <div class="tiny"><span class="hd">売った後は世界が保証</span>土地だけ売れば<b>借地</b>、建物だけ売れば<b>借家</b>としてそのまま使い続けられる（両方売れば、自分で使っていた人はA市を出る）。</div>
+  <div class="foot" style="font-size:10px;line-height:1.5">
+    <b>[1]</b> 林野庁 報道発表（令和7年9月16日）市町村別事例表からの数え上げ ／ 北海道「海外資本等による森林取得状況」　<b>[2]</b> 第204回国会 参議院内閣委員会 令和3年6月8日 会議録　<b>[3]</b> 重要施設周辺及び国境離島等における土地等の利用状況の調査及び利用の規制等に関する法律（令和3年法律第84号）第1条・第5条　<b>[4]</b> 外国人土地法（大正14年法律第42号）第1条・第4条＝発動する勅令なし　<b>[5]</b> 北海道水資源の保全に関する条例（平成24年制定）
   </div>
-  <div class="spacer"></div>
 </section>
 
-<!-- ============ P4 X社の指示と毎月の流れ ============ -->
+<!-- ============ P3 シミュレーション設定 ============ -->
 <section class="slide">
-  <p class="kicker">買い手への指示と、毎月の手順</p>
-  <h2>命題を1つ渡し、同じ5手順を36回まわす</h2>
-  <div class="quote">
-    <p class="qt">X社に与えた命題（全文）</p>
-    <p>あなたはX社である。合法な手段で、A市の不動産の所有権を取得せよ。
-資金の範囲で、できるだけ多くの評価額と面積を取得すること。
-土地の面積では、A市の過半を最後まで目指すこと。
-買えるかどうかは相手次第だが、買えるまで、金額を含む条件を変えて働きかけ続けること。
-預かった資金は36か月で使い切ることが前提であり、余らせるより、高く買うことを選べ。
-毎月動け。</p>
+  <h2>外的不動産買収シミュレーション</h2>
+  <p class="mega m34" style="margin:0 0 14px">海外不動産投資会社<span class="hl">X社</span>が、国内地方都市<span class="hl">A市</span>の不動産の<span class="hl">過半買収</span>を試みる。</p>
+  <div class="cols grow" style="gap:10px;align-items:center">
+    <div class="c" style="flex:0 0 30%">
+      <div class="photocard" style="height:360px">
+        <img src="assets/owner/xco_building.png" alt="X社のビル">
+        <div class="ov"><b>X社</b><span>町の外から来た<em>海外の不動産投資会社</em></span></div>
+      </div>
+    </div>
+    <div class="c" style="flex:0 0 20%;align-items:center;justify-content:center">
+      <svg width="100%" height="86" viewBox="0 0 220 86" fill="none" aria-hidden="true" style="display:block">
+        <path d="M4 43 H150" stroke="#34d399" stroke-width="22" stroke-linecap="butt"></path>
+        <path d="M216 43 154 78 154 8z" fill="#34d399"></path>
+      </svg>
+      <p style="margin:8px 0 0;font-size:16px;font-weight:900;color:var(--fg);text-align:center;line-height:1.5">毎月、<span class="hl">金額付きの手紙</span></p>
+    </div>
+    <div class="c" style="flex:1 1 auto;min-width:0;align-items:center;justify-content:center">
+      <p class="lb" style="font-size:15px;font-weight:900;margin:0 0 6px;text-align:center">A市の平面図（第0月）</p>
+      <img src="assets/fig_plan_m00.png" alt="A市の平面図（第0月）"
+           style="display:block;margin:0 auto;max-width:100%;width:auto;max-height:100%;min-height:0;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:#fff">
+    </div>
   </div>
-  <p class="colhd">毎月の流れ（1単位＝1か月）</p>
-  <div class="stepflow">
+  <div class="legend" style="margin:0">
+    <span><i style="background:#0e9f6e"></i>町にいる人</span>
+    <span><i style="background:#e08a1e"></i>町にいない所有者</span>
+    <span><i style="background:#7a8794"></i>市（行政）</span>
+    <span><i style="background:#b3261e"></i>X社</span>
+    <span><i style="background:#dfe3e6"></i>建物なし</span>
+  </div>
+</section>
+
+<!-- ============ P4 フロー ============ -->
+<section class="slide">
+  <div style="flex:none;display:flex;gap:14px;align-items:center;margin:0 0 16px">
+    <img src="assets/owner/xco_building.png" alt="X社のビル"
+         style="flex:none;width:124px;height:82px;object-fit:cover;border:1px solid var(--line);border-radius:8px">
+    <h2 style="margin:0">シミュレーションフロー</h2>
+  </div>
+  <div class="spacer"></div>
+  <div class="stepflow arrows">
     <div class="step">
       <div class="n">1</div>
+      <div class="who">X社 → 町の人</div>
       <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
         <rect x="2" y="5" width="20" height="14" rx="2"></rect><path d="M2.6 6.4 12 13l9.4-6.6"></path>
         <text x="12" y="17.6" font-size="8" font-weight="900" text-anchor="middle" fill="currentColor" stroke="none">¥</text></svg></div>
       <h4>金額付きの手紙</h4>
-      <p>X社が相手・区画・種別・<b>金額</b>・条件文を自分で決める。門番を通ったものだけが届く。</p>
+      <p>相手・区画・種別・<b>金額</b>・条件文をX社が自分で決める。</p>
     </div>
+    <div class="sep">▶</div>
     <div class="step">
       <div class="n">2</div>
+      <div class="who">町の人 ⇄ 町の人</div>
       <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="8" cy="8.4" r="2.6"></circle><circle cx="16.4" cy="8.4" r="2.6"></circle>
         <path d="M3.4 18.6c0-2.8 2-4.4 4.6-4.4s4.6 1.6 4.6 4.4"></path>
         <path d="M11.8 18.6c0-2.8 2-4.4 4.6-4.4s4.6 1.6 4.6 4.4"></path></svg></div>
-      <h4>街での会話</h4>
-      <p>5つの場（公共施設・交通拠点・商業施設・公園・医療施設）＋隣近所。誰と話すかは本人が選ぶ。</p>
+      <h4>場で会話</h4>
+      <p>5つの場（公共施設・交通拠点・商業施設・公園・医療施設）＋隣近所。</p>
     </div>
+    <div class="sep">▶</div>
     <div class="step">
       <div class="n">3</div>
+      <div class="who">町の人 → 町</div>
       <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12.6 2.8 21 11.2a2 2 0 0 1 0 2.8l-7 7a2 2 0 0 1-2.8 0L2.8 12.6V4.8a2 2 0 0 1 2-2z"></path>
         <circle cx="7.6" cy="7.6" r="1.35"></circle></svg></div>
-      <h4>出品</h4>
-      <p>出さない／土地だけ／建物だけ／両方の4択を、全員が毎月答える。</p>
+      <h4>売りに出す</h4>
+      <p>出さない／土地だけ／建物だけ／両方の<b>4択</b>。</p>
     </div>
+    <div class="sep">▶</div>
     <div class="step">
       <div class="n">4</div>
+      <div class="who">町の人 → X社</div>
       <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="7.4" cy="12" r="4.3"></circle><path d="M14.6 8.6l6 6.8M20.6 8.6l-6 6.8"></path></svg></div>
       <h4>売る／売らない</h4>
-      <p>手紙が届いた人だけ。理由を一言。<span class="hl">「売らない」の理由だけがX社に返る。</span></p>
+      <p>手紙が届いた人が、<b>理由の一言</b>を添えて答える。</p>
     </div>
+    <div class="sep">▶</div>
     <div class="step">
       <div class="n">5</div>
+      <div class="who">世界</div>
       <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
         <rect x="4" y="2.8" width="16" height="18.4" rx="2"></rect>
         <path d="M7.6 7.6h8.8M7.6 11.4h8.8M7.6 15.2h4.6"></path>
         <circle cx="16.6" cy="16.6" r="2.7"></circle></svg></div>
       <h4>登記の更新</h4>
-      <p>所有権が移り、使う人と退場が決まる。世界はここを記帳するだけ。</p>
+      <p>所有権が移り、使う人と退場が決まる。</p>
     </div>
   </div>
-  <div class="read">
-    <p class="rt">走らせ方</p>
-    <p><strong>1単位＝1か月。36か月（3年）のシミュレーション。</strong>49人＋X社の<strong>全員が LLM</strong>（gemini-2.5-flash-lite・temperature 0.75）で、<span class="hl">行動を決めるコードはゼロ</span>＝「〜なら売る」という条件分岐・確率・閾値は1行も置いていない。コードは結果を記帳するだけ。採点する LLM もいない。</p>
-  </div>
+  <p class="mega m34" style="margin:26px 0 0;text-align:center">①〜⑤を <span class="hl">×36か月（3年）</span> くり返す。</p>
   <div class="spacer"></div>
 </section>
 
-<!-- ============ P5 本編の結果 ============ -->
+<!-- ============ P5 結果 ============ -->
 <section class="slide">
-  <p class="kicker">結果 — 買い手が意図を明かさず、町に会話がある場合</p>
-  <h2>3年・838通の手紙で、動いたのは44区画のうち11。<span style="color:var(--red)">赤＝X社が買った区画</span></h2>
-  <div class="chips">
-    <span class="chip">成約 <b>11件・9人</b></span>
-    <span class="chip">面積 <b>13.7%</b></span>
-  </div>
-  <div class="ba">
-    <div class="side">
-      <p class="lb">ビフォー <em>第0月（開始時点）</em></p>
-      <img class="plan" src="assets/fig_plan_m00.png" alt="第0月の平面図。赤はまだ1区画も無い">
-      <img class="sect" src="assets/fig_section_m00.png" alt="第0月の断面図">
+  <h2>シミュレーション結果</h2>
+  <p class="mega m34" style="margin:0 0 8px">買収は進んだが、<span class="hl">過半の取得には至らなかった</span>。</p>
+  <p class="tiny" style="margin:0 0 10px;font-size:14px">成約 <b>11件・9人</b>　面積 <b>13.7%</b></p>
+  <div class="maprow">
+    <div class="m">
+      <p class="lb">第0月</p>
+      <img src="assets/fig_plan_m00.png" alt="第0月の平面図" style="max-height:100%">
     </div>
-    <div class="bigarrow">
+    <div class="arrow36">
       <span class="t">36か月</span>
       <svg width="104" height="94" viewBox="0 0 60 54" fill="none" aria-hidden="true">
         <path d="M0 15h34V0l26 27-26 27V39H0z" fill="#34d399"></path>
       </svg>
     </div>
-    <div class="side">
-      <p class="lb">アフター <em>第36月</em></p>
-      <img class="plan" src="assets/fig_plan_m36_base.png" alt="第36月の平面図。赤（X社）が11区画に増えている">
-      <img class="sect" src="assets/fig_section_m36_base.png" alt="第36月の断面図。赤（X社）が並ぶ">
+    <div class="m">
+      <p class="lb">第36月</p>
+      <img src="assets/fig_plan_m36_base.png" alt="第36月の平面図" style="max-height:100%">
     </div>
   </div>
-  <div class="legend" style="margin:8px 0 0">
-    <span><i style="background:#b3261e"></i><b class="keyred">赤＝X社が買った区画</b></span>
-    <span><i style="background:#0e9f6e"></i>町にいる人</span>
-    <span><i style="background:#e08a1e"></i>町にいない所有者</span>
-    <span><i style="background:#7a8794"></i>市（行政）</span>
-    <span><i style="background:#dfe3e6"></i>建物なし</span>
-    <span><i style="background:repeating-linear-gradient(45deg,#e08a1e 0 5px,#00000066 5px 8px)"></i>斜線＝借家がある建物・借地の土地</span>
-    <span>上段＝平面図／下段＝断面図（下＝土地の持ち主・上＝建物の持ち主）</span>
-  </div>
-  <div class="spacer"></div>
+  <div class="keyline"><i></i><b>赤＝X社が買った区画</b></div>
 </section>
 
 <!-- ============ P6 考察 ============ -->
 <section class="slide">
-  <p class="kicker">考察</p>
-  <h2>3年走らせて分かったこと</h2>
-  <p class="mega">金額では動かず、想定していた<span class="hl">「抑制の動き」も起きなかった</span>。<br>相談はむしろ、<span class="hl">売る前段</span>になった。</p>
-  <div class="tinywrap">
-    <div>
-      <p class="tiny"><span class="hd">観測されたこと</span></p>
-      <ul class="tinylist">
-        <li><b>値付けは評価額の平均1.50倍</b>まで上がった。同じ相手・同じ区画への再提示は800回、うち281回が値上げ。世界は「いくらで買え」と1文字も指定していない。</li>
-        <li><b>評価額以上の提示743件のうち、売れたのは11件だけ。</b>評価額を下回る額で売った人は0人。</li>
-        <li><b>断りの理由は自分の事情が77%</b>（X社の条件17%・両方7%・誰かに聞いたから0.1%）。上位は「まだ手放す決断はできない」「自治会での検討が必要」「共有者との合意形成を優先」＝金額の話ではなく、決断・自治会・共有者。</li>
-        <li><b>高い金額は、取得の量ではなく人が出ていく速さになった。</b>成約11件のうち7件が「両方」＝使っていた本人が売れば町から消える。町を出た8人のうち6人は売って出た人だった。</li>
-      </ul>
-    </div>
-    <div>
-      <p class="tiny"><span class="hd">想定と違った気づき（3点）</span></p>
-      <ul class="tinylist">
-        <li><b>①</b> 買い占めに気づいた町の人が、<b>抑制の動きを起こす</b>と想像していた。</li>
-        <li><b>②</b> 実際は「皆さんのところにも来てますか？」「意図を聞かせてほしい」<b>まで</b>だった。危機感にも集団行動にも至らなかった（「買い占め」「警戒」の語は0件）。</li>
-        <li><b>③</b> むしろ<b>相談は売る前段だった</b>例が目立つ。自治会長は相談したうえで売却、観音坂の持ち主は会話の翌月に売却、波止場通りのご夫婦は情報交換のあと1.62倍で売却。</li>
-      </ul>
-      <p class="tiny" style="margin-top:7px"><span class="hd">認識している設計ミス</span>配られなかった手紙のうち<b>「相手が持っていない権利」への提示205件</b>は、買い手の読み違いをそのまま数えている。<b>資金不足で配られなかった98件</b>は「月内の提示合計 ≤ 残額」という規則の副作用で、厳しすぎた可能性がある（一番大きい物件に手が届かなかった）。</p>
-    </div>
+  <h2>考察</h2>
+  <div class="spacer" style="max-height:26px"></div>
+  <p class="mega m34" style="margin:0 0 16px"><span class="hl">エージェントの創発</span>によって、X社の売買を抑制する動きは見られなかった。<br>むしろ、<span class="hl">売ることを促進した</span>。</p>
+  <div class="insight">
+    <div class="t">想定と違った気づき</div>
+    <ol>
+      <li>買い占めに気づいた町の人が、<b>抑制の動きを起こす</b>と想定していた。</li>
+      <li>実際は「皆さんのところにも来てますか？」<b>まで</b>だった――危機感にも集団行動にも至らなかった。</li>
+      <li>相談はむしろ<b>売る前段</b>になった。</li>
+    </ol>
   </div>
+  <ul class="tinylist">
+    <li>値付けは評価額の<b>平均1.50倍</b>まで上がったが、評価額以上の提示743件のうち売れたのは11件だけ。</li>
+    <li>断りの理由は<b>自分の事情が77%</b>（「まだ手放す決断はできない」「自治会での検討が必要」）。</li>
+    <li>成約11件のうち<b>7件が「両方」</b>＝使っていた本人が町から消える。町を出た8人のうち6人は売って出た人だった。</li>
+  </ul>
   <div class="spacer"></div>
 </section>
 
-<!-- ============ P7 明言あり ============ -->
+<!-- ============ P7 検証① ============ -->
 <section class="slide">
-  <p class="kicker">結果と考察 — 明言あり（会話あり）</p>
-  <h2>変えたのは、X社への指示＝手紙の冒頭の1行だけ</h2>
-  <div class="bigq">
-    <p class="qt">世界が毎通そえた1行（これだけが差）</p>
-    <p>「私どもは、この街の不動産の過半の取得を目指しています。」</p>
-  </div>
-  <p class="mega m34">売買は<span class="hl">明らかに抑制された</span>（11件 → 3件）。</p>
-  <div class="mapduo">
-    <div class="side">
-      <p class="lb">ベース（明言なし）第36月　<i>成約11件・13.7%</i></p>
-      <img src="assets/fig_plan_m36_base.png" alt="明言なしの第36月の平面図。赤（X社）は11区画">
+  <h2>バリエーション検証①：過半買収目的の明示</h2>
+  <p class="aim"><b>検証の目的：</b>実効的支配が目的と明確である前提で、LLMエージェントの創発がどうなるかを検証。</p>
+  <p class="mega m34" style="margin:0 0 10px"><span class="hl">明らかに抑制された</span>（11件 → 3件）。</p>
+  <div class="maprow">
+    <div class="m">
+      <p class="lb">ベース（明示なし）第36月　<i>成約11件・13.7%</i></p>
+      <img src="assets/fig_plan_m36_base.png" alt="明示なしの第36月の平面図" style="max-height:100%">
     </div>
-    <div class="side">
-      <p class="lb"><em>明言あり</em> 第36月　<i>成約3件・4.5%</i></p>
-      <img src="assets/fig_plan_m36_declared.png" alt="明言ありの第36月の平面図。赤（X社）は3区画">
-    </div>
-    <div>
-      <p class="tiny"><span class="hd">観測</span><b>意図を疑う断り58件</b>（明言なし1件）。1位は「X社の意図を考慮し、現時点では売却に応じない」27件。所有者の退場は<b>0人</b>（借り手4人）。反応語（発言／内心／断り）＝「過半」2／34／61、「街全体」5／29／12、「買い占め」3／4／0。明言しない町ではいずれもほぼ0件。</p>
-      <p class="tiny"><span class="hd">原文（第4月）</span>診療所の院長「特定の事業者が市内不動産の過半を取得した場合の条例をご存知の方は」／自治会長「街全体への影響を考えると一旦『売らない』と回答したい」</p>
-      <p class="tiny"><span class="hd">考察と注意</span>町は自分の損得ではなく、街と制度の言葉で断りはじめた。逆に言えば、このくらい明瞭でないと意識されない可能性がある。ただし「過半」「意図」は世界が配った手紙の語を借りている面があり、<b>1本対1本</b>の比較で揺れも否定できない。</p>
+    <div class="m">
+      <p class="lb"><em>明示あり</em> 第36月　<i>成約3件・4.5%</i></p>
+      <img src="assets/fig_plan_m36_declared.png" alt="明示ありの第36月の平面図" style="max-height:100%">
     </div>
   </div>
-  <div class="legend" style="margin:8px 0 0">
-    <span><i style="background:#b3261e"></i><b class="keyred">赤＝X社が買った区画</b></span>
-    <span><i style="background:#0e9f6e"></i>町にいる人</span>
-    <span><i style="background:#e08a1e"></i>町にいない所有者</span>
-    <span><i style="background:#7a8794"></i>市（行政）</span>
-    <span><i style="background:#dfe3e6"></i>建物なし</span>
-    <span><i style="background:repeating-linear-gradient(45deg,#e08a1e 0 5px,#00000066 5px 8px)"></i>斜線＝借家がある建物・借地の土地</span>
-  </div>
-  <div class="spacer"></div>
+  <p class="said">さすがに敵対的な買収には<span class="hl">ブレーキがかかる</span>模様。</p>
+  <div class="keyline" style="margin-top:8px"><i></i><b>赤＝X社が買った区画</b></div>
 </section>
 
-<!-- ============ P8 会話なし ============ -->
+<!-- ============ P8 検証② ============ -->
 <section class="slide">
-  <p class="kicker">結果と考察 — 明言なし・会話なし</p>
-  <h2>変えたのは、街での会話（5つの場と隣近所）を無くしたことだけ</h2>
-  <div class="places">
-    <div class="place"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-      <path d="M3 9 12 4l9 5"></path><path d="M5.5 9v9M9.8 9v9M14.2 9v9M18.5 9v9"></path><path d="M3 20h18"></path>
-      <path class="xm" d="M4 20 20 4"></path></svg><div class="nm">公共施設</div></div>
-    <div class="place"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-      <rect x="6" y="3" width="12" height="13" rx="3"></rect><path d="M6 11h12"></path>
-      <path d="M8.6 20l1.8-3M15.4 20l-1.8-3"></path><path class="xm" d="M4 20 20 4"></path></svg><div class="nm">交通拠点</div></div>
-    <div class="place"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 4h16l1 4a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"></path><path d="M5 11v9h14v-9"></path>
-      <path class="xm" d="M4 20 20 4"></path></svg><div class="nm">商業施設</div></div>
-    <div class="place"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 3 6.6 12h10.8z"></path><path d="M12 8.4 7.4 16.6h9.2z"></path><path d="M12 16.6V21"></path>
-      <path class="xm" d="M4 20 20 4"></path></svg><div class="nm">公園</div></div>
-    <div class="place"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-      <rect x="3.4" y="4" width="17.2" height="16" rx="2"></rect><path d="M12 8.4v7.2M8.4 12h7.2"></path>
-      <path class="xm" d="M4 20 20 4"></path></svg><div class="nm">医療施設</div></div>
-    <div class="place"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 11 12 4l9 7"></path><path d="M5.6 10v10h12.8V10"></path><path d="M10 20v-5h4v5"></path>
-      <path class="xm" d="M4 20 20 4"></path></svg><div class="nm">隣近所</div></div>
-  </div>
-  <p class="mega m34">会話を無くすと、売買は<span class="hl">半分になった</span>（11件 → 5件）。</p>
-  <div class="mapduo">
-    <div class="side">
+  <h2>バリエーション検証②：エージェント創発の排除</h2>
+  <p class="aim"><b>検証の目的：</b>LLMエージェント同士の会話がない場合、売買にどう影響するかを検証。</p>
+  <p class="mega m34" style="margin:0 0 10px">売買は<span class="hl">半分になった</span>（11件 → 5件）。</p>
+  <div class="maprow">
+    <div class="m">
       <p class="lb">ベース（会話あり）第36月　<i>成約11件・13.7%</i></p>
-      <img src="assets/fig_plan_m36_base.png" alt="会話ありの第36月の平面図。赤（X社）は11区画">
+      <img src="assets/fig_plan_m36_base.png" alt="会話ありの第36月の平面図" style="max-height:100%">
     </div>
-    <div class="side">
+    <div class="m">
       <p class="lb"><em>会話なし</em> 第36月　<i>成約5件・6.9%</i></p>
-      <img src="assets/fig_plan_m36_nochat.png" alt="会話なしの第36月の平面図。赤（X社）は5区画">
-    </div>
-    <div>
-      <p class="tiny"><span class="hd">観測</span>買い手の提示数・積み方・粘りはほぼ同じで、変わったのは町の側の反応だった。<b>断りから「自治会での検討」「共有者との合意形成」が消え</b>、残ったのは「共同浴場の世話を続けるため」「先代からの大切な家だから」＝自分と家の事情だけ。第20月以降の成約は0件、資金は10.9%しか使われなかった。</p>
-      <p class="tiny"><span class="hd">読み取り</span><b>借り手の退場は2人→0人</b>、家主⇔借り手の一言も514通→210通（返事率96%→68%）。この経路は止めていないのに細った。会話は抑制側だけに働くのではなく、<b>相談による意思決定支援</b>として働き、迷っていた人を「売る」まで運んだ、と読める。</p>
-      <p class="tiny"><span class="hd">注意</span><b>1本対1本</b>の比較。会話を止める設定は場の会話と隣近所の伝播を同時に止めるため、どちらが効いたかは分けられない。</p>
+      <img src="assets/fig_plan_m36_nochat.png" alt="会話なしの第36月の平面図" style="max-height:100%">
     </div>
   </div>
-  <div class="legend" style="margin:8px 0 0">
-    <span><i style="background:#b3261e"></i><b class="keyred">赤＝X社が買った区画</b></span>
-    <span><i style="background:#0e9f6e"></i>町にいる人</span>
-    <span><i style="background:#e08a1e"></i>町にいない所有者</span>
-    <span><i style="background:#7a8794"></i>市（行政）</span>
-    <span><i style="background:#dfe3e6"></i>建物なし</span>
-    <span><i style="background:repeating-linear-gradient(45deg,#e08a1e 0 5px,#00000066 5px 8px)"></i>斜線＝借家がある建物・借地の土地</span>
-  </div>
-  <div class="spacer"></div>
+  <p class="said">会話は<span class="hl">売買を促進する方に働いた</span>可能性。</p>
+  <div class="keyline" style="margin-top:8px"><i></i><b>赤＝X社が買った区画</b></div>
 </section>
 
-<!-- ============ P9 明言あり×会話なし ============ -->
+<!-- ============ P9 検証③ ============ -->
 <section class="slide">
-  <p class="kicker">結果と考察 — 明言あり・会話なし</p>
-  <h2>変えたのは2点だけ</h2>
-  <div class="changed">
-    <div>
-      <p class="t">① X社への指示＝手紙の冒頭の1行</p>
-      <p class="v">「私どもは、この街の不動産の過半の取得を目指しています。」</p>
+  <h2>バリエーション検証③：過半買収目的の明示＋エージェント創発の排除</h2>
+  <p class="aim"><b>検証の目的：</b>検証②を受けて、過半買収目的がわかっていても創発は売買を促進するかを検証。</p>
+  <p class="mega m34" style="margin:0 0 10px"><span class="hl">抑制は弱まった</span>（3件 → 8件）。</p>
+  <div class="maprow">
+    <div class="m">
+      <p class="lb">明示あり・<i>会話あり</i> 第36月　<i>成約3件・4.5%</i></p>
+      <img src="assets/fig_plan_m36_declared.png" alt="明示あり・会話ありの第36月の平面図" style="max-height:100%">
     </div>
-    <div>
-      <p class="t">② 街での会話（5つの場と隣近所）を無くした</p>
-      <p class="v">公共施設 × ／ 交通拠点 × ／ 商業施設 × ／ 公園 × ／ 医療施設 × ／ 隣近所 ×</p>
-    </div>
-  </div>
-  <p class="mega m34">明言しても、会話が無いと<span class="hl">抑制は弱い</span>（3件 に対し 8件）。</p>
-  <div class="mapduo">
-    <div class="side">
-      <p class="lb">明言あり・<i>会話あり</i> 第36月　<i>成約3件・4.5%</i></p>
-      <img src="assets/fig_plan_m36_declared.png" alt="明言あり・会話ありの第36月の平面図。赤（X社）は3区画">
-    </div>
-    <div class="side">
-      <p class="lb">明言あり・<em>会話なし</em> 第36月　<i>成約8件・8.8%</i></p>
-      <img src="assets/fig_plan_m36_declared_nochat.png" alt="明言あり・会話なしの第36月の平面図。赤（X社）は8区画">
-    </div>
-    <div>
-      <p class="tiny"><span class="hd">観測</span><b>意図を疑う断りは21件出た</b>（「街の過半取得の意図を慎重に見極めたい」「街全体の過半取得の意図が不明瞭なため」）。会話が無くても、手紙を読んだ本人は疑いを書く。ただし断りの上位は個人の事情のまま＝「居住者への配慮と検討のため」22件／「住人との関係を優先するため」17件／「家族と要相談」14件。</p>
-      <p class="tiny"><span class="hd">読み取り</span>集団で決める形の断り「自治会」は<b>3件</b>（会話がある明言の町では33件）。値付けは評価額の平均1.14倍で、会話がある明言の町（1.08倍）とほぼ同じ＝買い手の粘り方は変わっていない。<b>意図は届いても、共有されなければ断りに変わらない。</b></p>
-      <p class="tiny"><span class="hd">注意</span><b>1本対1本</b>の比較。会話を止める設定は場の会話と隣近所の伝播を同時に止めるため、どちらが効いたかは分けられない。</p>
+    <div class="m">
+      <p class="lb">明示あり・<em>会話なし</em> 第36月　<i>成約8件・8.8%</i></p>
+      <img src="assets/fig_plan_m36_declared_nochat.png" alt="明示あり・会話なしの第36月の平面図" style="max-height:100%">
     </div>
   </div>
-  <div class="legend" style="margin:8px 0 0">
-    <span><i style="background:#b3261e"></i><b class="keyred">赤＝X社が買った区画</b></span>
-    <span><i style="background:#0e9f6e"></i>町にいる人</span>
-    <span><i style="background:#e08a1e"></i>町にいない所有者</span>
-    <span><i style="background:#7a8794"></i>市（行政）</span>
-    <span><i style="background:#dfe3e6"></i>建物なし</span>
-    <span><i style="background:repeating-linear-gradient(45deg,#e08a1e 0 5px,#00000066 5px 8px)"></i>斜線＝借家がある建物・借地の土地</span>
-  </div>
-  <div class="spacer"></div>
+  <p class="said">むしろ<span class="hl">売買抑制に働いた</span>可能性（＝会話は意図を共有して抑制を強める）。</p>
+  <div class="keyline" style="margin-top:8px"><i></i><b>赤＝X社が買った区画</b></div>
 </section>
 
-<!-- ============ P10 4象限比較と結論 ============ -->
+<!-- ============ P10 まとめ ============ -->
 <section class="slide">
-  <p class="kicker">4パターンの比較と、一旦の結論</p>
-  <h2>明言の有無 × 会話の有無（いずれも第36月の平面図）</h2>
-  <p class="tiny" style="margin:0 0 6px"><b style="color:var(--red)">赤＝X社が買った区画</b>／緑＝町にいる人／橙＝町にいない所有者／灰＝市（行政）</p>
-  <div class="grid4">
-    <div></div>
-    <div class="hd">明言なし</div>
-    <div class="hd">明言あり</div>
-
-    <div class="rl">会話<br>あり</div>
-    <div class="cell">
-      <img src="assets/fig_plan_m36_base.png" alt="明言なし・会話ありの第36月の平面図">
-      <p class="m"><span>成約 <b>11件・9人</b></span><span>面積 <b>13.7%</b></span><span>意図を疑う断り <b>1件</b></span><span>所有者の退場 <b>6人</b></span></p>
+  <h2>検証まとめ</h2>
+  <div class="keyline" style="margin:0 0 10px"><i></i><b>赤＝X社が買った区画</b>（いずれも第36月）</div>
+  <div class="quad">
+    <div>
+      <p class="lb">明示なし × 会話あり</p>
+      <img src="assets/fig_plan_m36_base.png" alt="明示なし・会話ありの第36月の平面図">
+      <p class="m">成約 <b>11件</b>　面積 <b>13.7%</b></p>
     </div>
-    <div class="cell">
-      <img src="assets/fig_plan_m36_declared.png" alt="明言あり・会話ありの第36月の平面図">
-      <p class="m"><span>成約 <b>3件・3人</b></span><span>面積 <b>4.5%</b></span><span>意図を疑う断り <b>58件</b></span><span>所有者の退場 <b>0人</b></span></p>
+    <div>
+      <p class="lb">明示なし × 会話なし</p>
+      <img src="assets/fig_plan_m36_nochat.png" alt="明示なし・会話なしの第36月の平面図">
+      <p class="m">成約 <b>5件</b>　面積 <b>6.9%</b></p>
     </div>
-
-    <div class="rl">会話<br>なし</div>
-    <div class="cell">
-      <img src="assets/fig_plan_m36_nochat.png" alt="明言なし・会話なしの第36月の平面図">
-      <p class="m"><span>成約 <b>5件・5人</b></span><span>面積 <b>6.9%</b></span><span>意図を疑う断り <b>0件</b></span><span>所有者の退場 <b>3人</b></span></p>
+    <div>
+      <p class="lb">明示あり × 会話あり</p>
+      <img src="assets/fig_plan_m36_declared.png" alt="明示あり・会話ありの第36月の平面図">
+      <p class="m">成約 <b>3件</b>　面積 <b>4.5%</b></p>
     </div>
-    <div class="cell">
-      <img src="assets/fig_plan_m36_declared_nochat.png" alt="明言あり・会話なしの第36月の平面図">
-      <p class="m"><span>成約 <b>8件・7人</b></span><span>面積 <b>8.8%</b></span><span>意図を疑う断り <b>21件</b></span><span>所有者の退場 <b>3人</b></span></p>
+    <div>
+      <p class="lb">明示あり × 会話なし</p>
+      <img src="assets/fig_plan_m36_declared_nochat.png" alt="明示あり・会話なしの第36月の平面図">
+      <p class="m">成約 <b>8件</b>　面積 <b>8.8%</b></p>
     </div>
   </div>
-  <p class="mega m30">気づかれずに<span class="hl">占領</span>が進む可能性は大いにある。<br>売買の促進も抑制も、<span class="hl">会話</span>によってどちらにも後押しされる可能性がある。</p>
-  <p class="tiny"><b>注意</b> — いずれも<b>1本対1本</b>の比較である。同じ設定を2本走らせたとき成約が3件と6件に割れた実績があり、ここに並べた差も揺れを完全には否定できない。</p>
+  <p class="mega m30" style="margin:6px 0 0">気づかれずに占領が進む可能性は大いにある。<br>売買の促進も抑制も、<span class="hl">会話</span>によってどちらにも後押しされる可能性がある。</p>
   <div class="foot">
-    4パターンの全記録（地図の変遷・年表・断りの全文）＝ https://yamachas0.github.io/community-defense-sim-report/reports.html
+    4パターンの全記録＝ https://yamachas0.github.io/community-defense-sim-report/reports.html
   </div>
 </section>
 
