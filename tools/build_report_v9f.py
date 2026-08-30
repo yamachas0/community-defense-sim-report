@@ -33,6 +33,43 @@ ASSETS = os.path.join(HERE, "assets", "report")
 OUT_HTML = os.path.join(HERE, "report.html")
 MAP_MONTHS = [1, 6, 12, 18, 24, 30, 36]
 
+# 断りの理由を人の手で全件読んで分けた結果。出典＝
+# quiet-acquisition/docs/submission/reasons_v9f_classified.md （(a)節・(c)節・(d)節・(e)節）。
+# 判定用の人工知能は使わず、作業者が原文824件を読んで分類し、集計だけを機械にやらせている。
+CLASSIFIED = {
+    # 表示用（版の記号を出さない）。実ファイル＝上のコメントのパス。
+    "source": "この走行の断り理由の分類文書（docs/submission/）",
+    "n_written": 824,
+    "overall": [("自分の事情（愛着・家族・商売・共有者への配慮など）", 631, 76.6),
+                ("X社の条件（条件が不明・金額が見合わない・相手の実態が不明）", 137, 16.6),
+                ("その両方に触れている", 55, 6.7),
+                ("人から聞いた話が理由", 1, 0.1)],
+    "bands": [("1.0倍未満（評価額より安い）", 94, 69.1, 27.7, 3.2, 0.0),
+              ("1.0〜1.2倍", 177, 76.3, 18.1, 5.6, 0.0),
+              ("1.2〜1.5倍", 179, 76.5, 17.9, 5.0, 0.6),
+              ("1.5倍以上", 374, 78.6, 12.6, 8.8, 0.0)],
+    "money_n": 126,
+    "money_pct": 15.3,
+    "money_bands": [("1.0倍未満", 28, 94, 29.8), ("1.0〜1.2倍", 18, 177, 10.2),
+                    ("1.2〜1.5倍", 16, 179, 8.9), ("1.5倍以上", 64, 374, 17.1)],
+    "attractive_type": 10,
+    "proc_n": 136,
+    "proc_pct": 21.6,
+    "proc_examples": [("自治会での検討が必要なため", 14),
+                      ("共有者との合意形成を優先するため", 13)],
+    "over_valuation": 743,
+    "over_valuation_declined": 732,
+    "under_valuation": 95,
+    "under_valuation_sold": 0,
+    "sold_total": 11,
+    "sold_money": 8,
+    "sold_money_pct": 73,
+    "sold_own": 2,
+    "left_total": 8,
+    "left_sellers": 6,
+    "left_tenants": 2,
+}
+
 
 def jload(name):
     with open(os.path.join(RUN, name), encoding="utf-8") as f:
@@ -716,6 +753,79 @@ overflow-x:auto;font-size:14px;line-height:1.7;margin:8px 0 14px}
     w('<h2 id="c5">5. 町の答え</h2>')
     w('<p class="lead">断られた手紙は826通。'
       'そのほとんどに、その人が書いた「なぜ売らないか」の一言が付いている。</p>')
+    C = CLASSIFIED
+    w("<h3>断りの理由を全件読んで分けた（判定AI不使用）</h3>")
+    w(f'<p>824件の一言を人の目で1件ずつ読み、'
+      '「自分の事情」「X社の条件」「その両方」「人から聞いた話」に分けた。'
+      '分けたのは人で、機械がやったのは数えることだけ'
+      f'（出典＝<code>{e(C["source"])}</code>）。</p>')
+    w('<div class="scroll"><table><tr><th>断った理由の中身</th>'
+      '<th class="num">件数</th><th class="num">割合</th></tr>')
+    for label, n, p in C["overall"]:
+        w(f'<tr><td>{e(label)}</td><td class="num">{n}</td>'
+          f'<td class="num">{p}%</td></tr>')
+    w("</table></div>")
+    w('<p>4件に3件は<span class="hl">「自分の事情」</span>だった。'
+      '「金額が安い」「条件が不明だ」という相手への文句ではなく、'
+      '愛着・家族・商売・共有者への配慮といった、自分の側の話で断っている。</p>')
+
+    w("<h4>いくら積まれても、理由の内訳はほとんど変わらない</h4>")
+    w('<div class="scroll"><table><tr><th>提示額（評価額の何倍か）</th>'
+      '<th class="num">理由が書かれた断り</th><th class="num">自分の事情</th>'
+      '<th class="num">X社の条件</th><th class="num">両方</th>'
+      '<th class="num">聞いた話</th></tr>')
+    for label, n, a, b, c2, d2 in C["bands"]:
+        w(f'<tr><td>{e(label)}</td><td class="num">{n}</td><td class="num">{a}%</td>'
+          f'<td class="num">{b}%</td><td class="num">{c2}%</td>'
+          f'<td class="num">{d2}%</td></tr>')
+    w("</table></div>")
+    w('<p>どの帯でも「自分の事情」が <span class="hl">69〜79%</span> で一貫している。'
+      '安い提示の帯だけ「X社の条件」（＝安すぎる・条件が不明）が27.7%とやや多く、'
+      '高く積まれるほどその言い分は使えなくなって12.6%まで下がる。</p>')
+
+    w("<h4>金額に触れた断り</h4>")
+    w(f'<p>断りの一言のうち、金額（提示額・評価額・相場・納得など）に触れているのは'
+      f' <b>{C["money_n"]}件（{C["money_pct"]}%）</b>。'
+      'いちばん多い帯は「評価額より安い」（29.8%）で、'
+      'その次が「1.5倍以上」（17.1%）——'
+      f'高く積まれたほうでも金額の話が増える。'
+      f'<span class="hl">「提示額は魅力的だが、まだ手放したくない」</span>という'
+      f'型の一言が {C["attractive_type"]}件あり、'
+      '値段が上がったことを認めたうえで断る言い方が出てきている。</p>')
+    w('<div class="scroll"><table><tr><th>提示額の帯</th>'
+      '<th class="num">金額に触れた断り</th><th class="num">その帯の断り</th>'
+      '<th class="num">割合</th></tr>')
+    for label, n, tot, p in C["money_bands"]:
+        w(f'<tr><td>{e(label)}</td><td class="num">{n}</td><td class="num">{tot}</td>'
+          f'<td class="num">{p}%</td></tr>')
+    w("</table></div>")
+
+    w("<h4>一人では決められない、という断り</h4>")
+    w(f'<p>「自分の事情」631件のうち <b>{C["proc_n"]}件（{C["proc_pct"]}%）</b>は、'
+      '自治会・共有者・組合・家族・氏子といった'
+      '<span class="hl">関係者との手続き</span>に触れている。'
+      + "、".join(f'「{e(t)}」{n}件' for t, n in C["proc_examples"])
+      + 'が代表例で、共有名義や自治会のように'
+      '一人では決められない仕組みが、断りの4分の1近くを占めている。</p>')
+
+    w("<h4>売った人・出ていった人の側から見ると</h4>")
+    w(f'<ul class="plain">'
+      f'<li>評価額以上を出された手紙 {C["over_valuation"]}通のうち、'
+      f'<b>{C["over_valuation_declined"]}通が断られている</b>。'
+      f'評価額より安い {C["under_valuation"]}通からは成約が'
+      f'{C["under_valuation_sold"]}件（損な条件で売った人はいない）。</li>'
+      f'<li>売った9人・{C["sold_total"]}件の理由を同じように読むと、'
+      f'<b>{C["sold_money"]}件（{C["sold_money_pct"]}%）が金額そのもの</b>を理由にしていて、'
+      f'自分の事情を理由にしたのは{C["sold_own"]}件だけ。'
+      '<span class="hl">断る人は自分の事情を語り、売る人は金額を語る</span>という'
+      'ちょうど裏返しの形になっている。</li>'
+      f'<li>町を出た{C["left_total"]}人のうち{C["left_sellers"]}人は売った本人。'
+      f'残り{C["left_tenants"]}人は不動産の取引を一度もしていない借り手自身の退場で、'
+      '所有権の移動と人が出ていくことは1対1で対応していない。</li></ul>')
+    w('<p class="note">この分け方は人の主観である。'
+      '「まだ決められない」のような短い一言をどちらに寄せるかは、読み手が変われば変わりうる。</p>')
+
+    w("<h3>数で見た町の答え</h3>")
     w('<div class="cards">')
     for n, l in [(f'{S["offers_declined"]}通', "断られた手紙"),
                  (f'{len(declines)}件', "断りの理由が書かれていた"),
