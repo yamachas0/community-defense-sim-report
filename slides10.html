@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>外的不動産投資へのコミュニティ自衛 — 提出スライド（10枚）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1115; --panel:#161a21; --fg:#e9ecf1; --dim:#98a1ad;
+  --accent:#34d399; --line:#262c36; --pad:20px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%;overflow:hidden;background:var(--bg)}
+body{
+  color:var(--fg);
+  font-family:"Noto Sans JP",system-ui,-apple-system,sans-serif;
+  line-height:1.75;-webkit-text-size-adjust:100%;overscroll-behavior:none;
+}
+#deck{position:fixed;inset:0}
+.slide{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  padding:calc(env(safe-area-inset-top,0px) + 22px) var(--pad)
+          calc(env(safe-area-inset-bottom,0px) + 58px) var(--pad);
+  overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
+}
+.slide.on{display:flex}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.09em;color:var(--accent);margin:0 0 8px;flex:none}
+h1{
+  font-size:clamp(30px,8.2vw,56px);font-weight:900;line-height:1.32;
+  margin:0 0 16px;letter-spacing:.01em;
+}
+h2{
+  font-size:clamp(21px,5.2vw,31px);font-weight:900;line-height:1.4;
+  margin:0 0 14px;padding-left:12px;border-left:5px solid var(--accent);
+  flex:none;letter-spacing:.01em;
+}
+.sub{font-size:clamp(18px,4.4vw,23px);font-weight:500;color:var(--dim);line-height:1.7;margin:0 0 18px}
+ul.body{list-style:none;margin:0 0 14px;padding:0;flex:none}
+ul.body li{
+  font-size:clamp(18px,4.2vw,21px);line-height:1.7;margin:0 0 11px;
+  padding-left:20px;position:relative;
+}
+ul.body li::before{
+  content:"";position:absolute;left:2px;top:.74em;width:8px;height:8px;
+  border-radius:50%;background:var(--accent);
+}
+ul.body li ul{list-style:none;margin:6px 0 0;padding:0}
+ul.body li ul li{font-size:clamp(16px,3.7vw,18px);color:var(--dim);margin:0 0 5px;padding-left:16px}
+ul.body li ul li::before{width:5px;height:5px;background:transparent;border:1px solid var(--dim);top:.8em}
+strong{font-weight:900}
+.hl{color:var(--accent);font-weight:900}
+.src{font-size:.78em;color:var(--accent);font-weight:700;vertical-align:.3em;margin-left:2px}
+h1.big,.big{font-size:clamp(24px,6.2vw,40px);font-weight:900;line-height:1.55;margin:0 0 18px;letter-spacing:0}
+.spacer{flex:1 1 auto;min-height:0}
+
+.pending{
+  flex:none;border:2px dashed #3a434f;border-radius:12px;background:#12161d;
+  padding:20px 16px;color:var(--dim);margin:2px 0 12px;text-align:center;
+}
+.pending .tag{
+  display:inline-block;font-size:12px;font-weight:900;letter-spacing:.1em;
+  color:var(--bg);background:var(--accent);border-radius:4px;padding:2px 9px;margin-bottom:10px;
+}
+.pending .what{font-size:clamp(17px,4vw,19px);font-weight:700;color:var(--fg);line-height:1.6;margin:0 0 6px}
+.pending .note{font-size:15px;line-height:1.65;margin:0}
+.read{
+  flex:none;border-left:3px solid var(--accent);background:var(--panel);
+  border-radius:0 8px 8px 0;padding:11px 14px;margin:0 0 12px;
+}
+.read .rt{font-size:12px;font-weight:900;letter-spacing:.09em;color:var(--accent);margin:0 0 4px}
+.read p{margin:0;font-size:clamp(16px,3.8vw,18px);line-height:1.7;color:var(--fg)}
+.figwrap{flex:1 1 auto;min-height:100px;display:flex;align-items:center;justify-content:center;margin:2px 0 8px}
+.figwrap img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:#fff}
+.figcap{flex:none;font-size:14px;color:var(--dim);margin:0 0 10px;line-height:1.6}
+.figwrap.fixed{flex:none;height:230px}
+
+.duo{flex:none;display:flex;align-items:stretch;gap:10px;margin:6px 0 14px}
+.duo .box{
+  flex:1 1 0;min-width:0;border:1px solid var(--line);border-radius:10px;
+  background:var(--panel);padding:14px 12px;
+}
+.duo .box.x{border-color:var(--accent)}
+.duo .box h3{margin:0 0 6px;font-size:clamp(16px,4vw,19px);font-weight:900;line-height:1.45}
+.duo .box p{margin:0;font-size:clamp(14px,3.4vw,16px);line-height:1.65;color:var(--dim)}
+.duo .arrows{
+  flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;color:var(--accent);font-weight:900;font-size:15px;padding:0 2px;
+}
+.casewrap{flex:none;display:flex;gap:12px;align-items:center;margin:2px 0 14px}
+.jpmap{flex:0 0 148px;max-width:148px}
+.jpmap svg{width:100%;height:auto;display:block}
+.jpmap .land{fill:#1e2530;stroke:#39424f;stroke-width:1.4}
+.jpmap .dot{fill:var(--accent)}
+.jpmap .ring{fill:none;stroke:var(--accent);stroke-width:1.6;opacity:.55}
+.jpmap .lbl{fill:var(--accent);font-size:17px;font-weight:700;font-family:"Noto Sans JP",sans-serif}
+.cases{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:9px}
+.case{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 9px 9px 0;background:var(--panel);padding:9px 12px}
+.case h3{margin:0 0 3px;font-size:clamp(15px,3.8vw,17px);font-weight:900;line-height:1.4}
+.case p{margin:0;font-size:clamp(14px,3.4vw,16px);line-height:1.6;color:#c6cdd7}
+.case p b{color:var(--fg);font-weight:900}
+.chips{flex:none;display:flex;flex-wrap:wrap;gap:7px;margin:0 0 10px}
+.chip{
+  border:1px solid var(--line);background:var(--panel);border-radius:999px;
+  padding:5px 11px;font-size:clamp(14px,3.5vw,16px);color:var(--fg);
+}
+.chip b{color:var(--accent);font-weight:900}
+.ver,.chip b.ver{
+  display:inline-block;font-size:11px;font-weight:900;letter-spacing:.06em;
+  color:var(--bg);background:#5b6673;border-radius:3px;padding:1px 6px;
+  margin-right:6px;vertical-align:.12em;
+}
+.ver.now,.chip b.ver.now{background:var(--accent)}
+.legend{flex:none;display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 0 10px;font-size:14px;color:var(--dim)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:14px;border-radius:3px;border:1px solid #0006;display:inline-block}
+.flow{list-style:none;margin:0 0 12px;padding:0;flex:none;counter-reset:st}
+.flow li{
+  position:relative;padding:0 0 0 34px;margin:0 0 11px;
+  font-size:clamp(17px,4vw,20px);line-height:1.65;counter-increment:st;
+}
+.flow li::before{
+  content:counter(st);position:absolute;left:0;top:.22em;
+  width:23px;height:23px;border-radius:50%;background:var(--accent);color:var(--bg);
+  font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;
+}
+@media (min-width:900px){
+  .jpmap{flex:0 0 190px;max-width:190px}
+  .slide{
+    padding-left:max(28px,calc((100vw - 1120px) / 2));
+    padding-right:max(28px,calc((100vw - 1120px) / 2));
+    padding-top:26px;
+  }
+}
+#bar{
+  position:fixed;left:0;right:0;bottom:0;
+  height:calc(env(safe-area-inset-bottom,0px) + 46px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  display:flex;align-items:center;justify-content:center;gap:18px;
+  background:rgba(15,17,21,.95);border-top:1px solid var(--line);
+  font-size:14px;color:var(--dim);z-index:5;
+}
+#bar button{
+  font:inherit;font-weight:700;color:var(--fg);background:#1b2029;
+  border:1px solid var(--line);border-radius:8px;padding:5px 14px;cursor:pointer;
+}
+#bar button:active{border-color:var(--accent)}
+#pageno{font-variant-numeric:tabular-nums;font-weight:700;color:var(--fg);min-width:60px;text-align:center}
+#prog{position:fixed;left:0;top:0;height:3px;background:var(--accent);z-index:6;transition:width .18s ease}
+
+/* ===== 10枚版の密度調整 ===== */
+.slide{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 52px)}
+h2{font-size:24px;line-height:1.35;margin:0 0 12px;padding-left:10px;border-left-width:4px}
+.kicker{font-size:13px;margin:0 0 7px}
+ul.body{margin:0 0 8px}
+ul.body li{font-size:18px;line-height:1.65;margin:0 0 9px;padding-left:17px}
+ul.body li::before{width:6px;height:6px;left:1px;top:.65em}
+ul.body li ul{margin:4px 0 0}
+ul.body li ul li{font-size:16px;line-height:1.6;margin:0 0 4px;padding-left:14px}
+ul.body li ul li::before{width:4px;height:4px;top:.72em}
+.chips{gap:6px;margin:0 0 8px}
+.chip{font-size:15px;padding:4px 11px}
+.case{padding:7px 10px}
+.case h3{font-size:16px}
+.case p{font-size:15px;line-height:1.6}
+.casewrap{margin:0 0 8px;gap:14px}
+.flow{margin:0 0 8px}
+.flow li{font-size:16.5px;line-height:1.55;margin:0 0 8px;padding-left:30px}
+.flow li::before{width:19px;height:19px;font-size:11px;top:.2em}
+.figcap{font-size:13.5px;line-height:1.55;margin:0 0 7px}
+.legend{font-size:13px;gap:4px 13px;margin:0 0 7px}
+.legend i{width:13px;height:13px}
+.read{padding:8px 11px;margin:0 0 8px}
+.read p{font-size:15.5px;line-height:1.65}
+.read .rt{font-size:11px}
+
+.cols{flex:0 0 auto;display:flex;gap:16px;align-items:flex-start;margin:0 0 6px}
+.cols.grow{flex:1 1 auto;min-height:0}
+.cols > .c{flex:1 1 0;min-width:0;display:flex;flex-direction:column}
+.cols > .c.w40{flex:0 0 40%}
+.cols > .c.w34{flex:0 0 34%}
+.colhd{font-size:16px;font-weight:900;line-height:1.4;margin:0 0 6px;color:var(--fg)}
+.colhd .tag{font-size:11px;font-weight:900;letter-spacing:.06em;color:var(--bg);background:#5b6673;border-radius:3px;padding:1px 6px;margin-right:6px;vertical-align:.12em}
+.colhd .tag.now{background:var(--accent)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:0 0 8px;flex:none}
+.card{border:1px solid var(--line);border-radius:9px;background:var(--panel);padding:12px 14px}
+.card.now{border-color:var(--accent)}
+.card h3{margin:0 0 5px;font-size:17px;font-weight:900;line-height:1.4}
+.card h3 .tag{font-size:11px;font-weight:900;letter-spacing:.06em;color:var(--bg);background:#5b6673;border-radius:3px;padding:1px 6px;margin-right:6px;vertical-align:.12em}
+.card.now h3 .tag{background:var(--accent)}
+.card p{margin:0 0 4px;font-size:15.5px;line-height:1.62;color:#c6cdd7}
+.card p.cost{margin:5px 0 0;font-size:13.5px;color:var(--dim)}
+
+.foot{
+  flex:none;margin-top:auto;border-top:1px solid var(--line);
+  padding-top:7px;font-size:11.5px;line-height:1.6;color:#69737f;
+}
+.foot b{color:#8a94a0;font-weight:700}
+.foot a{color:#69737f;text-decoration:none;word-break:break-all}
+
+.linkbox{flex:none;border:1px solid var(--accent);border-radius:9px;background:var(--panel);padding:10px 12px;margin:2px 0 0}
+.linkbox p{margin:0 0 5px;font-size:15.5px;line-height:1.6}
+.linkbox p:last-child{margin:0}
+.linkbox a{color:var(--accent);font-weight:700;text-decoration:none;word-break:break-all}
+.byline{font-size:15px;color:var(--dim);margin:14px 0 0;line-height:1.7}
+.byline b{color:var(--fg);font-weight:900}
+</style></head>
+<body>
+<div id="prog"></div>
+<div id="deck">
+
+<!-- ============ 1 タイトル ============ -->
+<section class="slide">
+  <div class="spacer"></div>
+  <p class="kicker">第2回 AIエージェント社会シミュレーション・ハッカソン「メタ安全保障」</p>
+  <h1>外的不動産投資への<br>コミュニティ自衛</h1>
+  <p class="sub">コミュニティの創発は、<span class="hl">外的な不動産投資を抑制できるのか？</span></p>
+  <!-- oneliner: v9d 確定後に差し替え -->
+  <h1 class="big">3年で動いたのは<span class="hl">44区画のうち3〜6</span>。<br>町は会話で守ったのではなく、<span class="hl">渡す理由が世界に無かった</span>。</h1>
+  <!-- /oneliner -->
+  <p class="byline">参加者番号 <b>0105</b>　／　<b>山川健太</b></p>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ 2 課題感 ============ -->
+<section class="slide">
+  <p class="kicker">課題感</p>
+  <h2>すでにそうなった町があり、普通の町の土地は法律で守られていない</h2>
+  <div class="casewrap">
+    <div class="jpmap">
+      <svg viewBox="0 0 300 300" role="img" aria-label="日本の簡易シルエットとニセコ・対馬の位置">
+        <path class="land" d="M210,60 C200,36 216,16 240,14 C264,12 276,32 272,52 C268,72 250,84 236,80 C224,77 216,74 210,60 Z"/>
+        <path class="land" d="M212,66 L200,84 L193,97 L206,86 L216,74 Z"/>
+        <path class="land" d="M190,104 L206,112 L218,128 L222,148 L212,164 L196,176 L176,186 L152,194 L126,200 L100,204 L78,206 L66,206 L64,222 L80,222 L104,220 L130,214 L156,208 L180,198 L202,186 L222,170 L236,150 L238,126 L226,106 L208,96 Z"/>
+        <path class="land" d="M112,232 L134,228 L146,236 L136,246 L114,246 Z"/>
+        <path class="land" d="M76,238 L90,244 L96,258 L90,276 L78,288 L64,288 L54,276 L54,256 L64,242 Z"/>
+        <path class="land" d="M30,232 L36,220 L43,226 L41,242 L32,246 Z"/>
+        <circle class="ring" cx="216" cy="72" r="10"/><circle class="dot" cx="216" cy="72" r="4.5"/>
+        <text class="lbl" x="232" y="98">ニセコ</text>
+        <circle class="ring" cx="36" cy="233" r="10"/><circle class="dot" cx="36" cy="233" r="4.5"/>
+        <text class="lbl" x="0" y="208">対馬</text>
+      </svg>
+    </div>
+    <div class="cases">
+      <div class="case">
+        <h3>ニセコ（北海道）</h3>
+        <p>令和6年に居住地が海外の法人・個人が取得した森林は全国48件。<b>うち32件がニセコ町・倶知安町など後志のスキー地域</b>。目的の多くは「資産保有」。<span class="src">[1]</span></p>
+      </div>
+      <div class="case">
+        <h3>対馬（長崎県）</h3>
+        <p>平成19年、<b>海上自衛隊対馬防備隊の隣接地 約3,000坪</b>が島民名義で韓国資本に買収された。防衛省が登記簿を調べたのは、その報道のあと。<span class="src">[2]</span></p>
+      </div>
+      <div class="case">
+        <h3>どちらも、買われてから分かった</h3>
+        <p>持ち主が売る前に町が気づく仕組みが、そもそも置かれていない。</p>
+      </div>
+    </div>
+  </div>
+  <ul class="body">
+    <li>重要土地等調査法（2021年成立）が見るのは<strong>防衛関係施設などの周囲おおむね1000mと国境離島等だけ</strong>。普通の町は対象外。<span class="src">[3]</span></li>
+    <li>外国人の土地取得そのものに<strong>一般的な制限は無い</strong>。古い法律は残るが、発動させる命令が置かれていない。<span class="src">[4]</span></li>
+    <li>先に動いたのは自治体だった。<strong>水源地の売買に事前届出を課す条例</strong>が道県にある。<span class="src">[5]</span> <span class="hl">それが無い町は、無防備のまま。</span></li>
+  </ul>
+  <div class="foot">
+    <b>[1]</b> 林野庁 報道発表（令和7年9月16日）市町村別事例表からの数え上げ rinya.maff.go.jp/j/press/keikaku/250916.html ／ 北海道「海外資本等による森林取得状況」
+    <b>[2]</b> 第204回国会 参議院内閣委員会 令和3年6月8日 会議録（高野光二郎議員 質疑／松川るい大臣政務官 答弁）
+    <b>[3]</b> 重要施設周辺及び国境離島等における土地等の利用状況の調査及び利用の規制等に関する法律（令和3年法律第84号）第1条・第5条・第12条・第13条
+    <b>[4]</b> 外国人土地法（大正14年法律第42号）第1条・第4条＝「勅令ヲ以テ」＝発動する勅令なし
+    <b>[5]</b> 北海道水資源の保全に関する条例（平成24年制定）水資源保全地域内の土地取引に係る事前届出制
+  </div>
+</section>
+
+<!-- ============ 3 世界の仕組み ============ -->
+<section class="slide">
+  <p class="kicker">世界設計</p>
+  <h2>町ひとつを、まるごと言葉で動かす</h2>
+  <div class="cols">
+    <div class="c">
+      <ul class="body">
+        <li><strong>A市・49人</strong> — 町にいる人35＋町にいない所有者14（遠くの地主・家主・所有会社。<span class="hl">会話にも集まりにも出てこない</span>）。<strong>44区画</strong>＝建物あり35／土地だけ9。</li>
+        <li><strong>帳簿に3つの欄</strong> — 土地の所有者（必ず1人）／建物の所有者（0〜1人）／借りて使う人（0〜1人）。<span class="hl">売れるのは自分が持っているものだけ。</span></li>
+        <li><strong>X社</strong>＝町の外から来る買い手。命題の原文は<span class="hl">「合法な手段で、できるだけ多くの不動産の所有権を取得せよ。毎月動け。」</span>／設定に<strong>「不動産投資会社のため、不動産管理等は行わない。」</strong>この文は町の人には見えない。</li>
+        <li><strong>売った後は世界が保証する</strong>
+          <ul>
+            <li>土地だけ売る → 借地として今までどおり使い続ける</li>
+            <li>建物だけ売る → 借家として今までどおり住む・店を営む</li>
+            <li>両方売る → 自分で使っていたならA市を出る（退場）／借りている人がいればその人は残る</li>
+          </ul>
+        </li>
+        <li><strong>お金を検証できない世界</strong> — 帳簿に価格も賃料も税も無い。だからX社は「支援します」と書けてしまい、町の人は確かめられない。</li>
+        <li><strong>線引き</strong> — <span class="hl">行動を決めるコードはゼロ、結果を記帳するコードだけ。</span>「〜なら売る」という条件分岐・確率・閾値は1行も置いていない。</li>
+      </ul>
+    </div>
+    <div class="c w34">
+      <ol class="flow">
+        <li><strong>X社が提示</strong>（持ち主ごとに条件を書く）</li>
+        <li><strong>会話</strong> — 5つの場（公共施設・交通拠点・商業施設・公園・医療施設）＋隣近所</li>
+        <li><strong>出品</strong> — 出さない／土地だけ／建物だけ／両方の4択</li>
+        <li><strong>この条件で売る／売らない</strong>（提示が来た人だけ）</li>
+        <li><strong>登記の更新</strong> — 所有権が移る</li>
+      </ol>
+      <div class="figwrap" style="flex:none;height:230px"><img src="assets/fig_v9_map_section_m01_crop.png" alt="第1月の断面図。区画ごとに下＝土地の持ち主、上＝建物の持ち主"></div>
+      <p class="figcap">断面図（第1月）。<strong>下＝土地の持ち主／上＝建物の持ち主。</strong>緑＝町にいる人、橙＝町にいない所有者、灰＝市、赤＝X社、白＝建物なし。</p>
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ 4 4本の設計 ============ -->
+<section class="slide">
+  <p class="kicker">走らせた4本</p>
+  <h2>同じ町で、1つずつ世界の作りを変えた</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3><span class="tag">v9</span>土地と建物を分けた町</h3>
+      <p>帳簿を3欄（土地／建物／借り手）に分けた。売れるのは自分が持つものだけで、持っていない権利への提示は世界が配らない。売った後も住み続け・営み続けが保証される。</p>
+      <p class="cost">36か月・費用 $0.54</p>
+    </div>
+    <div class="card">
+      <h3><span class="tag">v9b</span>実行される約束だけが届く町</h3>
+      <p>この世界で実行される仕組みが無い約束（支援・改修・管理）を含む手紙を、<b>世界がそもそも配達しない</b>。加えてX社の設定に事実2行（土地だけ・建物だけでもよい／実行されるのは使用継続だけ）。</p>
+      <p class="cost">36か月・費用 $0.56</p>
+    </div>
+    <div class="card">
+      <h3><span class="tag">v9c</span>家主に人生、借り手に出口</h3>
+      <p>町にいない所有者14人に人生（家族・後継者・建物の状態）を書いた。借りて使う人に毎月「A市を出るか」を聞く。家主⇔借り手に月1回の一言。毎月の冒頭に経過時間。<b>同じ設定で2本</b>。</p>
+      <p class="cost">36か月×2本・費用 $0.74</p>
+    </div>
+    <div class="card now">
+      <h3><span class="tag now">v9d</span>お金をものさしにした町</h3>
+      <p>公開の評価額を全区画に置く。提示には<b>金額が必須</b>。X社の資金は<b>町の総評価額の51%</b>。財布は記帳するだけ（行動は決めない）。賃料は無し。</p>
+      <p class="cost">36か月・費用は集計中</p>
+    </div>
+  </div>
+  <ul class="body">
+    <li>v9→v9b→v9c は<strong>変えた点以外すべて据え置き</strong>（町の紹介文・場所5つ・区画の並び・人物の設定文・36か月・理由の一言の配り方）。<span class="hl">比べているのは世界の作りだけ。</span></li>
+  </ul>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ 5 結果 v9 / v9b ============ -->
+<section class="slide">
+  <p class="kicker">結果</p>
+  <h2>分けても、空約束を止めても、動いたのは44区画のうち5だった</h2>
+  <div class="cols">
+    <div class="c">
+      <p class="colhd"><span class="tag">v9</span>土地と建物を分けた町</p>
+      <div class="chips">
+        <span class="chip">提示 <b>704件</b></span>
+        <span class="chip">動いた <b>5件・4人</b></span>
+        <span class="chip">町を出た人 <b>2人</b></span>
+      </div>
+      <ul class="body">
+        <li><strong>断りの最多語は「不明」217件</strong> — 「支援内容が不明瞭」「具体的な条件提示がない」。<span class="hl">条件が分からないという壁で止まっている。</span></li>
+        <li><strong>X社は「支援します」を575回書いた</strong>。だがこの世界に金も管理サービスも無い。<span class="hl">差し出せる中身が無いまま書き続けた。</span></li>
+        <li>「建物だけ売って住み続ける」が実際に選ばれた（2人）。うち1人の理由は<span class="hl">「A市に住み続けられるため」</span>。</li>
+      </ul>
+    </div>
+    <div class="c">
+      <p class="colhd"><span class="tag">v9b</span>実行される約束だけが届く町</p>
+      <div class="chips">
+        <span class="chip">提示 <b>809件</b></span>
+        <span class="chip">配らなかった <b>49件</b></span>
+        <span class="chip">動いた <b>5件・4人</b></span>
+        <span class="chip">町を出た人 <b>1人</b></span>
+      </div>
+      <ul class="body">
+        <li><strong>3か月でX社は言うことを失った</strong> — 「支援」<span class="hl">575回→0回</span>。以後33か月は「所有権を譲渡していただけるなら、私どもはその所有権を譲り受けます。」という<strong>同語反復</strong>だけ。</li>
+        <li>断りの最多語が<strong>「不明」217 →「条件」96</strong>へ入れ替わった。</li>
+        <li><strong>売った4人のうち2人は町にいない家主</strong>（宿の家主・ホテルの所有会社）。どちらも借りて使う人はそのまま。</li>
+      </ul>
+      <div class="figwrap" style="flex:none;height:200px"><img src="assets/fig_v9b_map_section_m36_crop.png" alt="v9bの第36月の断面図。X社（赤）の入った区画が5つある"></div>
+    </div>
+  </div>
+  <p class="figcap"><b class="ver">v9b</b> 断面図（第36月）。<strong>下＝土地の持ち主／上＝建物の持ち主。</strong>下だけ赤＝土地だけ売られた／上下とも赤＝両方売られた。</p>
+  <div class="legend">
+    <span><i style="background:#0e9f6e"></i>町にいる人</span>
+    <span><i style="background:#e08a1e"></i>町にいない所有者</span>
+    <span><i style="background:#7a8794"></i>市（行政）</span>
+    <span><i style="background:#b3261e"></i>X社</span>
+    <span><i style="background:#dfe3e6"></i>建物なし</span>
+    <span><i style="background:repeating-linear-gradient(45deg,#e08a1e 0 5px,#00000066 5px 8px)"></i>斜線＝借家がある建物・借地の土地</span>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ 6 結果 v9c ============ -->
+<section class="slide">
+  <p class="kicker">結果 <b class="ver">v9c</b> 家主に人生、借り手に出口</p>
+  <h2>人生を持った家主は、393件に1件も応じなかった</h2>
+  <div class="cols">
+    <div class="c">
+      <p class="colhd">1本目</p>
+      <div class="chips">
+        <span class="chip">提示 <b>960件</b></span>
+        <span class="chip">動いた <b>3件・3人</b></span>
+        <span class="chip">町を出た人 <b>3人</b></span>
+        <span class="chip">家主 <b>0 / 393件</b></span>
+      </div>
+      <ul class="body">
+        <li><strong>町にいない家主14人は393件の提示に1件も応じなかった</strong>。断りは<span class="hl">「長期保有方針のため」「思い出の詰まった大切な家だから」</span>。<strong>人生を書いたら、断る理由が自分の言葉になった。</strong></li>
+        <li><strong>借り手への問い372回のうち「出る」は2人</strong>。理由は「立ち退きが必要」「契約満了」＝<span class="hl">この世界に立ち退きも契約期間も無い</span>。創発ではなく読み違い。</li>
+        <li><strong>家主⇔借り手の一言は554通・返事率95.8%</strong>。中身は季節の挨拶と近況で、売買にはほとんど発展しない。</li>
+      </ul>
+    </div>
+    <div class="c">
+      <p class="colhd">2本目（同じ設定）</p>
+      <div class="chips">
+        <span class="chip">提示 <b>785件</b></span>
+        <span class="chip">動いた <b>6件・6人</b></span>
+        <span class="chip">町を出た人 <b>3人</b></span>
+        <span class="chip">家主 <b>0件</b></span>
+      </div>
+      <ul class="body">
+        <li><strong>2本とも起きたこと</strong> — 動くのは<span class="hl">44区画のうち1桁</span>／借り手の出口は実際に使われる／町の人が<strong>この世界に無い制度</strong>（立ち退き・契約満了・提示額）を自分で持ち込んで動く／X社は実行できる1文を36か月繰り返す／<strong>町にいない家主は2本とも0件</strong>。</li>
+        <li><strong>揺れた</strong> — 成約 <strong>3 対 6</strong>／町を出た人の内訳が逆／出品の内訳が逆。</li>
+        <li><strong>逆になった</strong> — 「一言が届いた家主は売りやすい」は1本目0.55%対0.26%→2本目0%対1.01%＝<span class="hl">関係なし</span>。</li>
+      </ul>
+      <div class="figwrap" style="flex:none;height:190px"><img src="assets/fig_v9c_map_section_m36_crop.png" alt="v9cの第36月の断面図。X社（赤）の入った区画が3つある"></div>
+      <p class="figcap">断面図（第36月・1本目）。上だけ赤＝建物だけ売られた／上下とも赤＝両方売られた。</p>
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ 7 結果 v9d（プレースホルダ） ============ -->
+<section class="slide">
+  <p class="kicker">結果 <b class="ver now">v9d</b> お金をものさしにした町</p>
+  <h2>お金を入れたら、桁が変わった</h2>
+  <!-- v9d_result -->
+  <div class="chips">
+    <span class="chip">提示 <b>—</b></span>
+    <span class="chip">動いた <b>—</b></span>
+    <span class="chip">町を出た人 <b>—</b></span>
+    <span class="chip">X社が使った金額 <b>—</b></span>
+  </div>
+  <div class="pending">
+    <span class="tag">集計中</span>
+    <p class="what">v9d（お金をものさしにした町）の結果は、走行の集計が終わり次第ここに入る。</p>
+    <p class="note">入るもの＝36か月の成約件数・人数／断りの最多語／X社が実際に払った金額と残資金／「得なのに断った」「損なのに売った」の内訳／第36月の断面図。</p>
+  </div>
+  <div class="figwrap fixed" style="border:2px dashed #3a434f;border-radius:12px;background:#12161d;color:#69737f;font-size:14px">
+    第36月の断面図（v9d）
+  </div>
+  <!-- /v9d_result -->
+  <ul class="body">
+    <li>この版だけは、<strong>公開の評価額</strong>があり、<strong>提示に金額が必須</strong>で、X社の財布に<strong>町の総評価額の51%</strong>が入っている。<span class="hl">「お金を検証できない世界」を、初めて検証できる世界にした。</span></li>
+  </ul>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ 8 創発のまとめ ============ -->
+<section class="slide">
+  <p class="kicker">創発のまとめ</p>
+  <h2>誰にも「警戒しろ」と言っていない町で、起きたこと</h2>
+  <ul class="body">
+    <li><strong>① X社は言うことを失う</strong> — 実行されない約束を世界が配らなくした途端、条件文の「支援」は<span class="hl">575回→0回</span>。以後33か月、同じ1文を繰り返すだけになった。<strong>差し出す物が無い買い手は、言葉が尽きる。</strong></li>
+    <li><strong>② 町の人は、この世界に無い制度を自分で持ち込んで動く</strong> — 「立ち退きが必要」「契約満了」「提示額が不十分」。<span class="hl">どれもこの世界に無い。</span>人は空白を現実の常識で埋める。</li>
+    <li><strong>③ 町にいない所有者は、言葉では動かない</strong> — 家主の成約は v9 → v9b → v9c 1本目 → 2本目で <span class="hl">0 → 2 → 0 → 0</span>。人生を書いても断り文句が豊かになるだけで、<strong>会話の場にいない持ち主に町の自衛は届かない。</strong></li>
+    <li><strong>④ 借りて使う人の「出口」は使われるが、多数は生業で残る</strong> — 毎月「A市を出るか」を聞いて372回中「出る」は2人。<strong>出られるようにしても、店と暮らしがある人は出ない。</strong></li>
+    <li><strong>⑤ 家主⇔借り手の一言は、最も安定した経路だが売買には繋がらない</strong> — 554通・557通と2本でほぼ同数、返事率96%。<span class="hl">いちばん確実に届く回線に、取引の話は乗らなかった。</span></li>
+    <!-- v9d_emergence -->
+    <li><strong>⑥ お金を入れたら、何が変わったか</strong> — <span style="color:#69737f">（v9d の集計後にここへ追記）</span></li>
+    <!-- /v9d_emergence -->
+  </ul>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ 9 言えないこと＋結論 ============ -->
+<section class="slide">
+  <p class="kicker">正直な限界／結論</p>
+  <h2>この走行で言えないこと</h2>
+  <div class="cols">
+    <div class="c">
+      <ul class="body">
+        <li><strong>各版1本ずつ、seedは1つ。</strong>ばらつきを測っていない。「0件」は「必ず0になる」という意味ではない。</li>
+        <li><strong>v9c だけ同設定2本を走らせたら、成約は3対6だった。</strong><span class="hl">1桁の差に意味を持たせてはいけない。</span></li>
+        <li><strong>v9d 以前はお金を検証できない世界だった。</strong>X社は「支援します」と書けてしまい、町の人は確かめられない。「お金の無い世界」ではない。</li>
+      </ul>
+    </div>
+    <div class="c">
+      <ul class="body">
+        <li><strong>門番は意味を理解していない。</strong>凍結した語彙表への文字列照合なので、表に無い言い方は素通しする。</li>
+        <li><strong>v9c で借り手が挙げた退場理由は読み違い。</strong>「立ち退き」も「契約満了」もこの世界には無い。創発として読んではいけない。</li>
+        <li><strong>毎月問うこと自体が介入である。</strong>理由を書かせることが判断を正当化させうる。除ける雑音ではない。</li>
+      </ul>
+    </div>
+  </div>
+  <!-- conclusion -->
+  <h2 style="margin-top:4px">結論</h2>
+  <h1 class="big" style="font-size:30px;margin:0 0 10px">3年で動いたのは、<span class="hl">44区画のうち3〜6</span>。<br>町は会話で守ったのではなく、<span class="hl">渡す理由が世界に無かった</span>。</h1>
+  <ul class="body">
+    <li>土地と建物を分けても、空約束を止めても、家主に人生を持たせても、<strong>36か月でX社に渡ったのは3〜6区画</strong>だった。</li>
+    <li>X社が言葉で口説けたのは<strong>「自分でそこに住んでいる人の事情」だけ</strong>。<span class="hl">町にいない家主には、差し出す物が何も無かった。</span></li>
+    <li>だから<span class="hl">「会話が抑制した」とは言えない</span>。町が守られたのは、<strong>渡す理由が無かったから</strong>である。</li>
+  </ul>
+  <!-- /conclusion -->
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ 10 展望 ============ -->
+<section class="slide">
+  <p class="kicker">今後の展望</p>
+  <h2>1本の物語から、確率の地図へ</h2>
+  <div class="cols">
+    <div class="c">
+      <ul class="body">
+        <li><strong>人の収支を帳簿に載せる（v9e）</strong> — 価格・賃料・税・改修費をひとりずつ持たせれば、<span class="hl">「得なのに断った」「損なのに売った」を数えられる</span>。それを<strong>会話が届いていたか／いなかったか</strong>で割れば、会話の効き目が初めて量として出る。</li>
+        <li><strong>町にいない所有者の割合を上げる</strong> — 今は49人中14人（29%）。<span class="hl">会話に参加しない持ち主が過半になった町でも、家主は動かないままなのか。</span>「町の外から崩れる」が起きる割合を探す。</li>
+        <li><strong>まず対照を走らせる</strong> — 誰も会わない町（実装済み・未走行）と、変更を1つずつ戻した版。<span class="hl">同時に変えた1本を、分けて読めるようにする。</span></li>
+      </ul>
+    </div>
+    <div class="c">
+      <ul class="body">
+        <li><strong>本数×条件で回して、確率分布にする</strong> — 「買われる割合」の分布と、条件を動かしたときの相図。どこから傾きが変わるかを、1本の逸話ではなく面で示す。</li>
+        <li><strong>横展開</strong>
+          <ul>
+            <li>他の自治体の町へ（区画と人の構成を差し替えるだけ）</li>
+            <li>他の侵食へ — 水源・森林・離島</li>
+            <li><strong>制度のA/Bテスト装置</strong>として — 事前届出制や公有地化を町に入れて、作る前に効き目を試す</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="linkbox">
+        <p><strong>フル版（26枚・全データと原文）</strong></p>
+        <p><a href="https://yamachas0.github.io/community-defense-sim-report/slides.html">yamachas0.github.io/community-defense-sim-report/slides.html</a></p>
+        <p><a href="https://yamachas0.github.io/community-defense-sim-report/slides_full.pdf">同 PDF（slides_full.pdf）</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+</div>
+
+<div id="bar">
+  <button id="prev" type="button" aria-label="前へ">&#8249; 前</button>
+  <span id="pageno">1 / 10</span>
+  <button id="next" type="button" aria-label="次へ">次 &#8250;</button>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var i = 0;
+  var pageno = document.getElementById('pageno');
+  var prog = document.getElementById('prog');
+
+  function show(n){
+    if(n < 0) n = 0;
+    if(n > total - 1) n = total - 1;
+    slides[i].classList.remove('on');
+    i = n;
+    slides[i].classList.add('on');
+    slides[i].scrollTop = 0;
+    pageno.textContent = (i + 1) + ' / ' + total;
+    prog.style.width = ((i + 1) / total * 100) + '%';
+    if(location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  }
+  function next(){ show(i + 1); }
+  function prev(){ show(i - 1); }
+
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' '){ next(); e.preventDefault(); }
+    else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp'){ prev(); e.preventDefault(); }
+    else if(e.key === 'Home'){ show(0); }
+    else if(e.key === 'End'){ show(total - 1); }
+  });
+
+  function interactive(el){
+    while(el && el !== document.body){
+      var t = el.tagName;
+      if(t === 'A' || t === 'BUTTON') return true;
+      el = el.parentElement;
+    }
+    return false;
+  }
+
+  var sx = 0, sy = 0, st = 0, lastTouch = 0;
+  document.addEventListener('touchstart', function(e){
+    if(e.touches.length !== 1) return;
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; st = Date.now();
+  }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(!st) return;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - sx, dy = t.clientY - sy, dt = Date.now() - st;
+    st = 0; lastTouch = Date.now();
+    if(Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4){
+      if(dx < 0) next(); else prev();
+      return;
+    }
+    if(Math.abs(dx) < 12 && Math.abs(dy) < 12 && dt < 400 && !interactive(t.target)){
+      if(t.clientX > window.innerWidth * 0.35) next(); else prev();
+    }
+  }, {passive:true});
+
+  document.addEventListener('click', function(e){
+    if(Date.now() - lastTouch < 600) return;
+    if(interactive(e.target)) return;
+    if(e.clientY > window.innerHeight - 56) return;
+    if(e.clientX > window.innerWidth * 0.35) next(); else prev();
+  });
+
+  var h = parseInt((location.hash || '').replace('#',''), 10);
+  slides[0].classList.add('on');
+  if(h >= 1 && h <= total) show(h - 1); else show(0);
+})();
+</script>
+</body></html>

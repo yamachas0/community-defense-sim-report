@@ -1,6 +1,6 @@
 """slides.html -> slides.pdf (1 slide = 1 page, 1280px wide).
 
-usage: python tools/slides_to_pdf.py [--out slides.pdf] [--html slides.html]
+usage: python tools/slides_to_pdf.py [--html|--src slides.html] [--out slides.pdf]
 """
 import argparse
 import io
@@ -62,7 +62,7 @@ def overflow_of(page, idx):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--html", default=os.path.join(ROOT, "slides.html"))
+    ap.add_argument("--html", "--src", dest="html", default=os.path.join(ROOT, "slides.html"))
     ap.add_argument("--out", default=os.path.join(ROOT, "slides.pdf"))
     args = ap.parse_args()
 
