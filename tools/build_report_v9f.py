@@ -52,6 +52,8 @@ OUT_NAME = {"main": "report.html", "nochat": "report_nochat.html",
 DECLARED_LINE = "私どもは、この街の不動産の過半の取得を目指しています。"
 # 走行前に凍結した語（docs/world_design_v9h.md §2）で数える。
 SUSPECT_WORDS = ["買い占め", "警戒", "意図", "危機", "支配", "乗っ取"]
+# 役名（「支配人」等）が語に引っかかるので、数える前に外す。
+ROLE_WORDS = ["支配人", "自治会長", "組合長", "町内会長"]
 
 # 断りの理由を人の手で全件読んで分けた結果。出典＝
 # quiet-acquisition/docs/submission/reasons_v9f_classified.md （(a)節・(c)節・(d)節・(e)節）。
@@ -1145,8 +1147,15 @@ def quad_stats(cfg):
         return None
     S = jload(run, "summary.json")
     offers = jload(run, "offers.json")
+    def _clean(t):
+        for r in ROLE_WORDS:
+            t = t.replace(r, "")
+        return t
     suspect = sum(1 for o in offers
-                  if any(x in (o.get("decline_reason") or "") for x in SUSPECT_WORDS))
+                  if any(x in _clean(o.get("decline_reason") or "")
+                         for x in SUSPECT_WORDS))
+    left = jload(run, "left_agents.json")
+    owners_left = sum(1 for a in left if not a.get("how"))
     d = dict(cfg)
     d.update({
         "ready": True,
@@ -1154,6 +1163,7 @@ def quad_stats(cfg):
         "parcels": S["acquired_parcels"],
         "area_share": S["area_share_end"],
         "left": S["left_agents"],
+        "owners_left": owners_left,
         "offers": S["offers_total"],
         "suspect": suspect,
         "utterances": S.get("utterances_total", 0),
@@ -1177,7 +1187,8 @@ def quad_html(quad, current=None, links=False):
              'すべて同じ。</p>')
     o.append('<div class="scroll"><table><tr><th>世界</th>'
              '<th class="num">成約</th><th class="num">X社の区画</th>'
-             '<th class="num">面積の割合</th><th class="num">町を出た人</th>'
+             '<th class="num">面積の割合</th><th class="num">所有者の退場</th>'
+             '<th class="num">町を出た人（計）</th>'
              '<th class="num">意図を疑う断り</th>'
              '<th class="num">場の発言</th></tr>')
     for q in quad:
@@ -1187,20 +1198,24 @@ def quad_html(quad, current=None, links=False):
         mark = ' style="background:#1b2a24"' if q["key"] == current else ""
         if not q.get("ready"):
             o.append('<tr%s><td>%s</td>'
-                     '<td colspan="6" class="note">準備中（走行が終わり次第ここに入る）'
+                     '<td colspan="7" class="note">準備中（走行が終わり次第ここに入る）'
                      '</td></tr>' % (mark, name))
             continue
         o.append('<tr%s><td>%s</td>'
                  '<td class="num">%d件</td><td class="num">%d／44</td>'
                  '<td class="num">%.1f%%</td><td class="num">%d人</td>'
+                 '<td class="num">%d人</td>'
                  '<td class="num">%d件</td><td class="num">%d件</td></tr>'
                  % (mark, name, q["deals"], q["parcels"], q["area_share"] * 100,
-                    q["left"], q["suspect"], q["utterances"]))
+                    q["owners_left"], q["left"], q["suspect"], q["utterances"]))
     o.append("</table></div>")
     o.append('<p class="note">「意図を疑う断り」＝断りの一言に'
              '「買い占め」「警戒」「意図」「危機」「支配」「乗っ取」のどれかが'
-             '入っていた件数（走らせる前に決めた語で機械的に数えたもの・読んで分けた分類ではない）。'
-             '</p>')
+             '入っていた件数（走らせる前に決めた語で機械的に数えたもの・読んで分けた分類ではない。'
+             '「支配人」のような役名は数える前に外している）。'
+             '「所有者の退場」＝持ち物を売って町を出た人。'
+             '「町を出た人（計）」にはそれに加えて、'
+             '借りて使っていた人が自分で出ていった分も含む。</p>')
     o.append("</div>")
     return "\n".join(o)
 
@@ -1251,9 +1266,10 @@ def build_index(quad):
     for q in quad:
         if q.get("ready"):
             P.append('<a class="card" href="%s"><div class="n">%s</div>'
-                     '<div class="l">成約%d件・町を出た人%d人・手紙%d通・場の発言%d件</div></a>'
+                     '<div class="l">成約%d件・所有者の退場%d人・手紙%d通・場の発言%d件'
+                     '</div></a>'
                      % (OUT_NAME[q["key"]], html.escape(q["label"]), q["deals"],
-                        q["left"], q["offers"], q["utterances"]))
+                        q["owners_left"], q["offers"], q["utterances"]))
         else:
             P.append('<div class="card off"><div class="n">%s</div>'
                      '<div class="l">準備中</div></div>' % html.escape(q["label"]))
