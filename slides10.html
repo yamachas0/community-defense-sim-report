@@ -318,7 +318,7 @@ ul.tinylist li b{color:#b9c1cb;font-weight:700}
 .cell .m b{color:var(--accent);font-weight:900;font-variant-numeric:tabular-nums}
 
 /* ===== 2026-08-30 改訂：説明書きを削り、図を主役にする ===== */
-.maprow{flex:1 1 auto;min-height:0;display:flex;gap:16px;align-items:center;justify-content:center;margin:0 0 8px}
+.maprow{flex:1 1 auto;min-height:0;display:flex;gap:16px;align-items:flex-start;justify-content:center;margin:0 0 8px}
 .maprow > .m{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;min-height:0}
 .maprow .lb{font-size:17px;font-weight:900;line-height:1.35;margin:0 0 6px;text-align:center;color:var(--fg)}
 .maprow .lb em{font-style:normal;color:var(--red)}
@@ -366,7 +366,7 @@ ul.tinylist li b{color:#b9c1cb;font-weight:700}
 .legend2 span{display:inline-flex;align-items:center;gap:5px}
 .legend2 i{width:14px;height:14px;border-radius:3px;border:1px solid #0006;display:inline-block;flex:none}
 .legend2 i.hatch{background-color:#c9d0d8;
-  background-image:repeating-linear-gradient(45deg,#4a525c 0 2px,transparent 2px 5px)}
+  background-image:repeating-linear-gradient(135deg,#4a525c 0 2px,transparent 2px 5px)}
 
 .conclusion{flex:none;border:2px solid var(--accent);border-radius:14px;background:var(--panel);
   padding:14px 20px;margin:6px 0 8px;text-align:center}
@@ -429,7 +429,7 @@ ul.tinylist li b{color:#b9c1cb;font-weight:700}
     <div class="c" style="flex:0 0 30%">
       <div class="photocard" style="height:360px">
         <img src="assets/owner/xco_building.png" alt="X社のビル">
-        <div class="ov"><b>X社</b><span>町の外から来た<em>海外の不動産投資会社</em></span></div>
+        <div class="ov"><b>X社</b><span>X社は<em>海外不動産投資会社</em></span></div>
       </div>
     </div>
     <div class="c" style="flex:0 0 20%;align-items:center;justify-content:center">
@@ -437,7 +437,7 @@ ul.tinylist li b{color:#b9c1cb;font-weight:700}
         <path d="M4 43 H150" stroke="#34d399" stroke-width="22" stroke-linecap="butt"></path>
         <path d="M216 43 154 78 154 8z" fill="#34d399"></path>
       </svg>
-      <p style="margin:8px 0 0;font-size:16px;font-weight:900;color:var(--fg);text-align:center;line-height:1.5">毎月、<span class="hl">金額付きの手紙</span></p>
+      <p style="margin:8px 0 0;font-size:16px;font-weight:900;color:var(--fg);text-align:center;line-height:1.5"><span class="hl">買収提案</span></p>
     </div>
     <div class="c" style="flex:1 1 auto;min-width:0;align-items:center;justify-content:center">
       <p class="lb" style="font-size:15px;font-weight:900;margin:0 0 6px;text-align:center">A市の平面図（第0月）</p>
@@ -576,12 +576,12 @@ ul.tinylist li b{color:#b9c1cb;font-weight:700}
   <p class="mega m34" style="margin:0 0 10px"><span class="hl">明らかに抑制された</span>（11件 → 3件）。<br>さすがに敵対的な買収には<span class="hl">ブレーキがかかる</span>模様。</p>
   <div class="maprow">
     <div class="m">
-      <p class="lb">ベース（明示なし）第36月　<i>成約11件・13.7%</i></p>
-      <img src="assets/fig_plan_m36_base.png" alt="明示なしの第36月の平面図" style="max-height:100%">
+      <p class="lb">ベース（買収目的明示なし）第36月　<i>成約11件・13.7%</i></p>
+      <img src="assets/fig_plan_m36_base.png" alt="買収目的明示なしの第36月の平面図" style="max-height:100%">
     </div>
     <div class="m">
-      <p class="lb"><em>明示あり</em> 第36月　<i>成約3件・4.5%</i></p>
-      <img src="assets/fig_plan_m36_declared.png" alt="明示ありの第36月の平面図" style="max-height:100%">
+      <p class="lb"><em>買収目的明示あり</em> 第36月　<i>成約3件・4.5%</i></p>
+      <img src="assets/fig_plan_m36_declared.png" alt="買収目的明示ありの第36月の平面図" style="max-height:100%">
       <div class="legend2">
         <span><i style="background:#b3261e"></i>X社が買った区画</span>
         <span><i style="background:#0e9f6e"></i>町にいる人</span>
@@ -624,12 +624,12 @@ ul.tinylist li b{color:#b9c1cb;font-weight:700}
   <p class="mega m34" style="margin:0 0 10px"><span class="hl">抑制は弱まった</span>（3件 → 8件）。<br>むしろ<span class="hl">売買抑制に働いた</span>可能性（＝会話は意図を共有して抑制を強める）。</p>
   <div class="maprow">
     <div class="m">
-      <p class="lb">明示あり・<i>会話あり</i> 第36月　<i>成約3件・4.5%</i></p>
-      <img src="assets/fig_plan_m36_declared.png" alt="明示あり・会話ありの第36月の平面図" style="max-height:100%">
+      <p class="lb">買収目的明示あり・<i>会話あり</i> 第36月　<i>成約3件・4.5%</i></p>
+      <img src="assets/fig_plan_m36_declared.png" alt="買収目的明示あり・会話ありの第36月の平面図" style="max-height:100%">
     </div>
     <div class="m">
-      <p class="lb">明示あり・<em>会話なし</em> 第36月　<i>成約8件・8.8%</i></p>
-      <img src="assets/fig_plan_m36_declared_nochat.png" alt="明示あり・会話なしの第36月の平面図" style="max-height:100%">
+      <p class="lb">買収目的明示あり・<em>会話なし</em> 第36月　<i>成約8件・8.8%</i></p>
+      <img src="assets/fig_plan_m36_declared_nochat.png" alt="買収目的明示あり・会話なしの第36月の平面図" style="max-height:100%">
       <div class="legend2">
         <span><i style="background:#b3261e"></i>X社が買った区画</span>
         <span><i style="background:#0e9f6e"></i>町にいる人</span>
@@ -648,22 +648,22 @@ ul.tinylist li b{color:#b9c1cb;font-weight:700}
   <div class="quad">
     <div>
       <p class="lb">買収目的明示なし × 会話あり</p>
-      <img src="assets/fig_plan_m36_base.png" alt="明示なし・会話ありの第36月の平面図">
+      <img src="assets/fig_plan_m36_base.png" alt="買収目的明示なし・会話ありの第36月の平面図">
       <p class="m">成約 <b>11件</b>　面積 <b>13.7%</b></p>
     </div>
     <div>
       <p class="lb">買収目的明示なし × 会話なし</p>
-      <img src="assets/fig_plan_m36_nochat.png" alt="明示なし・会話なしの第36月の平面図">
+      <img src="assets/fig_plan_m36_nochat.png" alt="買収目的明示なし・会話なしの第36月の平面図">
       <p class="m">成約 <b>5件</b>　面積 <b>6.9%</b></p>
     </div>
     <div>
       <p class="lb">買収目的明示あり × 会話あり</p>
-      <img src="assets/fig_plan_m36_declared.png" alt="明示あり・会話ありの第36月の平面図">
+      <img src="assets/fig_plan_m36_declared.png" alt="買収目的明示あり・会話ありの第36月の平面図">
       <p class="m">成約 <b>3件</b>　面積 <b>4.5%</b></p>
     </div>
     <div>
       <p class="lb">買収目的明示あり × 会話なし</p>
-      <img src="assets/fig_plan_m36_declared_nochat.png" alt="明示あり・会話なしの第36月の平面図">
+      <img src="assets/fig_plan_m36_declared_nochat.png" alt="買収目的明示あり・会話なしの第36月の平面図">
       <p class="m">成約 <b>8件</b>　面積 <b>8.8%</b></p>
     </div>
   </div>
