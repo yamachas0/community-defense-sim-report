@@ -1,0 +1,81 @@
+</div>
+
+<div id="bar">
+  <button id="prev" type="button" aria-label="前へ">&#8249; 前</button>
+  <span id="pageno">1 / 10</span>
+  <button id="next" type="button" aria-label="次へ">次 &#8250;</button>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var i = 0;
+  var pageno = document.getElementById('pageno');
+  var prog = document.getElementById('prog');
+
+  function show(n){
+    if(n < 0) n = 0;
+    if(n > total - 1) n = total - 1;
+    slides[i].classList.remove('on');
+    i = n;
+    slides[i].classList.add('on');
+    slides[i].scrollTop = 0;
+    pageno.textContent = (i + 1) + ' / ' + total;
+    prog.style.width = ((i + 1) / total * 100) + '%';
+    if(location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  }
+  function next(){ show(i + 1); }
+  function prev(){ show(i - 1); }
+
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' '){ next(); e.preventDefault(); }
+    else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp'){ prev(); e.preventDefault(); }
+    else if(e.key === 'Home'){ show(0); }
+    else if(e.key === 'End'){ show(total - 1); }
+  });
+
+  function interactive(el){
+    while(el && el !== document.body){
+      var t = el.tagName;
+      if(t === 'A' || t === 'BUTTON') return true;
+      el = el.parentElement;
+    }
+    return false;
+  }
+
+  var sx = 0, sy = 0, st = 0, lastTouch = 0;
+  document.addEventListener('touchstart', function(e){
+    if(e.touches.length !== 1) return;
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; st = Date.now();
+  }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(!st) return;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - sx, dy = t.clientY - sy, dt = Date.now() - st;
+    st = 0; lastTouch = Date.now();
+    if(Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4){
+      if(dx < 0) next(); else prev();
+      return;
+    }
+    if(Math.abs(dx) < 12 && Math.abs(dy) < 12 && dt < 400 && !interactive(t.target)){
+      if(t.clientX > window.innerWidth * 0.35) next(); else prev();
+    }
+  }, {passive:true});
+
+  document.addEventListener('click', function(e){
+    if(Date.now() - lastTouch < 600) return;
+    if(interactive(e.target)) return;
+    if(e.clientY > window.innerHeight - 56) return;
+    if(e.clientX > window.innerWidth * 0.35) next(); else prev();
+  });
+
+  var h = parseInt((location.hash || '').replace('#',''), 10);
+  slides[0].classList.add('on');
+  if(h >= 1 && h <= total) show(h - 1); else show(0);
+})();
+</script>
+</body></html>
