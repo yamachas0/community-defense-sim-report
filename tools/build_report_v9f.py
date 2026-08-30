@@ -33,16 +33,16 @@ MAP_MONTHS = [1, 6, 12, 18, 24, 30, 36]
 # 4本の走行＝世界の設定が2点だけ違う（買い手が過半の取得を目指すと明言するか／
 # 場の会話と隣近所があるか）。key はファイル名と画像置き場に使う。
 RUNS = [
-    {"key": "main", "label": "明言なし・会話あり",
+    {"key": "main", "label": "買収目的明示なし・会話あり",
      "dir": "2026-08-30_1711_132_field_v9f_pay_more_if_needed_chat",
      "map": "v9f_map.py", "declared": False, "chat": True, "classified": True},
-    {"key": "nochat", "label": "明言なし・会話なし",
+    {"key": "nochat", "label": "買収目的明示なし・会話なし",
      "dir": "2026-08-30_1846_134_field_v9f_pay_more_if_needed_nochat",
      "map": "v9f_map.py", "declared": False, "chat": False, "classified": False},
-    {"key": "declared", "label": "明言あり・会話あり",
+    {"key": "declared", "label": "買収目的明示あり・会話あり",
      "dir": "2026-08-30_2017_138_field_v9h_declared_majority_chat",
      "map": "v9h_map.py", "declared": True, "chat": True, "classified": False},
-    {"key": "declared_nochat", "label": "明言あり・会話なし",
+    {"key": "declared_nochat", "label": "買収目的明示あり・会話なし",
      "dir": "2026-08-30_2043_140_field_v9h_declared_majority_nochat",
      "map": "v9h_map.py", "declared": True, "chat": False, "classified": False},
 ]
