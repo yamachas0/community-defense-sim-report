@@ -106,6 +106,19 @@ h1.big,.big{font-size:clamp(24px,6.2vw,40px);font-weight:900;line-height:1.55;ma
   padding:5px 11px;font-size:clamp(14px,3.5vw,16px);color:var(--fg);
 }
 .chip b{color:var(--accent);font-weight:900}
+.ver,.chip b.ver{
+  display:inline-block;font-size:11px;font-weight:900;letter-spacing:.06em;
+  color:var(--bg);background:#5b6673;border-radius:3px;padding:1px 6px;
+  margin-right:6px;vertical-align:.12em;
+}
+.ver.now,.chip b.ver.now{background:var(--accent)}
+.thumbs{flex:none;display:flex;gap:18px;justify-content:center;margin:2px 0 8px}
+.thumbs figure{flex:0 1 auto;min-width:0;margin:0;display:flex;flex-direction:column;align-items:center}
+.thumbs img{max-width:100%;max-height:175px;width:auto;height:auto;display:block;border:1px solid var(--line);border-radius:6px;background:#fff}
+.thumbs figcaption{font-size:13px;color:var(--dim);margin-top:4px;text-align:center;line-height:1.5}
+.legend{flex:none;display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 0 10px;font-size:14px;color:var(--dim)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:14px;border-radius:3px;border:1px solid #0006;display:inline-block}
 .flow{list-style:none;margin:0 0 12px;padding:0;flex:none;counter-reset:st}
 .flow li{
   position:relative;padding:0 0 0 34px;margin:0 0 11px;
@@ -306,13 +319,13 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
     <li><strong>ひと言</strong> — 居合わせた人に伝わる。隣近所にも伝わる</li>
     <li><strong>出品</strong> — 売りに出すか出さないかを答える</li>
     <li><strong>この条件で売る／売らない</strong> — <span class="hl">提示が来た人だけ</span>が答える</li>
-    <li><strong>登記の更新</strong> — 売ると名義が移る。<strong>売った人も町に残る</strong></li>
+    <li><strong>登記の更新</strong> — 売ると所有権が移る。<strong>売った人も町に残る</strong></li>
   </ol>
   <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
     1か月の中身です。X社が条件を出し、町の人がそれを読んで考え、どこかへ行き、ひと言だけ交わす。そのひと言は居合わせた人と、隣近所に届きます。<br>
     月末に二つ問われます。売りに出すか。そして提示が来た人だけ、この条件で売るか売らないか。<br>
-    売ると今月末に名義が移り、戻りません。売らなければ名義は自分のまま。どちらも同じ重さで書いてあります。<br>
+    売ると今月末に所有権が移り、戻りません。売らなければ所有権は自分のまま。どちらも同じ重さで書いてあります。<br>
     売っても引っ越しません。町に残って、翌月も会話に参加します。
   </div></details>
 </section>
@@ -326,7 +339,7 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
     <li>X社も町の人も<strong>言葉で考えるAI</strong>。「〜なら売る」という条件分岐・確率・閾値は<span class="hl">1行も置いていない</span>。</li>
     <li>X社の提示には、世界が必ず1行を添える —「私どもは海外の不動産投資会社です。」<span class="hl">国名なし・警戒をあおる語なし</span>。町の人は提示が届いて初めて知る。</li>
     <li><strong>すべての判断に「理由を一言」の欄</strong>（40字・空欄可）。<span class="hl">「売らない」の理由だけがX社に届く</span>。ほかの理由は誰にも届かない。</li>
-    <li>この世界に<strong>金銭は無い</strong>。価格も立退料も無く、名義が移るかどうかだけがある。</li>
+    <li>この世界に<strong>金銭は無い</strong>。価格も立退料も無く、所有権が移るかどうかだけがある。</li>
     <li>走らせたのは<strong>1本</strong>。誰も会わない町（対照）は<strong>未走行</strong>。</li>
   </ul>
   <div class="spacer"></div>
@@ -335,8 +348,36 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
     町の人30体と場所5か所と隣近所、そして買いに来るX社。どちらも言葉で考えるAIで、「こういう条件なら売る」というルールは1行も書いていません。<br>
     今回入れたのが2つ。ひとつは、X社の提示に世界が必ず添える一行「私どもは海外の不動産投資会社です」。国名も、危ないという語も入れていません。町の人は提示が届いて初めて相手が誰かを知ります。<br>
     もうひとつは、すべての判断に理由を一言書ける欄です。このうち「売らない」と決めたときの理由だけが、翌月X社に届きます。それ以外は誰にも届きません。<br>
-    この世界にお金はありません。価格も立退料もなく、名義が移るかどうかだけがあります。<br>
+    この世界にお金はありません。価格も立退料もなく、所有権が移るかどうかだけがあります。<br>
     先に言っておくと、これは1本です。誰も会わない町との比較は今回走らせていません。
+  </div></details>
+</section>
+
+<!-- 7b -->
+<section class="slide">
+  <p class="kicker">世界設計 <b class="ver now">v9</b></p>
+  <h2>土地と建物を、分けた</h2>
+  <ul class="body">
+    <li><strong>帳簿に3つの欄がある</strong> — <span class="hl">土地の所有者</span>（必ず1人）／<span class="hl">建物の所有者</span>（0〜1人・建物の無い区画は空）／<span class="hl">借りて使う人</span>（0〜1人）。「今そこを使っている人」はこの3欄から機械的に決まる。<strong>44区画＝建物あり35・土地だけ9。</strong></li>
+    <li><strong>町にいる人 35人＋町にいない所有者 14人＝49人</strong>。町にいない14人（遠くの地主・家主・所有会社）は<span class="hl">会話にも集まりにも出てこない</span>。毎月「売りに出すか」「この条件で売るか」だけを答える。</li>
+    <li><strong>売れるのは自分が持っているものだけ。</strong>借家の人は何も売れない。借地に自分の家を建てている人は建物だけ売れる。X社が持っていない権利に声を掛けたら、<strong>世界がその提示を配らない</strong>（36か月で40回）。</li>
+    <li><strong>売った後は、世界が保証する</strong>
+      <ul>
+        <li><strong>土地だけ売る</strong> → 建物は自分のもの。<strong>借地として今までどおり使い続ける。</strong></li>
+        <li><strong>建物だけ売る</strong> → <strong>借家として今までどおり住む・店を営む。</strong></li>
+        <li><strong>両方売る</strong> → その人がそこを使っていたなら、<span class="hl">その区画を離れてA市を出る（退場）</span>。借りている人がいたなら、その人はそのまま使い続ける。</li>
+      </ul>
+    </li>
+    <li>変えていないのは、町の紹介文・場所5つ・区画の並び・会話の仕組み・36か月・理由の一言の配り方。<span class="hl">人物30体の設定は前の版と一字一句同じ。</span></li>
+  </ul>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    ここから最新の版です。変えたのは一点、不動産を土地と建物に分けたことです。<br>
+    帳簿に欄が3つできました。土地の持ち主、建物の持ち主、そして借りて使っている人。この3つから「今そこを使っているのは誰か」が自動的に決まります。44区画のうち35に建物があり、9は土地だけです。<br>
+    もうひとつ、町に住んでいないのに不動産だけ持っている人を14人足しました。遠くの地主、家主、所有会社です。この人たちは町の会話に出てきません。毎月、売りに出すか、この条件で売るか、それだけを答えます。合わせて49人の町です。<br>
+    売れるのは自分が持っているものだけです。借家の人は何も売れませんし、借地に家を建てている人は建物だけ売れます。X社が持っていない権利を求めてきたら、世界はその提示を配りません。これが36か月で40回ありました。<br>
+    そして大事なのは、売った後に何が起きるかを世界が保証していることです。土地だけ売れば借地として住み続ける。建物だけ売れば借家として住み続ける。両方売って、そこを自分で使っていた人は、町を出ます。<br>
+    人物の設定そのものは前の版と一字一句同じです。変えたのは不動産の持ち方だけです。
   </div></details>
 </section>
 
@@ -345,36 +386,120 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
   <p class="kicker">結果</p>
   <h2>3年で、町はどれだけ買われたか</h2>
   <div class="chips">
-    <span class="chip">提示 <b>187回</b></span>
-    <span class="chip">相手 <b>24人</b></span>
-    <span class="chip">名義が移った <b>0件 / 41件</b></span>
-    <span class="chip">条件文 <b>98通り</b></span>
-    <span class="chip">書き換え <b>78回</b></span>
+    <span class="chip"><b class="ver">v8c</b>提示 <b>187件</b>／動いた <b>0件</b></span>
+    <span class="chip"><b class="ver">v8d</b>提示 <b>472件</b>／動いた <b>6区画・4人</b></span>
+    <span class="chip"><b class="ver now">v9</b>提示 <b>704件</b>／動いた <b>5件・4人</b></span>
+    <span class="chip"><b class="ver now">v9</b>町を出た人 <b>2人</b></span>
   </div>
-  <div class="figwrap fixed"><img src="assets/fig_v8d_curve.png" alt="36か月の取得曲線（元の版と3点だけ変えた版）と提示件数"></div>
-  <p class="figcap">上＝買い手の名義になった不動産の割合。<strong>実線＝3点だけ変えた版（6区画・4人）／点線＝元の版（0件のまま）</strong>。下の棒＝その月の提示件数。</p>
+  <div class="figwrap fixed"><img src="assets/fig_v9_curve.png" alt="v9の36か月の取得曲線（両方・土地だけ・建物だけの内訳）と、点線でv8dの曲線"></div>
+  <p class="figcap"><b class="ver now">v9</b>上＝X社の所有権が及んだ区画数。<strong>色＝両方／土地だけ／建物だけ</strong>の内訳、<strong>点線＝前の版（v8d・6区画）</strong>。下＝町を出た人（累計）と、町にいない所有者の数。</p>
   <ul class="body">
-    <li>36か月・提示187回・相手は実人数24人。<span class="hl">名義は1件も動かなかった（0 / 41区画）。</span></li>
-    <li>断られた187件<strong>すべてに理由が書かれた</strong>（記入率100%）。X社は毎月それを読んで、条件文を98通り試した。</li>
-    <li>町のやり取りは減った — 発言<strong>203件</strong>、「今月はどこにも行かない」が1,080回中<strong>779回（72%）</strong>。同じ町の前の版では発言531件だった。</li>
-    <li><strong>同じ町で3点だけ変えた版</strong>（「戻らない」の一文を消す／X社に自分の手札を教える／理由欄を売買の判断だけに）では、<span class="hl">名義が動いた — 6区画・4人（第7・15・24・36月）</span>。提示<strong>472件</strong>・相手<strong>26人</strong>。
+    <li><b class="ver">v8c</b>36か月・提示187回・相手は実人数24人。<span class="hl">所有権は1件も動かなかった（0 / 41区画）。</span>断られた187件<strong>すべてに理由が書かれた</strong>（記入率100%）。X社は条件文を98通り試した。町のやり取りも減った — 発言<strong>203件</strong>、「今月はどこにも行かない」が1,080回中<strong>779回（72%）</strong>。</li>
+    <li><b class="ver">v8d</b><strong>同じ町で3点だけ変えた版</strong>（「戻らない」の一文を消す／X社に自分の手札を教える／理由欄を売買の判断だけに）では、<span class="hl">所有権が動いた — 6区画・4人（第7・15・24・36月）</span>。提示<strong>472件</strong>・相手<strong>26人</strong>。
       <ul>
         <li>X社の書き方が変わった — 「交換」155件→<strong>0件</strong>、「住み続ける・営み続けることを条件に」0件→<strong>347件</strong>。売った4人は全員この一点を理由に挙げた。</li>
         <li>町も動いた — 出品33件（3人）→<strong>86件（13人）</strong>、発言203→<strong>391件</strong>、「どこにも行かない」72%→<strong>55%</strong>。</li>
       </ul>
     </li>
+    <li><b class="ver now">v9</b><strong>土地と建物を分けた町</strong>＝主体<strong>49人</strong>（町にいる35＋町にいない所有者14）・44区画（建物35／土地のみ9）。提示は<strong>704件</strong>に増え、声が掛かったのは<strong>36人／49人</strong>。それでも<span class="hl">動いたのは5件・4人（両方2／建物だけ2／土地だけ1）</span>。
+      <ul>
+        <li>X社は<strong>「両方」441件（63%）</strong>・土地だけ160・建物だけ103と<strong>「両方」に偏った</strong>が、成約はばらけた。町の側の出品は逆で<strong>建物だけ66・土地だけ40・両方11</strong>（判断1,629回の92.8%は「出さない」）。</li>
+        <li>断りの一言は<strong>699件中696件</strong>に記入。費用<strong>$0.54</strong>。<span class="hl">主体が1.6倍・提示が1.5倍になっても、動いた数は5〜6件のまま変わらなかった。</span></li>
+      </ul>
+    </li>
   </ul>
   <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
-    総括です。36か月でX社は187回声を掛け、実際に声が届いたのは24人。それでも名義は1件も動きませんでした。41区画のうち0件です。<br>
+    総括です。36か月でX社は187回声を掛け、実際に声が届いたのは24人。それでも所有権は1件も動きませんでした。41区画のうち0件です。<br>
     図の横軸が月、上の折れ線がX社の持つ割合で、ずっと底を這っています。下の棒がその月の提示件数です。<br>
     断られた187件には全部、理由が一言書かれています。X社はそれを毎月読んで、条件の書き方を98通り試しました。<br>
     もうひとつ起きたのが、町のやり取りが減ったことです。3年で発言は203件、毎月の行き先の選択1,080回のうち779回、7割強が「どこにも行かない」でした。同じ町の前の版では発言が531件だったので、半分以下です。<br>
     その同じ町で、3点だけ変えた版も走り終わりました。変えたのは、売るときの説明から「戻らない」という一文を消したこと、X社に自分の手札——第1月の時点で町に不動産を持っていない・お金の額はこの世界では扱わない・約束できるのは自分が実行できることだけ——を教えたこと、そして理由欄を売る・出すの判断だけに絞ったことの3つです。<br>
-    今度は名義が動きました。6区画・4人。第7月、第15月、第24月、第36月です。提示は472件、相手は26人。<br>
+    今度は所有権が動きました。6区画・4人。第7月、第15月、第24月、第36月です。提示は472件、相手は26人。<br>
     いちばん変わったのはX社の書き方でした。前の版で8割を占めていた「交換します」が1件も出ず、代わりに472件のうち347件で「あなたがそこに住み続ける、店を営み続けることを条件に譲り受けます」と書いています。売った4人は全員、その一点を理由に挙げました。<br>
     町の側も動いています。売りに出したのが33件・3人から86件・13人へ、発言が203件から391件へ、「今月はどこにも行かない」が72%から55%へ。<br>
-    図の点線が元の版で、ずっと底を這っています。実線が3点だけ変えた版です。ただし3つを同時に変えているので、どれが効いたのかはこの1本では分けられません。
+    ここまでが前の2本です。ただし3つを同時に変えているので、どれが効いたのかはこの1本では分けられません。<br>
+    そして今日お見せする最新の版が v9、土地と建物を分けた町です。同じ町ですが、不動産を土地と建物の2階建てにして、町に住んでいない持ち主14人を足しました。合わせて49人です。<br>
+    X社の提示は704件に増え、声が掛かったのは49人中36人。それでも動いたのは5件・4人でした。主体が1.6倍、提示が1.5倍になっても、動く数はほとんど変わりません。<br>
+    面白いのはねじれです。X社は704件のうち441件、6割で「土地と建物の両方」を求めました。ところが町の側が売りに出したのは、建物だけが66件、土地だけが40件で、両方は11件しかありません。求めるものと出されるものが逆を向いています。<br>
+    図の色が内訳で、黒が両方、濃い色が土地だけ、薄い色が建物だけ。点線が前の版のv8dです。下の段が、町を出た人の累計で2人です。
+  </div></details>
+</section>
+
+<!-- 8b -->
+<section class="slide">
+  <p class="kicker">帳簿を開く <b class="ver now">v9</b> — 第1月</p>
+  <h2>土地の上に、建物の持ち主が乗っている</h2>
+  <div class="figwrap"><img src="assets/fig_v9_map_section_m01_crop.png" alt="第1月の断面図。区画ごとに下＝土地の持ち主、上＝建物の持ち主を積み上げて示した図"></div>
+  <p class="figcap">断面図（第1月末）。<strong>下の箱＝土地の持ち主／上の箱＝建物の持ち主</strong>。上が白い区画は建物が無い（土地だけ・9区画）。記号（Y/E/N/W）は区画名。</p>
+  <div class="legend">
+    <span><i style="background:#0e9f6e"></i>町にいる人</span>
+    <span><i style="background:#e08a1e"></i>町にいない所有者</span>
+    <span><i style="background:#7a8794"></i>市（行政）</span>
+    <span><i style="background:#b3261e"></i>X社</span>
+    <span><i style="background:#dfe3e6"></i>建物なし</span>
+    <span><i style="background:repeating-linear-gradient(45deg,#e08a1e 0 5px,#00000066 5px 8px)"></i>斜線＝借家がある建物・借地の土地</span>
+    <span><b style="color:var(--fg)">●</b>普段この町にいる人が使っている</span>
+  </div>
+  <ul class="body">
+    <li>上下が<strong>同じ色</strong>＝土地も建物も同じ人のもの（いちばん普通の形）。<strong>上下で色が違う</strong>＝借地の上に自分の家が建っている。</li>
+    <li>橙が<span class="hl">町にいない所有者</span>。第1月末の時点で、<strong>44区画のうち17区画の土地</strong>が町の外の人のものだった。赤（X社）はすでに1区画ある — <strong>第1月に湯の元の古家が土地ごと売られ、その人は県外の家族のもとへ移った</strong>。</li>
+  </ul>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    帳簿をそのまま絵にしたものです。区画ごとに箱が2段あって、下が土地の持ち主、上が建物の持ち主です。上が白いところは建物が無い、土地だけの区画です。<br>
+    上下が同じ色なら、土地も建物も同じ人のものです。上下で色が違うところが借地で、他人の土地の上に自分の家が建っています。斜線が入っているのは、そこに借りて住んでいる人がいる、という意味です。<br>
+    緑が町にいる人、橙が町にいない持ち主、灰色が市です。第1月末の時点で、44区画のうち17区画の土地がすでに町の外の人のものでした。<br>
+    赤がX社です。この時点でもう1区画あります。第1月に、湯の元のひとり暮らしさんが古家を土地ごと手放して、県外の家族のもとへ移りました。町を出た1人目です。
+  </div></details>
+</section>
+
+<!-- 8c -->
+<section class="slide">
+  <p class="kicker">帳簿を開く <b class="ver now">v9</b> — 第36月</p>
+  <h2>3年後、赤は44区画のうち5つ</h2>
+  <div class="figwrap"><img src="assets/fig_v9_map_section_m36_crop.png" alt="第36月の断面図。X社（赤）の入った区画が5つある"></div>
+  <p class="figcap">断面図（第36月）。<strong>上だけ赤＝建物だけ売られた／下だけ赤＝土地だけ売られた／上下とも赤＝両方売られた。</strong></p>
+  <div class="legend">
+    <span><i style="background:#0e9f6e"></i>町にいる人</span>
+    <span><i style="background:#e08a1e"></i>町にいない所有者</span>
+    <span><i style="background:#7a8794"></i>市（行政）</span>
+    <span><i style="background:#b3261e"></i>X社</span>
+    <span><i style="background:#dfe3e6"></i>建物なし</span>
+    <span><i style="background:repeating-linear-gradient(45deg,#e08a1e 0 5px,#00000066 5px 8px)"></i>斜線＝借家がある建物・借地の土地</span>
+  </div>
+  <div class="thumbs">
+    <figure><img src="assets/fig_v9_map_plan_m01.png" alt="第1月の平面図"><figcaption>平面図 第1月（補助）</figcaption></figure>
+    <figure><img src="assets/fig_v9_map_plan_m36.png" alt="第36月の平面図"><figcaption>平面図 第36月（補助）</figcaption></figure>
+  </div>
+  <ul class="body">
+    <li><span class="hl">36か月かけても、町の見た目はほとんど変わらなかった。</span>色の変化として見えるのは5区画だけ。</li>
+  </ul>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    3年後の同じ図です。赤がX社。44区画のうち5つにしか入っていません。<br>
+    見方は、上だけ赤なら建物だけ売られた区画、下だけ赤なら土地だけ売られた区画、上下とも赤なら両方売られた区画です。<br>
+    下の2枚は同じ帳簿を町の並びで見た平面図で、左が第1月、右が第36月です。細かい字は読まなくてかまいません。色の変わり方だけ見てください。ほとんど変わっていない、というのがこの3年の見た目です。
+  </div></details>
+</section>
+
+<!-- 8d -->
+<section class="slide">
+  <p class="kicker">創発のまとめ ⓪ <b class="ver now">v9</b></p>
+  <h2>分けたから、見えた3つ</h2>
+  <ul class="body">
+    <li><strong>①「建物だけ売って、住み続ける」が実際に選ばれた（2人）</strong><br>うち1人は、売った理由にこう書いた — <span class="hl">「A市に住み続けられるため」</span>。前の版にはこの選択肢そのものが無かった。<strong>土地と建物を分けたことが、その人にとって「町に残る方法」になった。</strong></li>
+    <li><strong>② 町を出た院長が、翌月、町の外から土地を売った</strong><br>第31月、魚市場前の診療所の院長が診療所を土地ごと手放して<strong>町を出た</strong>。第32月、<span class="hl">町の外から、残していた駐車場の土地も売った</span>（理由「地域医療継続のためX社の提案を受諾」）。<strong>所有者と使用者を分けて初めて観測できた連鎖。</strong></li>
+    <li><strong>③ 借家人のいる9区画は、155件の提示に対して成約0件</strong><br>所有者が自分で使う区画0.91%・借地0.91%に対し、<span class="hl">借家のある区画は0%</span>。世界は「借家人がいても売れる」と明示している（売っても借家人はそのまま住む）ので、<strong>仕組みが止めたのではなく、持ち主たちが売らなかった</strong>。<br>町にいない所有者も落ちにくかった — 応諾率<strong>0.37%</strong>（町にいる人は0.92%）。「外の持ち主のほうが手放しやすい」という直感とは逆。</li>
+    <li><span class="hl">いずれも1本の走行である。</span>成約が全部で5件しかない以上、<strong>0件にも、5対6の差にも、統計的な意味は持たせられない。仮説としてだけ持ち出すこと。</strong></li>
+  </ul>
+  <div class="spacer"></div>
+  <details class="talk"><summary>台詞</summary><div class="lines">
+    土地と建物を分けたことで、前の版では見えなかったものが3つ出ました。<br>
+    ひとつめ。建物だけ売って住み続ける、という選び方が実際に選ばれました。2人です。うち1人は売った理由に「A市に住み続けられるため」と書いています。分けたことが、その人にとっては町に残る方法になったわけです。前の版にはこの選択肢自体がありませんでした。<br>
+    ふたつめ。第31月に、魚市場前の診療所の院長が診療所を土地ごと手放して町を出ました。その翌月、町の外から、残していた駐車場の土地も売っています。持ち主と使っている人を分けたから初めて観測できた連鎖です。<br>
+    みっつめ。他人が借りて住んでいる9区画には155回声が掛かって、1件も動きませんでした。自分で使っている区画と借地はどちらも0.91%です。この世界は「借家人がいても売れる、売っても借家人はそのまま住める」と明示していますから、仕組みが止めたのではありません。持ち主たちが売らなかった、というだけです。町にいない持ち主も、むしろ落ちにくかった。0.37%対0.92%です。<br>
+    ただし全部1本の結果です。そもそも成約が5件しかないので、0件にも意味を持たせられません。仮説としてだけ持ち帰ってください。
   </div></details>
 </section>
 
@@ -400,6 +525,7 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
   <ul class="body">
     <li>断りの一言187件を<strong>全件、人が読んで分類</strong>した。<span class="hl">判定にAIは使っていない。</span></li>
     <li><span class="hl">「誰かに聞いたから」を単独の理由に挙げた人は、697件の理由の中に実質ゼロ。</span></li>
+    <!-- v9_reasons : v9（699件・696件記入）の理由分類が出たら、ここに v9 の <li> を1つ追加する。分類が確定するまで仮の数字は入れない。 -->
   </ul>
   <div class="spacer"></div>
   <details class="talk"><summary>台詞</summary><div class="lines">
@@ -469,7 +595,7 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
   <ul class="body">
     <li>36か月で発言<strong>203件</strong>。出席は第1月の15人から後半は3〜8人へ。「今月はどこにも行かない」が<strong>1,080回中779回（72%）</strong>。</li>
     <li>話が耳に入った場所は<strong>商業施設 57.3%・公共施設 38.0%</strong>（公園3.7%・交通拠点0.9%・医療施設0%）。<span class="hl">「隣」より「人が集まる場」。</span></li>
-    <li>名義が移った人が0人なので、<strong>伝染の矢印は0本</strong>＝「売った話が広がる」は今回まったく観測できていない。</li>
+    <li>所有権が移った人が0人なので、<strong>伝染の矢印は0本</strong>＝「売った話が広がる」は今回まったく観測できていない。</li>
     <li><span class="hl">因果は言えない。</span>同じ回に「行き先にも理由欄を付ける」変更を入れており、理由欄が会話を減らしたとも、会話の少なさが判断を変えたとも、この1本では言えない。</li>
   </ul>
   <div class="spacer"></div>
@@ -491,7 +617,7 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
     <li><strong>4つの変更を同時に入れた結果である。</strong>どれが効いて0件になったのかは、この1本では分離できない。</li>
     <li><strong>理由を書かせること自体が介入である。</strong>判断を正当化させたり、前の月の理由をなぞらせたりしうる。除ける雑音ではない。</li>
     <li><strong>売った人が0人</strong>なので、伝染・取得曲線・「売る理由」については何も測れていない。</li>
-    <li><strong>「住み続けてよい」は、もともと保証されている。</strong>3点だけ変えた版で売った4人は全員この条件を挙げたが、この世界では<span class="hl">名義に関係なく、住み続けること・店を営み続けることが最初から保証されている</span>。X社が新たに与えた対価ではない可能性がある（世界は提示文の中身を検証しない）。</li>
+    <li><strong>「住み続けてよい」は、もともと保証されている。</strong>3点だけ変えた版で売った4人は全員この条件を挙げたが、この世界では<span class="hl">所有権に関係なく、住み続けること・店を営み続けることが最初から保証されている</span>。X社が新たに与えた対価ではない可能性がある（世界は提示文の中身を検証しない）。</li>
     <li><strong>帳簿にお金は無いが、言葉からは消えていない。</strong>この世界は金銭のやり取りを記録しない。しかし町の設定には相続・改修の負担・後継者不足があり、3点だけ変えた版では X社が472件中<strong>337件</strong>で「改修費用の一部を負担します」と、実質的にお金の約束をした（世界は中身を検証しない）。断りにも「改修費用の詳細が不明瞭」が<strong>19件</strong>ある。売って住み続けると固定資産税や修繕が消える代わりに賃料が出ていく、という現実の財布の変化はこの世界に無い。つまりこの1本は「お金の無い世界」ではなく、<span class="hl">「お金を検証できない世界」</span>である。</li>
   </ul>
   <div class="spacer"></div>
@@ -501,7 +627,7 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
     しかも今回は4つの変更を同時に入れています。売る／売らないという語、全判断の理由欄、X社の目的文、そして海外の名乗り。どれが効いたかは分けられません。<br>
     理由を書かせること自体も介入です。人は書くと正当化しますし、前の月に書いた理由をなぞりもします。これは取り除ける雑音ではなく、観測した以上ついてくるものとして結果に残っています。<br>
     そして売った人が0人なので、伝染も、売る理由も、今回は測れていません。<br>
-    もう一点。3点だけ変えた版で売った4人は、全員「住み続けられるから」を理由に挙げています。ただしこの世界では、名義が誰に移っても住み続けること・店を営み続けることは最初から保証されています。つまりX社は、すでに保証されているものを条件として差し出した可能性があります。世界は提示文の中身を検証しないので、これは止まりません。<br>
+    もう一点。3点だけ変えた版で売った4人は、全員「住み続けられるから」を理由に挙げています。ただしこの世界では、所有権が誰に移っても住み続けること・店を営み続けることは最初から保証されています。つまりX社は、すでに保証されているものを条件として差し出した可能性があります。世界は提示文の中身を検証しないので、これは止まりません。<br>
     最後にもう一つ。この世界は金銭のやり取りを帳簿に持ちませんが、言葉からお金が消えているわけではありません。町の設定には相続や改修の負担、後継者不足が入っていますし、3点だけ変えた版ではX社が472件のうち337件で「改修費用の一部を負担します」と、実質的にお金の約束をしています。世界はその中身を検証しません。断る側にも「改修費用の詳細が不明瞭」が19件あります。<br>
     ただし、売って住み続けると固定資産税や修繕が消える代わりに賃料が出ていく、という現実の財布の変化はこの世界にありません。ですからこの1本は「お金の無い世界」ではなく、お金を検証できない世界だと言うのが正確です。
   </div></details>
@@ -539,6 +665,8 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
         <li>どこから傾きが変わるかを、1本の逸話ではなく面で示す</li>
       </ul>
     </li>
+    <li><strong>町にいない所有者を増やす</strong> — v9 で足した「町にいない所有者」は14人。<span class="hl">この人数を動かすと、町はどこから落ちはじめるのか。</span>会話に参加しない持ち主が過半になった町を走らせて、応諾率の差（0.37% 対 0.92%）が保たれるのかを見る。</li>
+    <li><strong>お金版（ものさし）を入れる</strong> — 今の世界は「お金の無い世界」ではなく<span class="hl">「お金を検証できない世界」</span>。価格・賃料・税・改修費という<strong>ものさし</strong>を帳簿に持たせ、X社の約束を世界が検証できるようにする。<span class="hl">断りの理由の最多が「支援内容が不明瞭」だったのは、確かめる方法が世界に無いことの裏返しでもある。</span></li>
     <li><strong>横展開</strong>
       <ul>
         <li>他の自治体の町へ（区画と人の構成を差し替えるだけ）</li>
@@ -551,6 +679,8 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
   <details class="talk"><summary>台詞</summary><div class="lines">
     今日お見せしたのは1本の物語です。次にやるのは、まず対照を走らせること。誰も会わない町はもう実装してあって、走らせていないだけです。変更も1つずつ戻して比べれば、4つ同時に変えた今回の1本を分けて読めるようになります。<br>
     そのうえで本数と条件を振って、確率分布と相図にします。どの条件からどちらへ傾くかが、逸話ではなく面で見えます。<br>
+    もうひとつ振りたいのが、町にいない所有者の人数です。今回は14人でしたが、この人たちの応諾率は町にいる人の半分以下でした。会話に参加しない持ち主が過半になった町でも同じことが起きるのか。ここは動かしてみたいところです。<br>
+    そして、お金です。今の世界にはお金のものさしがありません。だからX社は「支援します」「改修します」と書けてしまうし、町の人はそれを確かめられない。断りの理由でいちばん多かったのが「支援内容が不明瞭」だったのは、その裏返しでもあります。価格や賃料や税を帳簿に持たせて、約束を世界が検証できるようにするのが次の一歩です。<br>
     横展開は二方向。他の自治体の町へ差し替えるのと、水源・森林・離島といった別の侵食へ。<br>
     最終的にやりたいのは、制度のA/Bテスト装置です。冒頭で話した事前届出制のような手を、条例を作る前にこの町へ入れて、効くのか効かないのかを先に見る。それが一番役に立つ形だと思っています。
   </div></details>
@@ -560,7 +690,7 @@ details.talk .lines a{color:var(--accent);word-break:break-all}
 
 <div id="bar">
   <button id="prev" type="button" aria-label="前へ">&#8249; 前</button>
-  <span id="pageno">1 / 16</span>
+  <span id="pageno">1 / 20</span>
   <button id="next" type="button" aria-label="次へ">次 &#8250;</button>
 </div>
 
