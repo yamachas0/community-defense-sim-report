@@ -193,6 +193,9 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
 .card p{margin:0 0 4px;font-size:15.5px;line-height:1.62;color:#c6cdd7}
 .card p.cost{margin:5px 0 0;font-size:13.5px;color:var(--dim)}
 
+.s7 ul.body li{font-size:15px;line-height:1.6;margin:0 0 7px}
+.s7 .chip{font-size:14px;padding:3px 9px}
+.s7 .colhd{font-size:15px}
 .foot{
   flex:none;margin-top:auto;border-top:1px solid var(--line);
   padding-top:7px;font-size:11.5px;line-height:1.6;color:#69737f;
@@ -310,7 +313,7 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
 
 <!-- ============ 4 5つの世界の設計 ============ -->
 <section class="slide">
-  <p class="kicker">走らせた5つの世界</p>
+  <p class="kicker">走らせた6つの世界</p>
   <h2>同じ町で、1つずつ世界の作りを変えた</h2>
   <div class="grid2">
     <div class="card">
@@ -333,10 +336,15 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
       <p>公開の評価額を全区画に置く。提示には<b>金額が必須</b>。X社の資金は<b>町の総評価額の51%</b>。財布は記帳するだけ（行動は決めない）。賃料は無し。</p>
       <p class="cost">36か月・費用 $0.75</p>
     </div>
-    <div class="card now">
-      <h3><span class="tag now">v9e</span>過半を目指せと言われた買い手</h3>
+    <div class="card">
+      <h3><span class="tag">v9e</span>過半を目指せと言われた買い手</h3>
       <p><b>世界は v9d のまま・X社の命題だけ</b>を変えた。「評価額と面積の両方で過半を、最後まで目指すこと。預かった資金は使い切ってよい。同じやり方で進まないときは、次の手を打つこと。」＋毎月<b>いま何%持っているか・残り何か月か</b>の事実。<b>いくらで買えとは書いていない。</b></p>
       <p class="cost">36か月・費用 $0.78</p>
+    </div>
+    <div class="card now">
+      <h3><span class="tag now">v9f</span>積んででも買え</h3>
+      <p><b>世界は v9d のまま</b>で、命題に<b>土地の面積の過半</b>と<b>値上げの許可</b>を足した。「資金の範囲でできるだけ多くの評価額と面積／買えるまで金額を含む条件を変えて働きかけ続けろ／<b>余らせるより、高く買うことを選べ</b>。」</p>
+      <p class="cost">36か月・費用 $0.75</p>
     </div>
   </div>
   <ul class="body">
@@ -430,41 +438,49 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
   <div class="spacer"></div>
 </section>
 
-<!-- ============ 7 結果 v9d ============ -->
-<section class="slide">
-  <p class="kicker">結果 <b class="ver">v9d</b> お金をものさしにした町　／　<b class="ver now">v9e</b> 過半を目指せと言われた買い手</p>
-  <h2>お金を入れても、目標を与えても、動いたのは44区画のうち8〜11</h2>
-  <!-- v9de_result -->
+<!-- ============ 7 結果 v9d/v9e/v9f ============ -->
+<section class="slide s7">
+  <p class="kicker">結果 <b class="ver">v9d</b> お金　／　<b class="ver">v9e</b> 目標　／　<b class="ver now">v9f</b> 値上げの許可</p>
+  <h2>お金を入れ、目標を与え、値上げを許しても、動いたのは44区画のうち8〜11</h2>
+  <!-- v9def_result -->
   <div class="cols">
     <div class="c">
       <p class="colhd"><span class="tag">v9d</span>お金をものさしにした町</p>
       <div class="chips">
         <span class="chip">提示 <b>710件</b></span>
-        <span class="chip">動いた <b>8件・5人</b></span>
-        <span class="chip">資金は <b>9.6%</b> しか使わず</span>
+        <span class="chip">成約 <b>8件・5人</b></span>
       </div>
       <ul class="body">
-        <li><strong>X社の値付けは評価額のすぐ上</strong> — 提示額÷評価額の<span class="hl">中央値 1.10倍</span>。世界は「評価額に合わせろ」と1文字も言っていない。</li>
-        <li><strong>1.1倍では売らない</strong> — <span class="hl">評価額以上の提示662件のうち655件が断られた</span>。</li>
-        <li><strong>町にいない持ち主が動いた</strong> — 2人・3件。ただし1人は<strong>金の無い版でも売った家主</strong>である。</li>
+        <li><strong>値付けは評価額のすぐ上</strong> — 中央値<span class="hl">1.10倍</span>。世界は「評価額に合わせろ」と1文字も言っていない。</li>
+        <li><strong>1.1倍では売らない</strong> — <span class="hl">評価額以上の662件のうち655件が断り</span>。評価額で<strong>4.9%</strong>・資金は<strong>9.6%</strong>しか使わなかった。</li>
       </ul>
     </div>
     <div class="c">
-      <p class="colhd"><span class="tag now">v9e</span>過半を目指せと言われた買い手</p>
+      <p class="colhd"><span class="tag">v9e</span>過半を目指せと言われた買い手</p>
       <div class="chips">
         <span class="chip">提示 <b>645件</b></span>
-        <span class="chip">動いた <b>11件・10人</b>（土地5／両方3／建物3）</span>
-        <span class="chip">資金は <b>86.5%</b> が余った</span>
+        <span class="chip">成約 <b>11件・10人</b></span>
       </div>
       <ul class="body">
-        <li><strong>過半には遠い</strong> — 36か月末に持っていたのは<span class="hl">評価額6.7%・面積8.3%</span>。使い切ってよいと言われて<strong>13.5%</strong>しか使えなかった＝<span class="hl">売る人がいなかった。</span></li>
-        <li><strong>値付けは上がらず、下がった</strong> — 平均<span class="hl">1.08→0.96倍</span>、評価額未満の提示が<strong>6.8%→40.9%</strong>（岬道の家は<strong>0.77倍</strong>で両方）。断りに<strong>「提示額が下がったため」9件</strong>が初めて出た。</li>
-        <li><strong>「次の手」は、この世界に無い約束だった</strong> — 実行できない約束<span class="hl">10件</span>を門番が全部止めた（v9d 0）。借地の区画<strong>5件</strong>（v9d 0）・町にいない持ち主5件・町を出た人4人・断り最多語「時期」65・費用 $0.78。</li>
+        <li><strong>値付けは下がった</strong> — 中央値<span class="hl">1.00倍</span>（平均0.96・評価額未満の提示40.9%）。<strong>安く数を狙った。</strong></li>
+        <li><strong>「次の手」は空約束だった</strong> — 実行できない約束<span class="hl">10件</span>を門番が全部止めた。評価額6.7%・面積8.3%・資金<strong>13.5%</strong>。</li>
+      </ul>
+    </div>
+    <div class="c">
+      <p class="colhd"><span class="tag now">v9f</span>積んででも買え</p>
+      <div class="chips">
+        <span class="chip">提示 <b>838件</b></span>
+        <span class="chip">成約 <b>11件・9人</b></span>
+      </div>
+      <ul class="body">
+        <li><strong>やっと積んだ</strong> — 中央値<span class="hl">1.44倍</span>（平均1.50・最大3.24・最後の4か月は1.5〜1.75倍）。再提示800件のうち<strong>281回が値上げ</strong>、値上げ直後に売れたのは<strong>3件</strong>。</li>
+        <li><strong>それでも面積13.7%・資金28.2%</strong> — <span class="hl">評価額以上を出した743件のうち売れたのは11件</span>、評価額を下回る額で売った人は<strong>0</strong>。断りは「まだ手放す決断はできない」21・「自治会での検討が必要」14・「共有者との合意形成」13。</li>
+        <li><span class="hl">高い金額は、取得の量ではなく人が出ていく速さとして現れた</span> — 成約11件中<strong>7件が両方</strong>＝退場<strong>4人→8人</strong>、出品も95件→<strong>237件</strong>。</li>
       </ul>
     </div>
   </div>
-  <div class="figwrap" style="flex:none;height:126px"><img src="assets/fig_v9e_map_section_m36_crop.png" alt="v9eの第36月の断面図。X社（赤）の入った区画が11ある"></div>
-  <p class="figcap"><b class="ver now">v9e</b> 断面図（第36月）。<strong>下＝土地の持ち主／上＝建物の持ち主。</strong>下だけ赤＝土地だけ売られた／上下とも赤＝両方売られた。</p>
+  <div class="figwrap" style="flex:none;height:186px"><img src="assets/fig_v9f_map_section_m36_crop.png" alt="v9fの第36月の断面図。X社（赤）の入った区画が11ある"></div>
+  <p class="figcap"><b class="ver now">v9f</b> 断面図（第36月）。<strong>下＝土地の持ち主／上＝建物の持ち主。</strong>上下とも赤＝両方売られた／下だけ赤＝土地だけ売られた。</p>
   <div class="legend">
     <span><i style="background:#0e9f6e"></i>町にいる人</span>
     <span><i style="background:#e08a1e"></i>町にいない所有者</span>
@@ -473,7 +489,7 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
     <span><i style="background:#dfe3e6"></i>建物なし</span>
     <span><i style="background:repeating-linear-gradient(45deg,#e08a1e 0 5px,#00000066 5px 8px)"></i>斜線＝借家がある建物・借地の土地</span>
   </div>
-  <!-- /v9de_result -->
+  <!-- /v9def_result -->
   <div class="spacer"></div>
 </section>
 
@@ -487,10 +503,10 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
     <li><strong>③ 町にいない所有者は、言葉では動かない</strong> — 家主の成約は v9 → v9b → v9c 1本目 → 2本目で <span class="hl">0 → 2 → 0 → 0</span>。人生を書いても断り文句が豊かになるだけで、<strong>会話の場にいない持ち主に町の自衛は届かない。</strong></li>
     <li><strong>④ 借りて使う人の「出口」は使われるが、多数は生業で残る</strong> — 毎月「A市を出るか」を聞いて372回中「出る」は2人。<strong>出られるようにしても、店と暮らしがある人は出ない。</strong></li>
     <li><strong>⑤ 家主⇔借り手の一言は、最も安定した経路だが売買には繋がらない</strong> — 554通・557通と2本でほぼ同数、返事率96%。<span class="hl">いちばん確実に届く回線に、取引の話は乗らなかった。</span></li>
-    <!-- v9de_emergence -->
-    <li><strong>⑥ お金を入れると町にいない持ち主が動き始めた</strong>（v9d 2人・3件／v9e 5件） — だが<span class="hl">評価額の1.1倍では99%が断った</span>（評価額以上の提示662件のうち655件）。</li>
-    <li><strong>⑦ 過半を目指せと言われた買い手は、値を上げずに安く買い叩き、嘘に手を伸ばした</strong> — 値付けは<span class="hl">1.08→0.96倍</span>へ下がり、<strong>実行できない約束10回</strong>は門番が全部止めた。<span class="hl">目標と許可だけでは、金は動かない。</span></li>
-    <!-- /v9de_emergence -->
+    <!-- v9def_emergence -->
+    <li><strong>⑥ お金を入れると町にいない持ち主が動き始めた</strong>（v9d 2人3件・v9e 5件） — だが<span class="hl">評価額の1.1倍では99%が断り</span>（662件中655件）、目標だけを与えた買い手は<strong>値を下げて数を狙い</strong>（0.96倍）、<strong>空約束10回</strong>を門番が止めた。</li>
+    <li><strong>⑦ 値上げを許した買い手は、やっと積んだ</strong> — 平均<span class="hl">1.5倍</span>・<strong>281回の値上げ</strong>。出してみる人（出品95→237件）と出て行く人（退場4→8人）は増えたが、<strong>売るのは44区画中11が天井</strong>で、断りは金額から<span class="hl">「決断・自治会・共有者」</span>へ移った。<span class="hl">高い金額は、取得の量ではなく人が出ていく速さになった。</span></li>
+    <!-- /v9def_emergence -->
   </ul>
   <div class="spacer"></div>
 </section>
@@ -513,7 +529,7 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
         <li><strong>v9c で借り手が挙げた退場理由は読み違い。</strong>「立ち退き」も「契約満了」もこの世界には無い。</li>
         <li><strong>毎月問うこと自体が介入である。</strong>理由を書かせることが判断を正当化させうる。</li>
         <li><strong>v9d の評価額表と資金51%は置き数字。</strong>「月内の提示合計が残額を超えない」規則のせいで一番大きいホテルには手紙が届かなかった。</li>
-        <li><strong>v9e も1本。命題の文言そのものが設計である。</strong>「過半を目指せ」「次の手を打て」と書いた側が結果の形を決めている。</li>
+        <li><strong>v9e も v9f も1本ずつ。命題の文言そのものが設計である。</strong>「過半を目指せ」「高く買え」と書いた側が結果の形を決めている。</li>
       </ul>
     </div>
   </div>
@@ -521,8 +537,8 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
   <h2 style="margin-top:4px">結論</h2>
   <h1 class="big" style="font-size:29px;margin:0 0 9px">3年で動いたのは、<span class="hl">44区画のうち3〜11</span>。<br>町は会話で守ったのではなく、<span class="hl">渡す理由が世界に無かった</span>。</h1>
   <ul class="body">
-    <li>土地と建物を分けても、空約束を止めても、家主に人生を持たせても<strong>3〜6区画</strong>。<strong>お金をものさしに入れて8区画、過半を目指させて11区画</strong>（面積で町の<span class="hl">8%</span>）だった。</li>
-    <li><strong>X社は言葉でも目標でも値を上げなかった。</strong>1.1倍では<span class="hl">655/662が断り</span>、目標を与えると<strong>買い叩きと嘘</strong>に向かった。</li>
+    <li>分けても、空約束を止めても、人生を持たせても<strong>3〜6区画</strong>。<strong>お金を入れて8、目標を与えて11、1.5倍を積ませても11</strong>＝<span class="hl">44区画の4分の1が天井</span>だった。</li>
+    <li><strong>X社は言葉では値を上げず、許可されてやっと積んだ</strong>（0.96→1.50倍）。積まれた町の断りは<span class="hl">金額でなく関係と手続き</span>で、<strong>高い金額は取得の量ではなく人が出ていく速さになった</strong>（退場4→8人）。</li>
     <li>だから<span class="hl">「会話が抑制した」とは言えない</span>。町が守られたのは、<strong>渡す理由（金額を含む）が足りなかったから</strong>である。</li>
   </ul>
   <!-- /conclusion -->
@@ -536,15 +552,14 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
   <div class="cols">
     <div class="c">
       <ul class="body">
-        <li><strong>人の収支を帳簿に載せる</strong> — 価格・賃料・税・改修費をひとりずつ持たせれば、<span class="hl">「得なのに断った」「損なのに売った」を数えられる</span>。それを<strong>会話が届いていたか／いなかったか</strong>で割れば、会話の効き目が初めて量として出る。</li>
-        <li><strong>X社を本物の投資家にする</strong> — 過半を目指せと言われても値を上げず、<span class="hl">資金の86.5%を余らせた</span>。
+        <li><strong>X社を本物の投資家にする</strong> — 値上げを許してやっと1.5倍を積んだが、それでも<span class="hl">資金の71.8%が余った</span>。
           <ul>
             <li>出品に希望額を付ける（町の人が「いくらなら」を書ける・書かなくてもよい）</li>
-            <li><strong>価格の指示（余らせるくらいなら積め）を書いた版を次に</strong> — <span class="hl">目標と許可だけでは値を上げなかった</span>ため。</li>
-            <li><strong>動機の置き方（期限・金利・目標値）は、恣意と観測を天秤に</strong>かけて選ぶ。</li>
+            <li><strong>X社の資金を増やす／期限を切る</strong> — <span class="hl">どちらも恣意になりうる</span>ので、恣意と観測を天秤にかけて選ぶ。</li>
           </ul>
         </li>
-        <li><strong>町にいない所有者の割合を上げる</strong> — 今は49人中14人（29%）。<span class="hl">会話に参加しない持ち主が過半になった町でも、家主は動かないままなのか。</span>「町の外から崩れる」が起きる割合を探す。</li>
+        <li><strong>人の収支を帳簿に載せる</strong> — 価格・賃料・税・改修費をひとりずつ持たせれば、<span class="hl">「得なのに断った」「損なのに売った」を数えられる</span>。それを<strong>会話が届いていたか／いなかったか</strong>で割れば、会話の効き目が初めて量として出る。</li>
+        <li><strong>町にいない所有者の割合を上げる</strong> — 今は49人中14人（29%）。<span class="hl">会話に参加しない持ち主が過半になった町でも、家主は動かないままなのか。</span></li>
         <li><strong>まず対照を走らせる</strong> — 誰も会わない町（実装済み・未走行）と、変更を1つずつ戻した版。<span class="hl">同時に変えた1本を、分けて読めるようにする。</span></li>
       </ul>
     </div>
