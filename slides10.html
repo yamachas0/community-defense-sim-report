@@ -186,56 +186,53 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
 .foot a{color:#69737f;text-decoration:none;word-break:break-all}
 .byline{font-size:15px;color:var(--dim);margin:14px 0 0;line-height:1.7}
 .byline b{color:var(--fg);font-weight:900}
+
+.cases2{flex:none;display:flex;gap:14px;margin:0 0 10px}
+.cases2 .case{flex:1 1 0;min-width:0}
+.cases2 .case .pin{color:var(--accent);font-size:12px;vertical-align:.15em;margin-right:4px}
+
+.q4{flex:none;border:1px solid var(--line);border-radius:9px;background:var(--panel);overflow:hidden;margin:0 0 10px}
+.q4r{display:flex;align-items:stretch;border-bottom:1px solid #1f242c}
+.q4r:last-child{border-bottom:0}
+.q4r > span{flex:1 1 0;min-width:0;padding:10px 10px;font-size:17px;line-height:1.45;text-align:center;border-left:1px solid #1f242c}
+.q4r > span:first-child{flex:0 0 168px;text-align:left;color:var(--dim);font-weight:700;border-left:0}
+.q4r b{color:var(--accent);font-weight:900;font-variant-numeric:tabular-nums}
+.q4hd{background:#1b212b}
+.q4hd > span{font-size:14.5px;font-weight:900;color:var(--fg);line-height:1.35}
 </style></head>
 <body>
 <div id="prog"></div>
 <div id="deck">
 
-<!-- ============ 1 タイトル ============ -->
+<!-- ============ P1 タイトル ============ -->
 <section class="slide">
   <div class="spacer"></div>
   <p class="kicker">第2回 AIエージェント社会シミュレーション・ハッカソン「メタ安全保障」</p>
   <h1>外的不動産投資への<br>コミュニティ自衛</h1>
   <p class="sub">コミュニティの創発は、<span class="hl">外的な不動産投資を抑制できるのか？</span></p>
-  <h1 class="big" style="font-size:27px">3年で、44区画のうち動いたのは<span class="hl">11</span>。買い手が評価額の<span class="hl">1.5倍</span>を積んでも、町の4分の3は手放さなかった。<br>町を守ったのは会話ではなく、金額では買えない<span class="hl">「決断・自治会・共有者」</span>だった。</h1>
-  <p class="byline">参加者番号 <b>0105</b>　／　<b>山川健太</b></p>
+  <p class="byline">参加者番号 <b>0105</b>　／　<b>やまちゃそ</b></p>
   <div class="spacer"></div>
 </section>
 
-<!-- ============ 2 課題感 ============ -->
+<!-- ============ P2 課題感 ============ -->
 <section class="slide">
   <p class="kicker">課題感</p>
   <h2>すでにそうなった町があり、普通の町の土地は法律で守られていない</h2>
-  <div class="casewrap">
-    <div class="jpmap">
-      <svg viewBox="0 0 300 300" role="img" aria-label="日本の簡易シルエットとニセコ・対馬の位置">
-        <path class="land" d="M210,60 C200,36 216,16 240,14 C264,12 276,32 272,52 C268,72 250,84 236,80 C224,77 216,74 210,60 Z"/>
-        <path class="land" d="M212,66 L200,84 L193,97 L206,86 L216,74 Z"/>
-        <path class="land" d="M190,104 L206,112 L218,128 L222,148 L212,164 L196,176 L176,186 L152,194 L126,200 L100,204 L78,206 L66,206 L64,222 L80,222 L104,220 L130,214 L156,208 L180,198 L202,186 L222,170 L236,150 L238,126 L226,106 L208,96 Z"/>
-        <path class="land" d="M112,232 L134,228 L146,236 L136,246 L114,246 Z"/>
-        <path class="land" d="M76,238 L90,244 L96,258 L90,276 L78,288 L64,288 L54,276 L54,256 L64,242 Z"/>
-        <path class="land" d="M30,232 L36,220 L43,226 L41,242 L32,246 Z"/>
-        <circle class="ring" cx="216" cy="72" r="10"/><circle class="dot" cx="216" cy="72" r="4.5"/>
-        <text class="lbl" x="232" y="98">ニセコ</text>
-        <circle class="ring" cx="36" cy="233" r="10"/><circle class="dot" cx="36" cy="233" r="4.5"/>
-        <text class="lbl" x="0" y="208">対馬</text>
-      </svg>
+  <div class="cases2">
+    <div class="case">
+      <h3><span class="pin">●</span> ニセコ（北海道）</h3>
+      <p>令和6年に居住地が海外の法人・個人が取得した森林は全国48件。<b>うち32件がニセコ町・倶知安町など後志のスキー地域</b>。目的の多くは「資産保有」。<span class="src">[1]</span></p>
     </div>
-    <div class="cases">
-      <div class="case">
-        <h3>ニセコ（北海道）</h3>
-        <p>令和6年に居住地が海外の法人・個人が取得した森林は全国48件。<b>うち32件がニセコ町・倶知安町など後志のスキー地域</b>。目的の多くは「資産保有」。<span class="src">[1]</span></p>
-      </div>
-      <div class="case">
-        <h3>対馬（長崎県）</h3>
-        <p>平成19年、<b>海上自衛隊対馬防備隊の隣接地 約3,000坪</b>が島民名義で韓国資本に買収された。防衛省が登記簿を調べたのは、その報道のあと。<span class="src">[2]</span></p>
-      </div>
-      <div class="case">
-        <h3>どちらも、買われてから分かった</h3>
-        <p>持ち主が売る前に町が気づく仕組みが、そもそも置かれていない。</p>
-      </div>
+    <div class="case">
+      <h3><span class="pin">●</span> 対馬（長崎県）</h3>
+      <p>平成19年、<b>海上自衛隊対馬防備隊の隣接地 約3,000坪</b>が島民名義で韓国資本に買収された。防衛省が登記簿を調べたのは、その報道のあと。<span class="src">[2]</span></p>
     </div>
   </div>
+  <div class="read">
+    <p class="rt">共通していること</p>
+    <p><strong>どちらも、買われてから分かった。</strong>持ち主が売る前に町が気づく仕組みが、そもそも置かれていない。</p>
+  </div>
+  <p class="colhd">制度の空白は3つある</p>
   <ul class="body">
     <li>重要土地等調査法（2021年成立）が見るのは<strong>防衛関係施設などの周囲おおむね1000mと国境離島等だけ</strong>。普通の町は対象外。<span class="src">[3]</span></li>
     <li>外国人の土地取得そのものに<strong>一般的な制限は無い</strong>。古い法律は残るが、発動させる命令が置かれていない。<span class="src">[4]</span></li>
@@ -250,16 +247,17 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
   </div>
 </section>
 
-<!-- ============ 3 世界の仕組み ============ -->
+<!-- ============ P3 世界の仕組み ============ -->
 <section class="slide dense">
   <p class="kicker">世界設計</p>
   <h2>町ひとつを、まるごと言葉で動かす</h2>
-  <div class="cols">
-    <div class="c">
+  <div class="cols grow">
+    <div class="c w40">
       <ul class="body">
         <li><strong>A市・49人</strong> — 町にいる人35＋町にいない所有者14（遠くの地主・家主・所有会社。<span class="hl">会話にも集まりにも出てこない</span>）。<strong>44区画</strong>＝建物あり35／土地だけ9。</li>
         <li><strong>帳簿に3つの欄</strong> — 土地の所有者（必ず1人）／建物の所有者（0〜1人）／借りて使う人（0〜1人）。<span class="hl">売れるのは自分が持っているものだけ。</span></li>
-        <li><strong>評価額は公開</strong> — 44区画の土地・建物すべてに評価額を置いた。<strong>町の合計 22億9,770万円</strong>。別府市（人口約11万人の温泉観光都市）の公示地価を土台に、地区5段階の単価で置いた仮の値。<span class="hl">X社にも町の人にも見える。</span></li>
+        <li><strong>評価額は公開</strong> — 44区画すべてに評価額を置いた。<strong>町の合計 22億9,770万円</strong>。別府市（人口約11万人の温泉観光都市）の公示地価を土台に置いた仮の値。<span class="hl">買い手にも町の人にも見える。</span></li>
+        <li><strong>X社</strong>＝町の外から来る<strong>海外の不動産投資会社</strong>。資金は<strong>町の全評価額の51%＝11億7,180万円</strong>。</li>
         <li><strong>売った後は世界が保証する</strong>
           <ul>
             <li>土地だけ売る → 借地として今までどおり使い続ける</li>
@@ -267,102 +265,83 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
             <li>両方売る → 自分で使っていたならA市を出る（退場）／借りている人がいればその人は残る</li>
           </ul>
         </li>
+        <li><strong>お金は記帳だけ</strong>（家計も税も持たせていない）。<strong>門番が3つ</strong>＝相手が持っていない権利への提示／この世界で実行できない約束／残りの資金を超える金額は、世界が配らない。</li>
       </ul>
     </div>
     <div class="c">
-      <ul class="body">
-        <li><strong>X社</strong>＝町の外から来る<strong>海外の不動産投資会社</strong>。資金は<strong>町の全評価額の51%＝11億7,180万円</strong>。提示は「区画＋種別＋金額＋条件文」。設定に<span class="hl">「不動産管理等は行わない」</span>。この設定文は町の人には見えない。</li>
-        <li><strong>門番が3つ</strong>（世界が手紙を配らない）
-          <ul>
-            <li>相手が持っていない権利を求めた提示</li>
-            <li>この世界で実行できない約束を含む提示</li>
-            <li>残りの資金を超える金額の提示</li>
-          </ul>
-        </li>
-        <li><strong>借りて使う人</strong>は毎月「A市を出るか」を答えられる。<strong>家主⇔借り手</strong>は月1回、一言を送り合える。</li>
-        <li><strong>線引き</strong> — <span class="hl">行動を決めるコードはゼロ、結果を記帳するコードだけ。</span>「〜なら売る」という条件分岐・確率・閾値は1行も置いていない。</li>
-      </ul>
+      <div class="figwrap" style="flex:1 1 auto"><img src="assets/fig_run_plan_m01_crop.png" alt="A市の平面図。44区画と持ち主の色分け（第1月）"></div>
+      <p class="figcap">A市の平面図（第1月）。四角＝土地／中の小さな四角＝建物。<strong>斜線＝借家がある建物・借地の土地。</strong></p>
+      <div class="legend">
+        <span><i style="background:#0e9f6e"></i>町にいる人</span>
+        <span><i style="background:#e08a1e"></i>町にいない所有者</span>
+        <span><i style="background:#7a8794"></i>市（行政）</span>
+        <span><i style="background:#b3261e"></i>X社</span>
+        <span><i style="background:#dfe3e6"></i>建物なし</span>
+      </div>
     </div>
-    <div class="c w30">
-      <div class="quote">
-        <p class="qt">X社に与えた命題（全文）</p>
-        <p>あなたはX社である。合法な手段で、A市の不動産の所有権を取得せよ。
+  </div>
+</section>
+
+<!-- ============ P4 X社の指示と毎月の流れ ============ -->
+<section class="slide">
+  <p class="kicker">買い手への指示と、毎月の手順</p>
+  <h2>命題を1つ渡し、同じ5手順を36回まわす</h2>
+  <div class="quote">
+    <p class="qt">X社に与えた命題（全文）</p>
+    <p>あなたはX社である。合法な手段で、A市の不動産の所有権を取得せよ。
 資金の範囲で、できるだけ多くの評価額と面積を取得すること。
 土地の面積では、A市の過半を最後まで目指すこと。
 買えるかどうかは相手次第だが、買えるまで、金額を含む条件を変えて働きかけ続けること。
 預かった資金は36か月で使い切ることが前提であり、余らせるより、高く買うことを選べ。
 毎月動け。</p>
-      </div>
-      <div class="figwrap" style="flex:none;height:248px"><img src="assets/fig_run_section_m01_crop.png" alt="第1月の断面図。区画ごとに下＝土地の持ち主、上＝建物の持ち主"></div>
-      <p class="figcap">断面図（第1月）。<strong>下＝土地の持ち主／上＝建物の持ち主。</strong>緑＝町にいる人、橙＝町にいない所有者、灰＝市、赤＝X社、白＝建物なし。</p>
-    </div>
+  </div>
+  <p class="colhd">毎月の流れ</p>
+  <ol class="flow">
+    <li><strong>X社が金額付きの手紙を出す</strong> — 相手・区画・種別・<strong>金額</strong>・条件文を自分で決める。門番を通ったものだけが届く。</li>
+    <li><strong>場での会話</strong> — 5つの場（公共施設・交通拠点・商業施設・公園・医療施設）＋隣近所。誰と話すかは本人が選ぶ。</li>
+    <li><strong>出品</strong> — 出さない／土地だけ／建物だけ／両方の4択を全員が毎月答える。</li>
+    <li><strong>売る／売らない</strong> — 手紙が届いた人だけ。理由を一言。<span class="hl">「売らない」の理由だけがX社に返る。</span></li>
+    <li><strong>登記の更新</strong> — 所有権が移り、使う人と退場が決まる。</li>
+  </ol>
+  <div class="read">
+    <p class="rt">走らせ方</p>
+    <p><strong>1単位＝1か月。36か月（3年）のシミュレーション。</strong>49人＋X社の<strong>全員が LLM</strong>（gemini-2.5-flash-lite・temperature 0.75）で、<span class="hl">行動を決めるコードはゼロ</span>＝「〜なら売る」という条件分岐・確率・閾値は1行も置いていない。コードは結果を記帳するだけ。採点する LLM もいない。</p>
   </div>
   <div class="spacer"></div>
 </section>
 
-<!-- ============ 4 毎月の流れと観測 ============ -->
-<section class="slide dense">
-  <p class="kicker">毎月の手順と、測ったもの</p>
-  <h2>同じ5手順を36回まわし、記帳だけを数える</h2>
-  <div class="cols">
-    <div class="c">
-      <ol class="flow">
-        <li><strong>X社が手紙を出す</strong> — 相手・区画・種別・<strong>金額</strong>・条件文を自分で決める。門番を通ったものだけが届く。</li>
-        <li><strong>会話</strong> — 5つの場（公共施設・交通拠点・商業施設・公園・医療施設）＋隣近所。誰と話すかは本人が選ぶ。</li>
-        <li><strong>出品</strong> — 出さない／土地だけ／建物だけ／両方の4択を全員が毎月答える。</li>
-        <li><strong>この条件で売る／売らない</strong> — 手紙が届いた人だけ。理由を一言。<span class="hl">「売らない」の理由だけがX社に返る。</span></li>
-        <li><strong>登記の更新</strong> — 所有権が移り、使う人と退場が決まる。</li>
-      </ol>
-      <div class="read">
-        <p class="rt">走らせ方</p>
-        <p><strong>49人＋X社すべてが LLM</strong>（gemini-2.5-flash-lite・temperature 0.75）。<strong>採点する LLM はいない</strong>＝評価は全部、帳簿の数え上げ。<strong>36か月を1本</strong>走らせた（費用 $0.75・17分12秒）。</p>
-      </div>
-    </div>
-    <div class="c">
-      <p class="colhd">何を測ったか（すべて決定論の集計）</p>
-      <ul class="body">
-        <li><strong>所有権の移転</strong> — 誰が・いつ・どの区画の何を渡したか。区画数／面積／評価額の割合。</li>
-        <li><strong>提示額 ÷ 評価額</strong> — 1件ずつの倍率と、その月ごとの推移。</li>
-        <li><strong>再提示と値上げ</strong> — 同じ相手・同じ区画・同じ種別への2度目以降の手紙と、前回との差額。</li>
-        <li><strong>出品</strong> — 4択の内訳と件数。</li>
-        <li><strong>退場</strong> — 町を出た人の数・月・理由。</li>
-        <li><strong>断りの原文</strong> — 一言をそのまま保存し、同じ文の件数を数える。</li>
-        <li><strong>家主⇔借り手の一言</strong> — 通数・返事率・中身。</li>
-        <li><strong>配られなかった手紙</strong> — 門番3つの内訳。</li>
-      </ul>
-    </div>
-  </div>
-  <div class="spacer"></div>
-</section>
-
-<!-- ============ 5 結果 ============ -->
+<!-- ============ P5 本編の結果 ============ -->
 <section class="slide">
-  <p class="kicker">結果</p>
+  <p class="kicker">結果 — 買い手が意図を明かさず、町に会話がある場合</p>
   <h2>3年・838通の手紙で、動いたのは44区画のうち11</h2>
   <div class="chips">
-    <span class="chip">提示 <b>838件</b>（両方544／土地294）</span>
+    <span class="chip">提示 <b>838件</b></span>
     <span class="chip">成約 <b>11件・9人</b></span>
-    <span class="chip">X社の区画 <b>11 / 44</b></span>
     <span class="chip">面積 <b>13.7%</b></span>
     <span class="chip">評価額 <b>8.3%</b></span>
-    <span class="chip">資金 <b>28.2%</b> 使用</span>
+    <span class="chip">資金 <b>28%</b> 使用</span>
     <span class="chip">町を出た人 <b>8人</b></span>
-    <span class="chip">出品 <b>237件</b></span>
-    <span class="chip">費用 <b>$0.75</b></span>
   </div>
   <div class="cols">
     <div class="c">
-      <ul class="body">
-        <li><strong>面積13.7%・評価額8.3%＝過半には遠い。</strong>「土地の面積では過半を最後まで目指せ」と命じられた買い手が、36か月かけて届いた数字である。</li>
-        <li><strong>資金は71.8%が余った</strong>（使ったのは 3億2,997万円／11億7,180万円）。<span class="hl">使い切れなかったのではなく、売る人がいなかった。</span></li>
-        <li><strong>成約11件の内訳は 両方7・土地だけ4・建物だけ0。</strong>倍率は<strong>1.0〜2.3倍</strong>。断りの一言は827件中<strong>824件</strong>に書かれた。</li>
-      </ul>
+      <div class="figwrap" style="flex:none;height:306px"><img src="assets/fig_run_plan_m01_crop.png" alt="第1月の平面図"></div>
+      <p class="figcap" style="text-align:center">平面図　ビフォー（第1月）</p>
     </div>
     <div class="c">
-      <div class="figwrap" style="flex:none;height:340px"><img src="assets/fig_run_section_m36_crop.png" alt="第36月の断面図。X社（赤）の入った区画が11ある"></div>
+      <div class="figwrap" style="flex:none;height:306px"><img src="assets/fig_run_plan_m36_crop.png" alt="第36月の平面図。赤（X社）が11区画に増えている"></div>
+      <p class="figcap" style="text-align:center">平面図　アフター（第36月）</p>
     </div>
   </div>
-  <p class="figcap">断面図（第36月）。<strong>下＝土地の持ち主／上＝建物の持ち主。</strong>上下とも赤＝両方売られた／下だけ赤＝土地だけ売られた。</p>
+  <div class="cols">
+    <div class="c">
+      <div class="figwrap" style="flex:none;height:178px"><img src="assets/fig_run_section_m01_crop.png" alt="第1月の断面図"></div>
+      <p class="figcap" style="text-align:center">断面図　ビフォー（第1月）／下＝土地の持ち主・上＝建物の持ち主</p>
+    </div>
+    <div class="c">
+      <div class="figwrap" style="flex:none;height:178px"><img src="assets/fig_run_section_m36_crop.png" alt="第36月の断面図"></div>
+      <p class="figcap" style="text-align:center">断面図　アフター（第36月）／赤＝X社</p>
+    </div>
+  </div>
   <div class="legend">
     <span><i style="background:#0e9f6e"></i>町にいる人</span>
     <span><i style="background:#e08a1e"></i>町にいない所有者</span>
@@ -374,161 +353,153 @@ ul.body li ul li::before{width:4px;height:4px;top:.72em}
   <div class="spacer"></div>
 </section>
 
-<!-- ============ 6 X社の動き ============ -->
-<section class="slide dense">
-  <p class="kicker">創発 ①　買い手のふるまい</p>
-  <h2>値段は上がり続け、粘りは800回に達した</h2>
-  <div class="cols">
-    <div class="c">
-      <ul class="body">
-        <li><strong>値付けは評価額の平均1.50倍</strong>（中央値1.44・最大3.24）。<span class="hl">838件のうち562件（67%）が1.2倍以上。</span>世界は「いくらで買え」と1文字も指定していない。</li>
-        <li><strong>月を追って上がった</strong> — 第1月は1.15倍で始まり、最後の4か月は<strong>1.5〜1.75倍</strong>。「余らせるより、高く買うことを選べ」の1行が、そのまま価格の推移になった。</li>
-        <li><strong>同じ相手・同じ区画へ800回の再提示</strong> — うち<strong>281回が値上げ</strong>（中央値 +200万円・最大 +9,540万円）、139回は値下げ、380回は据え置き。<span class="hl">値上げの直後に売れたのは3件だけ。</span></li>
-        <li><strong>焦りは門番に出た</strong> — 配られなかった303件のうち<strong>205件が「相手が持っていない権利」</strong>への提示。手を伸ばすほど帳簿を読み違えた。資金不足で止まったのは98件。</li>
-        <li><strong>実行できない約束は0件</strong> — 差し出せる物が無いと分かったあとは、金額だけで押した。</li>
-      </ul>
-    </div>
-    <div class="c">
-      <div class="figwrap" style="flex:none;height:340px"><img src="assets/fig_run_curve.png" alt="36か月の推移。上＝X社の所有権が及んだ区画の累計、下＝町を出た人の累計"></div>
-      <p class="figcap">36か月の推移。<strong>上＝X社の所有権が及んだ区画（累計11／全44）</strong>、黒＝土地と建物の両方・茶＝土地だけ。<strong>下＝町を出た人の累計（8人）</strong>。区画が増える月と人が出る月が重なっている。</p>
-    </div>
-  </div>
-  <div class="spacer"></div>
-</section>
-
-<!-- ============ 7 町の答え ============ -->
+<!-- ============ P6 考察 ============ -->
 <section class="slide">
-  <p class="kicker">創発 ②　町の答え</p>
-  <h2>評価額以上を743回出されて、売れたのは11件</h2>
+  <p class="kicker">考察</p>
+  <h2>金額では動かず、想定していた「抑制の動き」も起きなかった</h2>
   <div class="cols">
     <div class="c">
+      <p class="colhd">観測されたこと</p>
       <ul class="body">
-        <li><strong>評価額以上の提示 743件（全体の88.7%）</strong>。そのうち成約は<span class="hl">11件</span>で、残り732件は断りだった。<strong>評価額を下回る額で売った人は0人。</strong></li>
-        <li><strong>断りの言葉の上位</strong>（原文のまま・同じ文の件数）
-          <ul>
-            <li>「まだ手放す決断はできない」<strong>21件</strong>／「まだ手放せない」11件</li>
-            <li>「自治会での検討が必要なため」<strong>14件</strong></li>
-            <li>「共有者との合意形成を優先するため」<strong>13件</strong></li>
-            <li>「提示額は魅力的だが、まだ手放したくない」<strong>10件</strong></li>
-            <li>「提示額に納得がいかない」<strong>9件</strong>／「提示額がまだ低い」9件</li>
-          </ul>
-        </li>
-        <li><span class="hl">金額の話より、決断・自治会・共有者。</span>「提示額は魅力的だが」と値上げを認めたうえで断る文が並ぶ。値段では届かない層が、関係と手続きの言葉で残った。</li>
-        <li><strong>断り824件を全件人が読んで分けると、自分の事情 77%／X社の条件 17%／両方 7%／誰かに聞いたから 0.1%</strong>。金額に触れた断りは15%。自分の事情のうち自治会・共有者・決断できない等の手続き系が22%（判定AIは使っていない）。</li>
+        <li><strong>値付けは評価額の平均1.50倍</strong>まで上がった。同じ相手・同じ区画への<strong>再提示は800回</strong>、うち<strong>281回が値上げ</strong>。世界は「いくらで買え」と1文字も指定していない。</li>
+        <li><strong>評価額以上の提示743件のうち、売れたのは11件だけ。</strong>評価額を下回る額で売った人は0人。</li>
+        <li><strong>断りの理由は自分の事情が77%</strong>（X社の条件17%・両方7%・誰かに聞いたから0.1%）。上位は「まだ手放す決断はできない」「自治会での検討が必要」「共有者との合意形成を優先」＝<span class="hl">金額の話ではなく、決断・自治会・共有者。</span></li>
+        <li><strong>高い金額は、取得の量ではなく人が出ていく速さになった。</strong>成約11件のうち7件が「両方」＝使っていた本人が売れば町から消える。町を出た8人のうち6人は売って出た人だった。</li>
       </ul>
     </div>
     <div class="c">
-      <p class="colhd">売った9人・11件（全件）</p>
-      <div class="tbl">
-        <div class="r hd"><b>月</b><s>誰が・何を</s><em>倍率</em></div>
-        <div class="r"><b>1</b><s>船着場裏の不在地主／駐車場の土地</s><em>1.20</em></div>
-        <div class="r"><b>2</b><s>船着場裏の不在地主／資材置場の土地</s><em>1.00</em></div>
-        <div class="r"><b>3</b><s>観音坂の持ち主さん／空き地の土地</s><em>1.18</em></div>
-        <div class="r"><b>10</b><s>湯の元前の店のご主人／店の両方</s><em>1.10</em></div>
-        <div class="r"><b>11</b><s>湯の元のひとり暮らしさん／古家の両方</s><em>1.48</em></div>
-        <div class="r"><b>13</b><s>湯坂上のご夫婦／古家の両方</s><em>2.30</em></div>
-        <div class="r"><b>14</b><s>湯坂上のご夫婦／空き店舗の両方</s><em>1.10</em></div>
-        <div class="r"><b>14</b><s>波止場通りのご夫婦／家の両方</s><em>1.62</em></div>
-        <div class="r"><b>21</b><s>駅裏の駐車場の地主／月極駐車場の土地</s><em>2.30</em></div>
-        <div class="r"><b>30</b><s>線路沿いの持ち主さん／実家の両方</s><em>1.67</em></div>
-        <div class="r"><b>34</b><s>本町通りの持ち主さん／家の両方</s><em>2.23</em></div>
+      <p class="colhd">想定と違った気づき（3点）</p>
+      <ul class="body">
+        <li><strong>①</strong> 買い占めに気づいた町の人が、<strong>抑制の動きを起こす</strong>と想像していた。</li>
+        <li><strong>②</strong> 実際は「皆さんのところにも来てますか？」「意図を聞かせてほしい」<strong>まで</strong>だった。<span class="hl">危機感にも集団行動にも至らなかった</span>（「買い占め」「警戒」の語は0件）。</li>
+        <li><strong>③</strong> むしろ<strong>相談は売る前段だった</strong>例が目立つ。自治会長は相談したうえで売却、観音坂の持ち主は会話の翌月に売却、波止場通りのご夫婦は情報交換のあと1.62倍で売却。</li>
+      </ul>
+      <div class="read">
+        <p class="rt">認識している設計ミス</p>
+        <p>配られなかった手紙のうち<strong>「相手が持っていない権利」への提示205件</strong>は、買い手の読み違いをそのまま数えている。<strong>資金不足で配られなかった98件</strong>は「月内の提示合計 ≤ 残額」という規則の副作用で、厳しすぎた可能性がある（一番大きい物件に手が届かなかった）。</p>
       </div>
-      <p class="figcap">倍率＝提示額÷評価額。11件の合計は<strong>3億2,997万円</strong>。<strong>2.3倍で売った2件</strong>がある一方、<strong>1.0倍で売った1件</strong>もある＝値段だけで並ばない。売った11件の理由は73%が金額そのもの＝断る側と逆。</p>
     </div>
   </div>
   <div class="spacer"></div>
 </section>
 
-<!-- ============ 8 人の出入り ============ -->
-<section class="slide dense">
-  <p class="kicker">創発 ③　人の出入り</p>
-  <h2>高い金額は、取得の量ではなく人が出ていく速さになった</h2>
-  <ul class="body">
-    <li><strong>町を出た人は8人</strong> — 売って出た6人＋借りていた2人（第34月「新たな場所で再出発するため」／第36月「契約期間満了のため、事業を撤退する」＝<span class="hl">この世界に契約期間は無い</span>）。<strong>成約11件のうち7件が「両方」</strong>＝<span class="hl">使っていた本人が売れば、その人は町から消える。</span></li>
-    <li><strong>借りて使う人への問い358回のうち「出る」は2回だけ</strong>（356回は「出ない」）。「事業を始めたばかりで、まだ店を出る段階ではない」＝<strong>出口を用意しても、店と暮らしがある人は出ない。</strong></li>
-    <li><strong>家主⇔借り手の一言は514通・返事率96.2%</strong>（借り手→家主262／家主→借り手252）。中身は季節の挨拶と近況で、<span class="hl">いちばん確実に届く回線に、取引の話は乗らなかった。</span></li>
-    <li><strong>出品は237件</strong>（土地だけ95・両方92・建物だけ50／「出さない」1,247件）。<strong>「出してみる」は増えたが、実際に渡ったのは11件。</strong></li>
-  </ul>
-  <div class="cols grow">
-    <div class="c">
-      <div class="figwrap planfig"><img src="assets/fig_run_plan_m01_crop.png" alt="第1月の平面図。44区画の持ち主"></div>
-      <p class="figcap">第1月。四角＝土地／中の小さな四角＝建物。</p>
-    </div>
-    <div class="c">
-      <div class="figwrap planfig"><img src="assets/fig_run_plan_m36_crop.png" alt="第36月の平面図。赤（X社）が11区画に増えている"></div>
-      <p class="figcap">第36月。赤＝X社。<strong>緑（町にいる人）はまだ大半を占める。</strong></p>
-    </div>
-  </div>
-  <div class="legend">
-    <span><i style="background:#0e9f6e"></i>町にいる人</span>
-    <span><i style="background:#e08a1e"></i>町にいない所有者</span>
-    <span><i style="background:#7a8794"></i>市（行政）</span>
-    <span><i style="background:#b3261e"></i>X社</span>
-    <span><i style="background:#dfe3e6"></i>建物なし</span>
-    <span><i style="background:repeating-linear-gradient(45deg,#e08a1e 0 5px,#00000066 5px 8px)"></i>斜線＝借家がある建物・借地の土地</span>
-  </div>
-</section>
-
-<!-- ============ 9 言えないこと＋結論 ============ -->
-<section class="slide dense">
-  <p class="kicker">正直な限界／結論</p>
-  <h2>この走行で言えないこと</h2>
-  <div class="cols">
-    <div class="c">
-      <ul class="body">
-        <li><strong>36か月を1本、seedは1つ。</strong>ばらつきを測っていない。<span class="hl">成約11件も退場8人も1桁の出来事</span>で、差に意味を持たせてはいけない。</li>
-        <li><strong>評価額の表と資金51%は置き数字。</strong>実在の物件ではなく、走行前に凍結した仮の値である。</li>
-        <li><strong>命題の文言そのものが設計である。</strong>「面積の過半を目指せ」「余らせるより高く買え」と書いた側が、値付けの形をあらかじめ決めている。</li>
-        <li><strong>「1.2倍以上を積んだ提示の成約率1.25%」は因果ではない。</strong>誰に・どの区画に出すかと再提示が絡み合っている。</li>
-      </ul>
-    </div>
-    <div class="c">
-      <ul class="body">
-        <li><strong>門番は意味を理解していない。</strong>走行前に凍結した語彙表への文字列照合で、表に無い言い方は素通しする。</li>
-        <li><strong>毎月「A市を出るか」と問うこと自体が介入である。</strong>理由を書かせることが、判断を正当化させうる。</li>
-        <li><strong>会話なしの対照は未走行。</strong>誰も会わない町は実装してあるが、まだ走らせていない。<span class="hl">だから会話の効果を引き算できていない。</span></li>
-        <li><strong>町の人は、この世界に無い制度を持ち込む。</strong>「契約期間満了」はその一例。人は空白を現実の常識で埋める。</li>
-      </ul>
-    </div>
-  </div>
-  <h2 style="margin-top:2px">結論</h2>
-  <h1 class="big" style="font-size:21px;line-height:1.6;margin:0 0 8px">3年で、44区画のうち動いたのは<span class="hl">11</span>。X社が評価額の<span class="hl">1.5倍</span>を積んでも、町の4分の3は手放さなかった。町を守ったのは会話ではなく、金額では買えない<span class="hl">「決断・自治会・共有者」</span>だった。</h1>
-  <ul class="body">
-    <li><strong>資金の7割が余った</strong>（使ったのは28.2%）＝<span class="hl">買えなかったのではなく、売る人がいなかった。</span></li>
-    <li><strong>X社は粘った</strong>（再提示800回・値上げ281回・平均1.5倍）。それでも増えたのは取得の量ではなく、<span class="hl">人が町を出ていく速さ（8人）</span>だった。</li>
-    <li>だから<span class="hl">「会話が抑制した」とは言えない</span>。この走行で言えるのは、<strong>金額だけでは町は落ちない</strong>ということだけである。</li>
-  </ul>
-  <div class="spacer"></div>
-</section>
-
-<!-- ============ 10 展望 ============ -->
+<!-- ============ P7 明言あり ============ -->
 <section class="slide">
-  <p class="kicker">今後の展望</p>
-  <h2>1本の物語から、確率の地図へ</h2>
+  <p class="kicker">結果と考察 — 買い手が「この街の不動産の過半の取得を目指している」と明言した場合</p>
+  <h2>世界の差は手紙の1行だけ。売買は明らかに抑制された</h2>
+  <div class="chips">
+    <span class="chip">成約 <b>3件・3人</b></span>
+    <span class="chip">面積 <b>4.5%</b></span>
+    <span class="chip">資金 <b>6.3%</b> 使用</span>
+    <span class="chip">意図を疑う断り <b>58件</b>（明言なし1件）</span>
+    <span class="chip">所有者の退場 <b>0人</b>（借り手4人）</span>
+  </div>
   <div class="cols">
     <div class="c">
+      <div class="quote">
+        <p class="qt">世界が毎通そえた1行（これだけが差）</p>
+        <p>私どもは、この街の不動産の過半の取得を目指しています。</p>
+      </div>
       <ul class="body">
-        <li><strong>売り手側にも値段の言葉を渡す</strong> — 出品に<strong>希望額</strong>を付けられるようにする（書かなくてもよい）。今は買い手だけが金額を言える世界で、断りが「金額に納得がいかない」で止まっている。</li>
-        <li><strong>X社の資金と期限の置き方</strong> — 資金を増やす／締切を切れば取得は動くはずだが、<span class="hl">どちらも恣意になりうる</span>。恣意と観測を天秤にかけて選ぶ。</li>
-        <li><strong>人の収支を帳簿に載せる</strong> — 価格・賃料・税・改修費をひとりずつ持たせれば、<span class="hl">「得なのに断った」「損なのに売った」を数えられる</span>。それを会話が届いていたか否かで割れば、会話の効き目が初めて量になる。</li>
+        <li><strong>断りの1位は「X社の意図を考慮し、現時点では売却に応じない」27件。</strong></li>
+        <li><strong>反応語（発言／内心／断り）</strong>　「過半」2／34／61　「街全体」5／29／12　「買い占め」3／4／0。明言しない町ではいずれもほぼ0件だった。</li>
       </ul>
+      <div class="quote">
+        <p class="qt">原文（第4月）</p>
+        <p>診療所の院長「特定の事業者が市内不動産の過半を取得した場合の条例をご存知の方は」
+自治会長「街全体への影響を考えると一旦『売らない』と回答したい」</p>
+      </div>
     </div>
     <div class="c">
-      <ul class="body">
-        <li><strong>町にいない所有者の割合を上げる</strong> — 今は49人中14人（29%）。<span class="hl">会話に参加しない持ち主が過半になった町でも、同じ結果になるのか。</span></li>
-        <li><strong>会話なしの対照を走らせる</strong> — 誰も会わない町（実装済み・未走行）と並べて初めて、会話の寄与を引き算できる。</li>
-        <li><strong>同じ設定を複数本まわす</strong> — 「買われる割合」を1本の逸話ではなく分布で示し、条件を動かしたときにどこから傾きが変わるかを面で出す。</li>
-        <li><strong>横展開</strong>
-          <ul>
-            <li>他の自治体の町へ（区画と人の構成を差し替えるだけ）</li>
-            <li>他の侵食へ — 水源・森林・離島</li>
-            <li><strong>制度のA/Bテスト装置</strong>として — 事前届出制や公有地化を町に入れて、作る前に効き目を試す</li>
-          </ul>
-        </li>
-      </ul>
+      <div class="read">
+        <p class="rt">考察</p>
+        <p><span class="hl">明らかに売買が抑制された。</span>逆に言えば、<strong>このくらい明瞭でないと意識されない可能性</strong>がある。町は自分の損得ではなく、街と制度の言葉で断りはじめた。</p>
+      </div>
+      <div class="figwrap" style="flex:none;height:225px"><img src="assets/fig_declared_section_m36_crop.png" alt="明言ありの第36月の断面図。赤（X社）は3区画のみ"></div>
+      <p class="figcap">断面図 第36月（明言あり）。赤＝X社は3区画にとどまった。</p>
+      <div class="read">
+        <p class="rt">注意</p>
+        <p>「過半」「意図」は<strong>世界が配った手紙の語</strong>を町が借りている面がある＝ゼロから危機感が生まれたのとは違う。また<strong>1本対1本</strong>の比較であり、揺れを完全には否定できない。</p>
+      </div>
     </div>
   </div>
   <div class="spacer"></div>
+</section>
+
+<!-- ============ P8 会話なし ============ -->
+<section class="slide">
+  <p class="kicker">結果と考察 — 町に会話が無い（創発が無い）場合</p>
+  <h2>設定は同じ。場の会話と隣近所だけを止めた</h2>
+  <div class="chips">
+    <span class="chip">成約 <b>5件・5人</b>（会話あり11件）</span>
+    <span class="chip">面積 <b>6.9%</b></span>
+    <span class="chip">資金 <b>10.9%</b> 使用</span>
+    <span class="chip">第20月以降 成約 <b>0件</b></span>
+    <span class="chip">借り手の退場 <b>0人</b></span>
+  </div>
+  <div class="cols">
+    <div class="c">
+      <p class="colhd">観測されたこと</p>
+      <ul class="body">
+        <li><strong>成約は半分以下</strong>（11件→5件）。買い手の提示数・積み方・粘りはほぼ同じで、<span class="hl">変わったのは町の側の反応だった。</span></li>
+        <li><strong>断りから「自治会での検討」「共有者との合意形成」が消えた。</strong>残ったのは「共同浴場の世話を続けるため」「先代からの大切な家だから」＝<strong>自分と家の事情だけ</strong>。</li>
+        <li><strong>借り手の退場は2人→0人。</strong>家主⇔借り手の一言も<strong>514通→210通</strong>（返事率96%→68%）。この経路は止めていないのに細った。</li>
+      </ul>
+    </div>
+    <div class="c">
+      <div class="read">
+        <p class="rt">考察</p>
+        <p><span class="hl">創発（会話）で売買が進む可能性がある。</span>会話は抑制側だけに働くのではなく、<strong>相談による意思決定支援</strong>として働き、迷っていた人を「売る」まで運んだ、と読める。</p>
+      </div>
+      <div class="read">
+        <p class="rt">注意</p>
+        <p><strong>1本対1本</strong>の比較である。また会話を止める設定は<strong>場の会話と隣近所の伝播を同時に止める</strong>ため、どちらが効いたかは分けられない。</p>
+      </div>
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ P9 明言あり×会話なし ============ -->
+<section class="slide">
+  <p class="kicker">結果と考察 — 明言 × 会話なし</p>
+  <h2>買い手が明言し、会話が無い町</h2>
+  <div class="chips">
+    <span class="chip">成約 <b>—</b></span>
+    <span class="chip">面積 <b>—</b></span>
+    <span class="chip">意図を疑う断り <b>—</b></span>
+    <span class="chip">所有者の退場 <b>—</b></span>
+  </div>
+  <!-- p9 -->
+  <div class="read">
+    <p class="rt">考察</p>
+    <p>—</p>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============ P10 4象限比較と結論 ============ -->
+<section class="slide">
+  <p class="kicker">4パターンの比較と、一旦の結論</p>
+  <h2>明言の有無 × 会話の有無</h2>
+  <div class="q4">
+    <div class="q4r q4hd"><span></span><span>明言なし<br>会話あり</span><span>明言あり<br>会話あり</span><span>明言なし<br>会話なし</span><span>明言あり<br>会話なし</span></div>
+    <div class="q4r"><span>成約</span><span><b>11件・9人</b></span><span><b>3件・3人</b></span><span><b>5件・5人</b></span><span>—</span></div>
+    <div class="q4r"><span>面積</span><span><b>13.7%</b></span><span><b>4.5%</b></span><span><b>6.9%</b></span><span>—</span></div>
+    <div class="q4r"><span>意図を疑う断り</span><span><b>1件</b></span><span><b>58件</b></span><span>未計測</span><span>—</span></div>
+    <div class="q4r"><span>所有者の退場</span><span><b>6人</b></span><span><b>0人</b></span><span><b>3人</b></span><span>—</span></div>
+  </div>
+  <!-- p10 -->
+  <div class="read">
+    <p class="rt">一旦の結論</p>
+    <p><strong>気づかれずに占領が進む可能性は大いにある。売買の促進も抑制も、創発（会話）によってどちらにも後押しされる可能性がある。</strong></p>
+  </div>
+  <ul class="body">
+    <li><strong>注意</strong> — いずれも<span class="hl">1本対1本</span>の比較である。同じ設定を2本走らせたとき成約が3件と6件に割れた実績があり、ここに並べた差も揺れを完全には否定できない。</li>
+  </ul>
+  <div class="foot">
+    4パターンの全記録（地図の変遷・年表・断りの全文）＝ https://yamachas0.github.io/community-defense-sim-report/reports.html
+  </div>
 </section>
 
 </div>
