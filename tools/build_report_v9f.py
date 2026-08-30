@@ -416,7 +416,7 @@ def build_one(cfg, quad, skip_maps=False):
 <html lang="ja"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>A市で起きたことの全記録 — 外的不動産投資へのコミュニティ自衛</title>
+<title>A市で起きたことの全記録 — 外的不動産買収へのコミュニティ自衛</title>
 <style>
 :root{--bg:#0f1115;--panel:#161a21;--fg:#e9ecf1;--dim:#98a1ad;--accent:#34d399;
 --warn:#f59e0b;--red:#ef6a5e;--line:#262c36;}
@@ -489,7 +489,7 @@ overflow-x:auto;font-size:14px;line-height:1.7;margin:8px 0 14px}
 </style></head><body><div class="wrap">
 """)
 
-    w('<p class="kicker">外的不動産投資へのコミュニティ自衛</p>')
+    w('<p class="kicker">外的不動産買収へのコミュニティ自衛</p>')
     w(f'<h1>A市で起きたことの全記録<br><span style="font-size:.62em">'
       f'（{e(cfg["label"])}の世界）</span></h1>')
     w('<p class="lead">架空の温泉のまち「A市」に、海外の不動産投資会社（X社）が入ってくる。'
@@ -1256,7 +1256,7 @@ def build_index(quad):
          '<meta name="viewport" content="width=device-width, initial-scale=1">',
          '<title>A市で起きたことの全記録 — 4つの世界</title>',
          '<style>' + INDEX_CSS + '</style></head><body><div class="wrap">',
-         '<p class="kicker">外的不動産投資へのコミュニティ自衛</p>',
+         '<p class="kicker">外的不動産買収へのコミュニティ自衛</p>',
          '<h1>A市で起きたことの全記録</h1>',
          '<p class="lead">同じ町・同じ人・同じ買い手のお金で、'
          '世界の設定を2点だけ変えた4本の走行。'
